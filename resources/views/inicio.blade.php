@@ -2,5 +2,6 @@
     titulo="Inicio"
     metaDescription="ventana de inicio de Plandyapp">
 
-    <h1>Ventana de inicio</h1>
+    <h2>Ventana de inicio</h2>
+    <p>Aqui se ve todos los Eventos</p>
 </x-layouts>

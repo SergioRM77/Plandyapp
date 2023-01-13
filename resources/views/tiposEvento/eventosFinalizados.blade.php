@@ -1,6 +1,7 @@
+pepe 
 <x-layouts.base 
-    titulo="Eventos Finalizados"
+    titulo="Evento Finalizado"
     metaDescription="eventos finalizados de Plandyapp">
 
-    <h1>Eventos finalizados</h1>
+    <h2>Evento finalizado</h2>
 </x-layouts>

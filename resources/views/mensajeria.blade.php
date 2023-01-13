@@ -2,5 +2,5 @@
     titulo="Mensajes"
     metaDescription="bandeja de mensajeria de Plandyapp">
 
-    <h1>Mensajes</h1>
+    <h2>Mensajes</h2>
 </x-layouts>

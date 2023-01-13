@@ -2,5 +2,5 @@
     titulo="Acerca de..."
     metaDescription="Información del creador de Plandyapp">
 
-    <h1>Esto es Acerca de...</h1>
+    <h2>Esto es Acerca de...</h2>
 </x-layouts>

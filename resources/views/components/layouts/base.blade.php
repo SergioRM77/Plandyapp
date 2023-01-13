@@ -8,7 +8,9 @@
     <meta content="{{$metaDescription ?? 'Aplicacion de gestion de viajes Plandyapp'}}">
 </head>
 <body>
-    <x-layouts.navegacion/>
+    <x-layouts.sidebar/>
     {{$slot}}
+    <p>< contenido ></p>
+    <x-layouts.footer/>
 </body>
 </html>
