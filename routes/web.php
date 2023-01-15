@@ -10,23 +10,26 @@ use App\Http\Controllers\chatReporteController;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\InicioController;
 
-Route::get('/', function () {
-    return 'adfgadfg';
-});
+// Route::get('/', function () {
+//     return 'adfgadfg';
+// });
+
+Route::get('evento/eventofinalizado',[EventoController::class, 'eventoFinalizado'])->name('eventofinalizado');
+Route::view('evento/conpresupuesto', 'tiposEvento.eventoConPresu')->name('eventoconpresu');
+Route::view('evento/sinpresupuesto', 'tiposEvento.eventoSinPresu')->name('eventosinpresu');
+Route::get('/',InicioController::class)->name('inicio');
+// Route::get('eventos',[EventoController::class, 'inicio'])->name('evento');
 
 
-Route::get("ajustes", AjustesUsuarioController::class)->name('ajustes');
-Route::get('contactos',ContactosController::class)->name('contactos');
 Route::get('mensajeria',MensajeriaController::class)->name('mensajeria');
-Route::get('eventos',InicioController::class)->name('inicio');
-Route::get('inicio',InicioController::class)->name('inicio');
-Route::get('eventos',[EventoController::class, 'inicio'])->name('evento');
-Route::get('eventos/eventosfinalizados',[EventoController::class, 'eventosFianlizados'])->name('eventosfinalizados');
 Route::get('mensajeria/chat/{chat}',chatPrivadoController::class)->name('chat');
 Route::get('mensajeria/chatevento/{chat}',chatEventoController::class)->name('chatevento');
 Route::get('mensajeria/chatreporte/{chat}',chatReporteController::class)->name('chatreporte');
-Route::view('acercade', 'acercade')->name('acercade');
 
+Route::view('acercade', 'acercade')->name('acercade');
+Route::get("ajustes", AjustesUsuarioController::class)->name('ajustes');
+Route::get('contactos',ContactosController::class)->name('contactos');
+Route::get('inicio',InicioController::class)->name('inicio');
 
 /* 
 Route::view("chat","chat")->name("chat");

@@ -24,9 +24,9 @@ class EventoController extends Controller
         return view('tiposEvento.eventoSinPresu');
     }
 
-    public function eventosFianlizados()
+    public function eventoFinalizado()
     {
         
-        return view('tiposEvento.eventosFinalizados');
+        return view('tiposEvento.eventoFinalizado');
     }
 }
