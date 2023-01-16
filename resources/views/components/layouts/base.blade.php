@@ -10,9 +10,9 @@
 <body>
     <x-layouts.sidebar/>
     <hr>
-    <p>< contenido ></p>
+    <p><strong>< contenido ></strong></p>
     {{$slot}}
-    <p>< fin contenido ></p>
+    <p><strong>< fin contenido ></strong></p>
     <hr>
     <x-layouts.footer/>
 </body>
