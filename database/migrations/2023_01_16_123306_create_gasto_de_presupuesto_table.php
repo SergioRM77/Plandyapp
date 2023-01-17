@@ -15,7 +15,11 @@ return new class extends Migration
     {
         Schema::create('gasto_de_presupuesto', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('descripcion_gasto_pre');
+            $table->float('coste', 6 ,2);
+            $table->date('fecha');
+            $table->string('foto')->nullable();
+            $table->timestamp('fecha_creacion');
         });
     }
 

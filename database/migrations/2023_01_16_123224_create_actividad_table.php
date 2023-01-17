@@ -15,7 +15,12 @@ return new class extends Migration
     {
         Schema::create('actividad', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('nombre_actividad');
+            $table->string('descripcion_actividad')->nullable();
+            $table->float('coste', 6, 2);
+            $table->dateTime('fecha_y_hora_inicio')->nullable();
+            $table->timestamp('fecha_hora_creacion');
+
         });
     }
 

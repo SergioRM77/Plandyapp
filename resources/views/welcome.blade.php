@@ -8,5 +8,8 @@
 </head>
 <body>
     <h1>HOlaaaa</h1>
+    <div>
+        <x-alerta/>
+    </div>
 </body>
 </html>

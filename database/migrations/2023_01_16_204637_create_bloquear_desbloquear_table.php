@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tipo_evento', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre_tipo_evento', 50);
+        Schema::create('bloquear_desbloquear', function (Blueprint $table) {
+            $table->foreignId('usuario_bloqueador_id')->constrained('usuario');
+            $table->foreignId('usuario_bloqueado_id')->constrained('usuario');
+            $table->primary('usuario_bloqueador_id');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipo_evento');
+        Schema::dropIfExists('bloquear_desbloquear');
     }
 };

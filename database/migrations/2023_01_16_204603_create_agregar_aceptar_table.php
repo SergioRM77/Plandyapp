@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tipo_evento', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre_tipo_evento', 50);
+        Schema::create('agregar_aceptar', function (Blueprint $table) {
+            $table->foreignId('usuario_agreagador_id')->constrained('usuario');
+            $table->foreignId('usuario_agreagado_id')->constrained('usuario');
+            $table->primary('usuario_agreagador_id');
+            $table->boolean('is_aceptado')->default(false);
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipo_evento');
+        Schema::dropIfExists('agregar_aceptar');
     }
 };

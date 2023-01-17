@@ -10,9 +10,9 @@ use App\Http\Controllers\chatReporteController;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\InicioController;
 
-// Route::get('/', function () {
-//     return 'adfgadfg';
-// });
+Route::get('/componentes', function () {
+    return view('welcome');
+});
 
 Route::get('evento/eventofinalizado',[EventoController::class, 'eventoFinalizado'])->name('eventofinalizado');
 Route::view('evento/conpresupuesto', 'tiposEvento.eventoConPresu')->name('eventoconpresu');

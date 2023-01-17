@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('gasto_de_presupuesto', function (Blueprint $table) {
+            $table->foreignId('evento_id')->after('id')->constrained('evento');
+            $table->foreignId('admin_id')->after('id')->constrained('usuario');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('gasto_de_presupuesto', function (Blueprint $table) {
+            $table->dropColumn('evento_id');
+            $table->dropColumn('admin_id');
+        });
+    }
+};

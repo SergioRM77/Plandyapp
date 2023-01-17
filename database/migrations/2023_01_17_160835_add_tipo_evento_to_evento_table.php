@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tipo_evento', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre_tipo_evento', 50);
-            $table->timestamps();
+        Schema::table('evento', function (Blueprint $table) {
+            $table->foreignId('tipo_evento_id')->after('id')->constrained('tipo_evento');
+
         });
     }
 
@@ -27,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipo_evento');
+        Schema::table('evento', function (Blueprint $table) {
+            $table->dropColumn('tipo_evento_id');
+        });
     }
 };
