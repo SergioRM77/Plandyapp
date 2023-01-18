@@ -10,6 +10,7 @@ use App\Http\Controllers\chatReporteController;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\InicioController;
 
+
 Route::get('/componentes', function () {
     return view('welcome');
 });
