@@ -7,15 +7,10 @@ use App\Models\User;
 
 class datos extends Component
 {
-
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $user;
+    public function __construct($user)
     {
-        //
+        $this->user=$user;
     }
 
     /**
@@ -26,5 +21,6 @@ class datos extends Component
     public function render()
     {
         return view('components.datos');
+        //return var_dump($this->user);
     }
 }

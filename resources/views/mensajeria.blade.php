@@ -1,6 +1,4 @@
-<x-layouts.base 
-    titulo="Mensajes"
-    metaDescription="bandeja de mensajeria de Plandyapp">
+<x-layouts.base titulo="Mensajeria" metaDescription="Mensajes de Plandyapp">
 
-    <h2>Mensajes</h2>
-</x-layouts>
+<h2>Mensajería</h2>
+</x-layouts.base>

@@ -44,7 +44,7 @@
             {{$slot_ini}}
         </x-tabla2>
         <hr>
-        <x-datos/>
+        <x-datos :user="$user ?? ''"/>
 
 
     </div>

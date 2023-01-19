@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Usuario;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -22,7 +24,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call(array(
-            UserSeeder::class
+            UserSeeder::class, Usuario::class
         ));
     }
 }

@@ -10,16 +10,10 @@
 <body>
     <x-layouts.sidebar/>
     <hr>
-    {{$slot}}
-    <hr>
-    <x-layouts.footer/>
-
-    {{-- <x-layouts.sidebar/>
-    <hr>
     <p><strong>< contenido ></strong></p>
     {{$slot}}
     <p><strong>< fin contenido ></strong></p>
     <hr>
-    <x-layouts.footer/>--}}
-</body> 
+    <x-layouts.footer/>
+</body>
 </html>

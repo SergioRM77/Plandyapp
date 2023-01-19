@@ -1,9 +1,5 @@
-<x-layouts.base 
-    titulo="Acerca de..."
-    metaDescription="ajustes del usuario de Plandyapp"
-    >
+<x-layouts.base titulo="Ajustes" metaDescription="Datos de usuario de Plandyapp">
 
-    <h2>Ajustes de Usuario</h2>
-    {{$slot}}
-</x-layouts> 
-<!-- **meter ruta en controlador -->
+    <h2>Ajustes</h2>
+    <x-vistas.ajustes_usuario :users="$users"/>
+</x-layouts.base>

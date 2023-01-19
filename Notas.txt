@@ -18,3 +18,22 @@ Con tinker puedes ver los datos de la base de datos, hacer consultas,
 meter cosas, etc...  consulta ejemplo-> $usuario = User::where('name',''Pepe)->get();
 
 LA MOSTRAR LOS DATOS EN LAS VISTAS EN NECESARIO LLAMAR AL MODELO EN EL CONTROLADOR
+
+Los datos tienen que pasar de Web a Controlador, en este hace la peticion de datos la base de 
+datos (debemos añadir el use\modelo... al controlador):
+        public function __invoke()
+            {
+                $users = User::all();
+                return view('index',compact('users'));
+            }
+Este controlador envia los datos a la vista principal y despues se la asignamos al 
+componente correspondiente (:users="$users"). Dentro de la clase se envian los datos 
+directamente gracias a la función render() y podemos meter otras funciones
+    web>Controlador>vista>componente.php(clase)>contenido-componente.blade.php
+
+**Cuando se usan componentes las funciones propias junto a la lógica va en la clase del componente,
+    no en el controlador (aunque se podría también). Cuando pasamos datos de BD, el controlador ya 
+    nos los devuelve tratados como un string o array de string.
+
+**Si no usamos controladores la lógica y funciones van el controlador
+

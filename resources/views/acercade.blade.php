@@ -1,6 +1,4 @@
-<x-layouts.base 
-    titulo="Acerca de..."
-    metaDescription="Información del creador de Plandyapp">
+<x-layouts.base titulo="Acerca de ..." metaDescription="Acerca de ... Plandyapp">
 
-    <h2>Esto es Acerca de...</h2>
-</x-layouts>
+    <h2>Acerca de ...</h2>
+    </x-layouts.base>
