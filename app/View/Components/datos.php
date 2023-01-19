@@ -5,19 +5,17 @@ namespace App\View\Components;
 use Illuminate\View\Component;
 use App\Models\User;
 
-class tabla2 extends Component
+class datos extends Component
 {
-    public $titulo;
-    public $subtitulo;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($titulo = "", $subtitulo= "")
+    public function __construct()
     {
-        $this->titulo= $titulo;
-        $this->subtitulo= $subtitulo;
+        //
     }
 
     /**
@@ -27,6 +25,6 @@ class tabla2 extends Component
      */
     public function render()
     {
-        return view('components.tabla2');
+        return view('components.datos');
     }
 }

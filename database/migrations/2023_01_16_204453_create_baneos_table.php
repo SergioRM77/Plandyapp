@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('baneo', function (Blueprint $table) {
-            $table->foreignId('usuario_id')->constrained('usuario');
-            $table->foreignId('admin_id')->constrained('usuario');
+        Schema::create('baneos', function (Blueprint $table) {
+            $table->foreignId('usuario_id')->constrained('usuarios');
+            $table->foreignId('admin_id')->constrained('usuarios');
             $table->primary(['usuario_id', 'admin_id']);
             $table->boolean('is_permanente')->default(false);
             $table->boolean('is_temporal')->default(false);
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('baneo');
+        Schema::dropIfExists('baneos');
     }
 };

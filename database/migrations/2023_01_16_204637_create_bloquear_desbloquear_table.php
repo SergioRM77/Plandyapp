@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('bloquear_desbloquear', function (Blueprint $table) {
-            $table->foreignId('usuario_bloqueador_id')->constrained('usuario');
-            $table->foreignId('usuario_bloqueado_id')->constrained('usuario');
+            $table->foreignId('usuario_bloqueador_id')->constrained('usuarios');
+            $table->foreignId('usuario_bloqueado_id')->constrained('usuarios');
             $table->primary('usuario_bloqueador_id');
             $table->timestamps();
         });

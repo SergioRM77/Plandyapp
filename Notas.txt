@@ -1,0 +1,20 @@
+*Cambiar tablas de migracion a plurales, para funcionar bien con los modelos y seeders
+
+1º hay que crear los modelos con la primera letra en mayuscula y singular
+ que hace referencia a la migración en minuscula y plural ejemplo -> User(model)->users(migracion)
+
+
+
+2ºhacer los seeders en DataBaseSeeder se debería poner todas las conexiones a otros seeders con use y se
+ declaran en el run()// en el terminal o llamamos al general donde metemos todos 'php artisan db:seed' o 
+ a un seeder en concreto 'php artisan db:seed --class=NombreSeeder'
+
+3º crear las factories (son para crear datos aleatorios de prueba)
+ 'php artisan make:factory NombretablaFactoy' dentro se define el modelo sore el que va a trabajar 'App\Models\NombreSeeder'
+ y sobre esa tabla mete cosas random
+
+
+Con tinker puedes ver los datos de la base de datos, hacer consultas,
+meter cosas, etc...  consulta ejemplo-> $usuario = User::where('name',''Pepe)->get();
+
+LA MOSTRAR LOS DATOS EN LAS VISTAS EN NECESARIO LLAMAR AL MODELO EN EL CONTROLADOR

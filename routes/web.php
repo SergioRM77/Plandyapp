@@ -9,12 +9,13 @@ use App\Http\Controllers\chatPrivadoController;
 use App\Http\Controllers\chatReporteController;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\InicioController;
+use App\Http\Controllers\HomeController;
 
 
 Route::get('/componentes', function () {
     return view('welcome');
 });
-
+Route::get("/prueba", HomeController::class);
 Route::get('evento/eventofinalizado',[EventoController::class, 'eventoFinalizado'])->name('eventofinalizado');
 Route::view('evento/conpresupuesto', 'tiposEvento.eventoConPresu')->name('eventoconpresu');
 Route::view('evento/sinpresupuesto', 'tiposEvento.eventoSinPresu')->name('eventosinpresu');

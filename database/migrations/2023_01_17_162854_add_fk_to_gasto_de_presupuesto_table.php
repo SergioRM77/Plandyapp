@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('gasto_de_presupuesto', function (Blueprint $table) {
-            $table->foreignId('evento_id')->after('id')->constrained('evento');
-            $table->foreignId('admin_id')->after('id')->constrained('usuario');
+        Schema::table('gastos_de_presupuesto', function (Blueprint $table) {
+            $table->foreignId('evento_id')->after('id')->constrained('eventos');
+            $table->foreignId('admin_id')->after('id')->constrained('usuarios');
         });
     }
 
@@ -26,9 +26,12 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('gasto_de_presupuesto', function (Blueprint $table) {
-            $table->dropColumn('evento_id');
-            $table->dropColumn('admin_id');
+        Schema::table('gastos_de_presupuesto', function (Blueprint $table) {
+            // $table->dropColumn('evento_id');
+            // $table->dropColumn('admin_id');
+
+            $table->dropConstrainedForeignId('evento_id');
+            $table->dropConstrainedForeignId('admin_id');
         });
     }
 };

@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('gasto', function (Blueprint $table) {
+        Schema::create('gastos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('evento_id')->constrained('evento');
-            $table->foreignId('usuario_id')->constrained('usuario');
+            $table->foreignId('evento_id')->constrained('eventos');
+            $table->foreignId('usuario_id')->constrained('usuarios');
             $table->string('descripcion');
             $table->float('coste', 6, 2);
             $table->timestamp('fecha_hora');
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gasto');
+        Schema::dropIfExists('gastos');
     }
 };

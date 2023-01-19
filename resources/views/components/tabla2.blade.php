@@ -7,4 +7,5 @@
     <p>{{$attributes}}</p>
     <p>{{gettype($attributes)}}</p>
     <p>{{var_dump((array)$attributes)}}</p>
+
 </div>

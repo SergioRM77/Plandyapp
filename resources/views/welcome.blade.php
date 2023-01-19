@@ -43,6 +43,10 @@
         <x-tabla2 :titulo="$titulo" :subtitulo="$subtitulo" tiempo="soleado" meme="meme">
             {{$slot_ini}}
         </x-tabla2>
+        <hr>
+        <x-datos/>
+
+
     </div>
 </body>
 </html>

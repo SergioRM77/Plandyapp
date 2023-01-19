@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('gasto_de_presupuesto', function (Blueprint $table) {
+        Schema::create('gastos_de_presupuesto', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion_gasto_pre');
             $table->float('coste', 6 ,2);
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gasto_de_presupuesto');
+        Schema::dropIfExists('gastos_de_presupuesto');
     }
 };

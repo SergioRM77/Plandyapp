@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('chat_evento', function (Blueprint $table) {
-            $table->foreignId('evento_id')->constrained('evento');
-            $table->foreignId('usuario_id')->constrained('usuario');
+        Schema::create('chats_eventos', function (Blueprint $table) {
+            $table->foreignId('evento_id')->constrained('eventos');
+            $table->foreignId('usuario_id')->constrained('usuarios');
             $table->timestamp('fecha_y_hora');
             $table->primary(['evento_id', 'usuario_id', 'fecha_y_hora']);
             $table->string('contenido');
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chat_evento');
+        Schema::dropIfExists('chats_eventos');
     }
 };
