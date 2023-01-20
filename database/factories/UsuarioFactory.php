@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Usuario>
@@ -18,18 +19,19 @@ class UsuarioFactory extends Factory
     {
         return [
             'nombre_completo' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            // 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'password' => 1234, // password
-            'remember_token' => fake()->int,
             'alias'=>fake()->unique()->name(),
-            'telefono'=>fake()->int,
+            'email' => fake()->unique()->safeEmail(),
+            'telefono'=>fake()->e164phoneNumber(),
             'direccion'=>fake()->text(),
             'localidad'=>fake()->text(),
-            'codigo_postal'=>fake()->int,
-            'created_at',
-            'updated_at'
+            'codigo_postal'=>random_int(0,99999),
+            // 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'estado' => fake()->text(),
+            'is_admin_sistema'=> fake()->boolean(),
+            'password' => 1234, // password
+            'remember_token' => Str::random(10)
+            
+
         ];
     }
 }

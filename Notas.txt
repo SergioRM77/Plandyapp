@@ -1,4 +1,6 @@
 *Cambiar tablas de migracion a plurales, para funcionar bien con los modelos y seeders
+***PARA CREAR LOS COMPONENTES HAY QUE CREARLOS CON LA PRIMERA LETRA EN MAYUSCULA Y SIN DIRECTORIOS(php artisan make:component Alerta)
+    ------ O SI NO PETA!!!!----
 
 1º hay que crear los modelos con la primera letra en mayuscula y singular
  que hace referencia a la migración en minuscula y plural ejemplo -> User(model)->users(migracion)

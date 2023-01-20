@@ -1,4 +1,4 @@
 <header>
-    <h1> <a href="< ?php echo e(route('inicio')); ?>">Logo Plandyapp</a></h1>
+    <h1> <a href="{{e(route('inicio'))}}">Logo Plandyapp</a></h1>
         <x-layouts.navegacion/>
     </header>
