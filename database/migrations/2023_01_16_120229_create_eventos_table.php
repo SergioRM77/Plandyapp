@@ -21,8 +21,9 @@ return new class extends Migration
             $table->date('fecha_fin')->nullable();
             $table->string('tags')->nullable();
             $table->string('foto')->nullable();
-            $table->timestamp('fecha_creacion');
-            $table->dateTime('fecha_actualizado');
+            $table->string("estado")->default("activo");
+            $table->timestamps();
+
         });
     }
     

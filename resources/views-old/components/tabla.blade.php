@@ -3,7 +3,6 @@
         {{$color}}
     </p>
     <p>Esto es lo ingresado: {{$contenido}}</p>
-    <p>{{$mostrarContenido()}}</p>
 
     <p>{{$slot}}</p>
 

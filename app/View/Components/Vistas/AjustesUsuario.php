@@ -15,17 +15,18 @@ class AjustesUsuario extends Component
         
     }
     public function getAllCodigoPostal(){
-        $array='';
+        $texto='';
             foreach ($this->usuarios as $usuario => $value) {
-                $array .= $usuario . $this->usuarios[$usuario]['codigo_postal'] . ' .';
+                $texto .= $this->usuarios[$usuario]['nombre_completo'] . 
+                ': '. $this->usuarios[$usuario]['codigo_postal'] . ' //';
             }
-            return $array;
+            return $texto;
 
     }
 
         public function isSelected()
     {
-        return "asdfqdgf";
+        return "Seleccionado";
     }
     
     public function render()

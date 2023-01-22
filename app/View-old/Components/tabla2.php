@@ -9,15 +9,19 @@ class tabla2 extends Component
 {
     public $titulo;
     public $subtitulo;
+    public $numUno;
+    public $numDos;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($titulo = "", $subtitulo= "")
+    public function __construct($titulo = "", $subtitulo= "", $numUno= 0, $numDos=0)
     {
         $this->titulo= $titulo;
         $this->subtitulo= $subtitulo;
+        $this->numUno=$numUno;
+        $this->numDos=$numDos;
     }
 
     /**
