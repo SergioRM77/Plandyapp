@@ -1,3 +1,4 @@
+<x-layouts.base titulo="chat" metaDescription="Chat privado de Plandyapp">
 <article>
     <h3>CHAT PRIVADO</h3>
     <div class="mensajes-chat-privado"></div>
@@ -5,4 +6,4 @@
         <input type="text" name="enviar">
         <button type="submit">Enviar</button>
     </form>
-</article>
+</article></x-layouts.base>

@@ -25,9 +25,9 @@ Route::get('/',InicioController::class)->name('inicio');
 
 
 Route::get('mensajeria',MensajeriaController::class)->name('mensajeria');
-Route::get('mensajeria/chat/{chat}',chatPrivadoController::class)->name('chat');
-Route::get('mensajeria/chatevento/{chat}',chatEventoController::class)->name('chatevento');
-Route::get('mensajeria/chatreporte/{chat}',chatReporteController::class)->name('chatreporte');
+Route::get('mensajeria/chat',chatPrivadoController::class)->name('chat');
+Route::get('mensajeria/chatevento/',chatEventoController::class)->name('chatevento');
+Route::get('mensajeria/chatreporte/',chatReporteController::class)->name('chatreporte');
 
 Route::view('acercade', 'acercade')->name('acercade');
 Route::get("ajustes", AjustesUsuarioController::class)->name('ajustes');

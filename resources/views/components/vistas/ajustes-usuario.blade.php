@@ -3,13 +3,14 @@
 <form action="" method="POST">
     @csrf
     <label for="foto">Foto</label>
-    <input type="image" name="foto" >
+    <img src="" alt="foto perfil">
+    <input type="file" name="foto" >
     <label for="nombre_completo">Nombre completo:</label>
     <input type="text" name="nombre_completo" >
     <label for="alias">Alias:</label>
-    <input type="text" name="alias" >
+    <input type="text" name="alias" value="funcionRecuperarX()">
     <label for="email">Email:</label>
-    <input type="text" name="email" >
+    <input type="text" name="email" value="meme@gmail.me" disabled>
     <label for="telefono">Teléfono:</label>
     <input type="text" name="telefono" >
     <label for="direccion">Direccion:</label>

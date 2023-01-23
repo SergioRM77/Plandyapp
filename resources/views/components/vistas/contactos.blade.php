@@ -13,25 +13,25 @@
         <button type="submit">Buscar por nombre</button>
     </form>
 
-    <section>
+    <section>{{-- iteracion sobre busqueda seleccionada --}}
         <div>
             <div>Foto</div>
             <p>Nombre Usuario:</p>
             <p>Ciudad:</p>
             <p>Intereses:</p>
-            <div>
-                <input type="button" value="Agregar">
-                <input type="button" value="Eliminar">
+            <form action="" method="POST">
+                <a href="{{e(route('chat'))}}">Abrir chat</a>
+                <a href="{{e(route('chatreporte'))}}">Abrir Chat Reporte</a>
+                <input type="button" value="Agregar/Eliminar">
                 <input type="button" value="Bloquear/Desbloquear">
                 <input type="button" value="Reportar">
                 <input type="button" value="Enviar Mensaje">
-            </div>
-            <div>
+            
                 <label for="">Enviar mensaje/Reportar</label>
                 <input type="text">
-                <button type="submit">Enviar Mensaje</button>
-                <button type="submit">Abrir chat</button>
-            </div>
+                <button type="submit">Enviar</button>
+                
+            </form>
         </div>
         
 

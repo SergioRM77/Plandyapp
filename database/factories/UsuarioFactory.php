@@ -26,8 +26,7 @@ class UsuarioFactory extends Factory
             'localidad'=>fake()->text(),
             'codigo_postal'=>random_int(0,99999),
             // 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'estado' => fake()->text(),
-            'is_admin_sistema'=> fake()->boolean(),
+            
             'password' => 1234, // password
             'remember_token' => Str::random(10)
             
