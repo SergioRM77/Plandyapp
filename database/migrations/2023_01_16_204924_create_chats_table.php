@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('chat', function (Blueprint $table) {
-            $table->foreignId('usuario_origen_id')->constrained('usuarios');
-            $table->foreignId('usuario_destino_id')->constrained('usuarios');
+            $table->foreignId('usuario_origen_id')->constrained('users');
+            $table->foreignId('usuario_destino_id')->constrained('users');
             $table->timestamp('fecha_y_hora');
             $table->primary(['usuario_origen_id', 'usuario_destino_id', 'fecha_y_hora']);
             $table->string('contenido');

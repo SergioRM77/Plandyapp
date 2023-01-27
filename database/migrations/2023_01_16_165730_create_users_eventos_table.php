@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('usuarios_evento', function (Blueprint $table) {
+        Schema::create('users_eventos', function (Blueprint $table) {
             $table->foreignId('evento_id')->constrained('eventos');
-            $table->foreignId('usuario_id')->constrained('usuarios');
+            $table->foreignId('user_id')->constrained('users');
             $table->boolean('is_admin_principal')->default(false);
             $table->boolean('is_admin_secundario')->default(false);
             $table->timestamps();
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('usuarios_evento');
+        Schema::dropIfExists('users_eventos');
     }
 };

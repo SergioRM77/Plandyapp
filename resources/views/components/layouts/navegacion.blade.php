@@ -7,6 +7,6 @@
         <li><a href="{{ e(route('mensajeria')) }}">Mensajería</a></li>
         <li><a href="{{ e(route('ajustes')) }}">Ajustes</a></li>
         <li><a href="{{ e(route('acercade')) }}">Acerca de</a></li>
-        <li><a href="">Cerrar sesion</a></li>
+        <li><a href="{{e(route('logout'))}}">Cerrar sesion</a></li>
     </ul>
 </nav>

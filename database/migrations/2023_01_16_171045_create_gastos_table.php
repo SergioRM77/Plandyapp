@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('gastos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('evento_id')->constrained('eventos');
-            $table->foreignId('usuario_id')->constrained('usuarios');
+            $table->foreignId('usuario_id')->constrained('users');
             $table->string('descripcion');
             $table->float('coste', 6, 2);
             $table->timestamp('fecha_hora');

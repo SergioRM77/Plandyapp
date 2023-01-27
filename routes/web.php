@@ -4,56 +4,53 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AjustesUsuarioController;
 use App\Http\Controllers\ContactosController;
 use App\Http\Controllers\MensajeriaController;
-use App\Http\Controllers\chatEventoController;
-use App\Http\Controllers\chatPrivadoController;
-use App\Http\Controllers\chatReporteController;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\InicioController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SessionController;
+use App\Http\Controllers\LoginRegisterController;
+use App\Http\Controllers\AuthenticatedSessionController;
+use App\Http\Controllers\ChatController;
 
 
 
 
-Route::get("/componentes", [HomeController::class, 'componentes']);
-Route::get("/prueba", [HomeController::class, 'index']);
-
-Route::get('evento/eventofinalizado',[EventoController::class, 'eventoFinalizado'])->name('eventofinalizado');
-Route::view('evento/conpresupuesto', 'tiposEvento.eventoConPresu')->name('eventoconpresu');
-Route::view('evento/sinpresupuesto', 'tiposEvento.eventoSinPresu')->name('eventosinpresu');
-Route::get('/',InicioController::class)->name('inicio');
 
 
-
-Route::get('mensajeria',MensajeriaController::class)->name('mensajeria');
-Route::get('mensajeria/chat',chatPrivadoController::class)->name('chat');
-Route::get('mensajeria/chatevento/',chatEventoController::class)->name('chatevento');
-Route::get('mensajeria/chatreporte/',chatReporteController::class)->name('chatreporte');
-
-Route::view('acercade', 'acercade')->name('acercade');
-Route::get("ajustes", AjustesUsuarioController::class)->name('ajustes');
-Route::get('contactos',ContactosController::class)->name('contactos');
-Route::get('inicio',InicioController::class)->name('inicio');
-
-/****esto es lo viejo****/
-// Route::get("/componentes", [HomeController::class, 'componentes']);
-// Route::get("/prueba", [HomeController::class, 'index']);
-
-// Route::get('evento/eventofinalizado',[EventoController::class, 'eventoFinalizado'])->name('eventofinalizado');
-// Route::view('evento/conpresupuesto', 'tiposEvento.eventoConPresu')->name('eventoconpresu');
-// Route::view('evento/sinpresupuesto', 'tiposEvento.eventoSinPresu')->name('eventosinpresu');
-// Route::get('/',InicioController::class)->name('inicio');
+Route::get('evento/eventofinalizado',[EventoController::class, 'eventoFinalizado'])->name('eventofinalizado')->middleware('auth');
+Route::view('evento/conpresupuesto', 'tiposEvento.eventoConPresu')->name('eventoconpresu')->middleware('auth');
+Route::view('evento/sinpresupuesto', 'tiposEvento.eventoSinPresu')->name('eventosinpresu')->middleware('auth');
+Route::get('/',InicioController::class)->name('inicio')->middleware('auth');
 
 
 
-// Route::get('mensajeria',MensajeriaController::class)->name('mensajeria');
-// Route::get('mensajeria/chat/{chat}',chatPrivadoController::class)->name('chat');
-// Route::get('mensajeria/chatevento/{chat}',chatEventoController::class)->name('chatevento');
-// Route::get('mensajeria/chatreporte/{chat}',chatReporteController::class)->name('chatreporte');
+Route::get('mensajeria',MensajeriaController::class)->name('mensajeria')->middleware('auth');
+Route::get('mensajeria/chat',[ChatController::class, 'chatPrivado'])->name('chat')->middleware('auth');
+Route::get('mensajeria/chatevento/',[ChatController::class, 'chatEvento'])->name('chatevento')->middleware('auth');
+Route::get('mensajeria/chatreporte/',[ChatController::class, 'chatReporte'])->name('chatreporte')->middleware('auth');
 
-// Route::view('acercade', 'acercade')->name('acercade');
-// Route::get("ajustes", AjustesUsuarioController::class)->name('ajustes');
-// Route::get('contactos',ContactosController::class)->name('contactos');
-// Route::get('inicio',InicioController::class)->name('inicio');
+Route::view('acercade', 'acercade')->name('acercade')->middleware('guest');
+Route::get("ajustes", [AjustesUsuarioController::class, 'index'])->name('ajustes')->middleware('auth');
+Route::patch("ajustes", [AjustesUsuarioController::class, 'update'])->name('updateUser')->middleware('auth');
+Route::get('contactos',ContactosController::class)->name('contactos')->middleware('auth');
+Route::get('inicio',InicioController::class)->name('inicio')->middleware('auth');
+Route::post('inicio',InicioController::class)->name('inicio')->middleware('auth');
+
+
+//Route::get('login',[LoginRegisterController::class, 'login'])->name('login')->middleware('guest');
+Route::view('login','auth.login')->name('login');
+Route::post('login',[LoginRegisterController::class, 'storeLogin'])->middleware('guest');
+
+Route::view('registrarse','auth.registrarse')->name('registrarse');
+Route::post('registrarse',[LoginRegisterController::class, 'store']);
+Route::post('logout',[LoginRegisterController::class, 'destroySession'])->name('logout');
+Route::get('logout',[LoginRegisterController::class, 'destroySession'])->name('logout');
+
+
+Route::get('/setSession', [SessionController::class, 'setSessionData'])->name('setSessionData')->middleware('auth');
+Route::get('/getAccessSession', [SessionController::class, 'getAccessSession'])->name('getAccessSession')->middleware('auth');
+Route::get('/deleteSessionData', [SessionController::class, 'deleteSetSessionData'])->name('deleteSetSessionData')->middleware('auth');
+
+
 
 
 

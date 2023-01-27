@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('usuario_participa_actividad', function (Blueprint $table) {
             $table->foreignId('actividad_id')->constrained('actividades');
-            $table->foreignId('participante_id')->constrained('usuarios');
+            $table->foreignId('participante_id')->constrained('users');
             $table->timestamps();
         });
     }

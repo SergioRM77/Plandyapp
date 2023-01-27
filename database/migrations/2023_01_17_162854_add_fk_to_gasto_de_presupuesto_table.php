@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('gastos_de_presupuesto', function (Blueprint $table) {
             $table->foreignId('evento_id')->after('id')->constrained('eventos');
-            $table->foreignId('admin_id')->after('id')->constrained('usuarios');
+            $table->foreignId('admin_id')->after('id')->constrained('users');
         });
     }
 

@@ -14,11 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('reportes', function (Blueprint $table) {
-            $table->foreignId('usuario_reportador_id')->constrained('usuarios');
-            $table->foreignId('usuario_reportado_id')->constrained('usuarios');
+            $table->foreignId('usuario_reportador_id')->constrained('users');
+            $table->foreignId('usuario_reportado_id')->constrained('users');
             $table->timestamp('fecha_y_hora');
             $table->primary(['usuario_reportador_id','usuario_reportado_id','fecha_y_hora']);
-            $table->foreignId('admin_id')->constrained('usuarios');
+            $table->foreignId('admin_id')->constrained('users');
             $table->string('comentario');
             
         });
