@@ -31,19 +31,20 @@ Route::get('mensajeria/chatreporte/',[ChatController::class, 'chatReporte'])->na
 Route::view('acercade', 'acercade')->name('acercade')->middleware('guest');
 Route::get("ajustes", [AjustesUsuarioController::class, 'index'])->name('ajustes')->middleware('auth');
 Route::patch("ajustes", [AjustesUsuarioController::class, 'update'])->name('updateUser')->middleware('auth');
+// Route::patch("ajustes", [\App\View\Components\Vistas\AjustesUsuario::class, 'update'])->name('updateUser')->middleware('auth');
 Route::get('contactos',ContactosController::class)->name('contactos')->middleware('auth');
 Route::get('inicio',InicioController::class)->name('inicio')->middleware('auth');
 Route::post('inicio',InicioController::class)->name('inicio')->middleware('auth');
 
 
-//Route::get('login',[LoginRegisterController::class, 'login'])->name('login')->middleware('guest');
-Route::view('login','auth.login')->name('login');
+Route::view('login','auth.login')->name('login')->middleware('guest');
 Route::post('login',[LoginRegisterController::class, 'storeLogin'])->middleware('guest');
 
-Route::view('registrarse','auth.registrarse')->name('registrarse');
-Route::post('registrarse',[LoginRegisterController::class, 'store']);
+Route::view('registrarse','auth.registrarse')->name('registrarse')->middleware('guest');
+Route::post('registrarse',[LoginRegisterController::class, 'store'])->middleware('guest');
 Route::post('logout',[LoginRegisterController::class, 'destroySession'])->name('logout');
 Route::get('logout',[LoginRegisterController::class, 'destroySession'])->name('logout');
+Route::delete('borrar-cuenta', [AjustesUsuarioController::class, 'deleteUser'])->name('deleteUser');
 
 
 Route::get('/setSession', [SessionController::class, 'setSessionData'])->name('setSessionData')->middleware('auth');
@@ -51,7 +52,8 @@ Route::get('/getAccessSession', [SessionController::class, 'getAccessSession'])-
 Route::get('/deleteSessionData', [SessionController::class, 'deleteSetSessionData'])->name('deleteSetSessionData')->middleware('auth');
 
 
-
-
+// Ejemplo formulario con componentes
+Route::view('sample', 'sample');
+Route::post('sample', [\App\View\Components\MyForm::class, 'handle'])->name('handle');
 
 ?>

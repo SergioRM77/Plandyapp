@@ -24,5 +24,12 @@
     <label for="confirm-password">* Confirmar contraseña:</label>
     <input type="password" name="confirm-password" required>@error('same') <span> {{$message}}</span> @enderror
 <br>
+
+
     <input type="submit" value="Enviar">
+</form>
+<form action="{{route('deleteUser')}}" method="post">
+    @csrf @method('DELETE')
+    <label for="delete">Borrar cuenta de Usuario</label>
+    <button type="submit">Borrar cuenta</button>
 </form>

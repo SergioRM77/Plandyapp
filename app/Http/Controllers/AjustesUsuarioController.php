@@ -32,35 +32,27 @@ class AjustesUsuarioController extends Controller
             'foto' => ''
         ]);
 
-        $usuario = User::where('alias', session()->get('alias'))->get();
-        // $usuario->nombre_completo = $request->input('nombre_completo');
-        // $usuario->alias = $request->input('alias');
-        // $usuario->email = $request->input('email');
-        // $usuario->telefono = $request->input('telefono');
-        // $usuario->direccion = $request->input('direccion');
-        // $usuario->localidad = $request->input('localidad');
-        // $usuario->codigo_postal = $request->input('codigo_postal');
-        // $usuario->intereses = $request->input('intereses');
-        // $usuario->password = bcrypt($request->input('password'));
-        // $usuario->save();
+        $usuario = User::whereAlias(session()->get('alias'))->get()->first();
 
-        // // $usuario->nombre_completo = $request->nombre_completo;
-        // // $usuario->alias = $request->alias;
-        // // $usuario->email = $request->email;
-        // // $usuario->telefono = $request->telefono;
-        // // $usuario->direccion = $request->direccion;
-        // // $usuario->localidad = $request->localidad;
-        // // $usuario->codigo_postal = $request->codigo_postal;
-        // // $usuario->intereses = $request->intereses;
-        // // $usuario->password = bcrypt($request->password);
-        // // $usuario->save();
+        $usuario->nombre_completo = $request->input('nombre_completo');
+        $usuario->telefono = $request->input('telefono');
+        $usuario->direccion = $request->input('direccion');
+        $usuario->localidad = $request->input('localidad');
+        $usuario->codigo_postal = $request->input('codigo_postal');
+        $usuario->intereses = $request->input('intereses');
+        $usuario->password = bcrypt($request->input('password'));
+        $usuario->save();
 
         session(['alias' => $request->alias]);
         session()->flash('status', 'Has actualizado tus datos');
-//        return view('inicio');
-
-        return $usuario;
+        return view('inicio');
 
     }
     
+    public function deleteUser(){
+        $user = User::whereAlias(session()->get('alias'))->get()->first();
+        session()->forget('alias');
+        $user->delete();
+        return to_route('login')->with('status', 'Cuenta de Usuario Eliminada');
+    }
 }

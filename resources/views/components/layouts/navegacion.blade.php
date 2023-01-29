@@ -9,4 +9,5 @@
         <li><a href="{{ e(route('acercade')) }}">Acerca de</a></li>
         <li><a href="{{e(route('logout'))}}">Cerrar sesion</a></li>
     </ul>
+    <a href="{{ e(route('ajustes')) }}">@-{{session('alias')}}</a>
 </nav>
