@@ -54,6 +54,10 @@ Route::get('/deleteSessionData', [SessionController::class, 'deleteSetSessionDat
 
 // Ejemplo formulario con componentes
 Route::view('sample', 'sample');
-Route::post('sample', [\App\View\Components\MyForm::class, 'handle'])->name('handle');
+Route::post('sample/registrarse', [\App\View\Components\MyForm::class, 'handle'])->name('handle');
+Route::post('sample/login', [\App\View\Components\MyForm::class, 'storeLogin'])->name('storeLogin');
+Route::post('sample/logout', [\App\View\Components\MyForm::class, 'destroySession'])->name('destroySession');
+Route::patch('sample/update', [\App\View\Components\MyForm::class, 'updateData'])->name('updateData');
+Route::delete('sample/delete', [\App\View\Components\MyForm::class, 'delete'])->name('delete');
 
 ?>

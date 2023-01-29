@@ -22,6 +22,9 @@ class AjustesUsuario extends Component
     }
 
     public function show($string){
+        if($this->user == null){
+            return '';
+        }
         return $this->user[$string];
     }
 
