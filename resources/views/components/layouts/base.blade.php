@@ -6,7 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>PlandyApp - {{$titulo ?? ""}}</title>
     <meta content="{{$metaDescription ?? 'Aplicacion de gestion de viajes Plandyapp'}}">
-    <script src="https://cdn.tailwindcss.com"></script>
+    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
+    @vite('resources/css/app.css')
 </head>
 <body>
     <x-layouts.sidebar/>
@@ -16,8 +17,9 @@
             {{session('status')}}
         </div>
     @endif
-    {{$slot}}
-    <hr>
+    <main class="container w-6/12 my-10">
+        {{$slot}}
+    </main>
     <x-layouts.footer/>
 </body> 
 </html>

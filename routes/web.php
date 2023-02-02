@@ -11,6 +11,8 @@ use App\Http\Controllers\LoginRegisterController;
 use App\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\ChatController;
 
+use App\View\Components\MyForm;
+
 
 
 
@@ -28,7 +30,7 @@ Route::get('mensajeria/chat',[ChatController::class, 'chatPrivado'])->name('chat
 Route::get('mensajeria/chatevento/',[ChatController::class, 'chatEvento'])->name('chatevento')->middleware('auth');
 Route::get('mensajeria/chatreporte/',[ChatController::class, 'chatReporte'])->name('chatreporte')->middleware('auth');
 
-Route::view('acercade', 'acercade')->name('acercade')->middleware('guest');
+Route::view('acercade', 'acercade')->name('acercade')->middleware('auth');
 Route::get("ajustes", [AjustesUsuarioController::class, 'index'])->name('ajustes')->middleware('auth');
 Route::patch("ajustes", [AjustesUsuarioController::class, 'update'])->name('updateUser')->middleware('auth');
 // Route::patch("ajustes", [\App\View\Components\Vistas\AjustesUsuario::class, 'update'])->name('updateUser')->middleware('auth');
@@ -54,10 +56,10 @@ Route::get('/deleteSessionData', [SessionController::class, 'deleteSetSessionDat
 
 // Ejemplo formulario con componentes
 Route::view('sample', 'sample');
-Route::post('sample/registrarse', [\App\View\Components\MyForm::class, 'handle'])->name('handle');
-Route::post('sample/login', [\App\View\Components\MyForm::class, 'storeLogin'])->name('storeLogin');
-Route::post('sample/logout', [\App\View\Components\MyForm::class, 'destroySession'])->name('destroySession');
-Route::patch('sample/update', [\App\View\Components\MyForm::class, 'updateData'])->name('updateData');
-Route::delete('sample/delete', [\App\View\Components\MyForm::class, 'delete'])->name('delete');
+Route::post('sample/registrarse', [MyForm::class, 'handle'])->name('handle');
+Route::post('sample/login', [MyForm::class, 'storeLogin'])->name('storeLogin');
+Route::post('sample/logout', [MyForm::class, 'destroySession'])->name('destroySession');
+Route::patch('sample/update', [MyForm::class, 'updateData'])->name('updateData');
+Route::delete('sample/delete', [MyForm::class, 'delete'])->name('delete');
 
 ?>
