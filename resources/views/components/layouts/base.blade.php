@@ -17,7 +17,7 @@
             {{session('status')}}
         </div>
     @endif
-    <main class="container w-6/12 my-10">
+    <main class="md:container md:w-3/4 md:my-10 m-3 mt-8">
         {{$slot}}
     </main>
     <x-layouts.footer/>

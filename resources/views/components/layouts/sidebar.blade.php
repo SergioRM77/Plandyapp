@@ -4,5 +4,5 @@
                 <div class="grid justify-end mr-3">
                         <a class=" bg-yellow-300 rounded-full" href="{{ e(route('ajustes')) }}">@-{{session('alias')}}</a></div>
                 </div>
-        <x-layouts.navegacion visible="visible"/>
+        <x-layouts.navegacion visible="invisible"/>
 </header>
