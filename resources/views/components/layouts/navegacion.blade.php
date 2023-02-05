@@ -1,4 +1,4 @@
-<nav class="fixed h-full z-10 border border-sky-500 {{$visible}}">
+<nav class="fixed h-full border border-sky-500 {{$visible}} mt-10">
 
 
         <div class="bg-slate-400 h-full p-3 shadow-lg">
