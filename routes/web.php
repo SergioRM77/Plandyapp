@@ -31,10 +31,10 @@ Route::get('mensajeria/chatevento/',[ChatController::class, 'chatEvento'])->name
 Route::get('mensajeria/chatreporte/',[ChatController::class, 'chatReporte'])->name('chatreporte')->middleware('auth');
 
 Route::view('acercade', 'acercade')->name('acercade')->middleware('auth');
-Route::get("ajustes", [AjustesUsuarioController::class, 'index'])->name('ajustes')->middleware('auth');
+Route::get("ajustes", [AjustesUsuarioController::class, 'ajustes'])->name('ajustes')->middleware('auth');
 Route::patch("ajustes", [AjustesUsuarioController::class, 'update'])->name('updateUser')->middleware('auth');
 // Route::patch("ajustes", [\App\View\Components\Vistas\AjustesUsuario::class, 'update'])->name('updateUser')->middleware('auth');
-Route::get('contactos',ContactosController::class)->name('contactos')->middleware('auth');
+Route::get('contactos',[ContactosController::class, 'showAllUsers'])->name('contactos')->middleware('auth');
 Route::get('inicio',InicioController::class)->name('inicio')->middleware('auth');
 Route::post('inicio',InicioController::class)->name('inicio')->middleware('auth');
 

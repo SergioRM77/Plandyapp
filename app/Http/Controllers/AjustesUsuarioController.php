@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 
 class AjustesUsuarioController extends Controller
 {
-    public function index(Request $request)
+    public function ajustes(Request $request)
     {
 
         $user = User::where('alias', session()->get('alias'))->get();
@@ -19,34 +19,40 @@ class AjustesUsuarioController extends Controller
     }
 
     public function update(Request $request){
+        if($this->validateUser($request)){
+            $usuario = User::whereAlias(session()->get('alias'))->get()->first();
 
-        $request->validate([
-            'nombre_completo' => 'required',
-            'telefono' => 'max:12',
-            'direccion' => 'max:100',
-            'localidad' => 'required|max:100',
-            'codigo_postal' => 'max:15',
-            'intereses' => 'max:200',
-            'password' => 'min:4|required_with:confirm-password|same:confirm-password',
-            'confirm-password' => 'min:4|required',
-            'foto' => ''
-        ]);
+            $usuario->nombre_completo = $request->input('nombre_completo');
+            $usuario->telefono = $request->input('telefono');
+            $usuario->direccion = $request->input('direccion');
+            $usuario->localidad = $request->input('localidad');
+            $usuario->codigo_postal = $request->input('codigo_postal');
+            $usuario->intereses = $request->input('intereses');
+            $usuario->password = bcrypt($request->input('password'));
+            $usuario->save();
 
-        $usuario = User::whereAlias(session()->get('alias'))->get()->first();
+            session(['alias' => $usuario->alias]);
+            session()->flash('status', 'Has actualizado tus datos');
+            return view('inicio');
+        }
 
-        $usuario->nombre_completo = $request->input('nombre_completo');
-        $usuario->telefono = $request->input('telefono');
-        $usuario->direccion = $request->input('direccion');
-        $usuario->localidad = $request->input('localidad');
-        $usuario->codigo_postal = $request->input('codigo_postal');
-        $usuario->intereses = $request->input('intereses');
-        $usuario->password = bcrypt($request->input('password'));
-        $usuario->save();
+        return "error";
+        
 
-        session(['alias' => $request->alias]);
-        session()->flash('status', 'Has actualizado tus datos');
-        return view('inicio');
+    }
 
+    private function validateUser(Request $request){
+        return  $request->validate([
+                    'nombre_completo' => 'required',
+                    'telefono' => 'max:12',
+                    'direccion' => 'max:100',
+                    'localidad' => 'required|max:100',
+                    'codigo_postal' => 'max:15',
+                    'intereses' => 'max:200',
+                    'password' => 'min:4|required_with:confirm-password|same:confirm-password',
+                    'confirm-password' => 'min:4|required',
+                    'foto' => ''
+                ]);
     }
     
     public function deleteUser(){

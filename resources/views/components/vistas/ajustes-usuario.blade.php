@@ -6,9 +6,9 @@
     <label class="col-span-1 my-1" for="nombre_completo">Nombre completo *:</label>
     <input class="border-2 border-black rounded-md col-span-1 my-1" class="border-2 border-black rounded-md" type="text" name="nombre_completo" value="{{$show('nombre_completo')}}" required>@error('nombre_completo') <span> {{$message}}</span> @enderror
     <label class="col-span-1 my-1" for="alias">Alias *:</label>
-    <input class="border-2 border-black rounded-md col-span-1 my-1" type="text" name="alias" value="{{$show("alias")}}" required>@error('alias') <span> {{$message}}</span> @enderror
+    <p class="border-2 border-black rounded-md col-span-1 my-1">  @error('alias') <span> {{$message}}@enderror</span>{{$show('alias')}} </p> 
     <label class="col-span-1 my-1" for="email">Email *:</label>
-    <input class="border-2 border-black rounded-md col-span-1 my-1" type="email" name="email" value="{{$show('email')}}" required>@error('email') <span> {{$message}}</span> @enderror
+    <p class="border-2 border-black rounded-md col-span-1 my-1">  @error('email') <span> {{$message}}@enderror</span>{{$show('email')}} </p> 
     <label class="col-span-1 my-1" for="telefono">Teléfono:</label>
     <input class="border-2 border-black rounded-md col-span-1 my-1" type="text" name="telefono" value="{{$show('telefono')}}">@error('telefono') <span> {{$message}}</span> @enderror
     <label class="col-span-1 my-1" for="direccion">Direccion:</label>

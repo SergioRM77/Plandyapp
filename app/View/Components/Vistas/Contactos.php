@@ -6,18 +6,16 @@ use Illuminate\View\Component;
 
 class Contactos extends Component
 {
+    public $users;
         /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($users)
     {
-        //
+        $this->users = $users;
     }
-    public function hola(){
-            return "hola";
-        }
     /**
      * Get the view / contents that represent the component.
      *
@@ -26,5 +24,9 @@ class Contactos extends Component
     public function render()
     {
         return view('components.vistas.contactos');
+    }
+
+    public function show($user, $key){
+        return $user[$key];
     }
 }
