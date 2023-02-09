@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('agregar_aceptar', function (Blueprint $table) {
             $table->foreignId('usuario_agreagador_id')->constrained('users');
             $table->foreignId('usuario_agreagado_id')->constrained('users');
-            $table->primary('usuario_agreagador_id');
+            $table->primary(['usuario_agreagador_id','usuario_agreagado_id']);
             $table->boolean('is_aceptado')->default(false);
             $table->timestamps();
         });

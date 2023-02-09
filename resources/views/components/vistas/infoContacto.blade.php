@@ -22,7 +22,11 @@
 
     <div class="flex flex-wrap justify-around">
         <a class="border border-black rounded-md bg-green-700 py-1 p-2 my-2 text-white" href="{{e(route('chatreporte'))}}">Bloquear/Desbloquear</a>
-        <a class="border border-black rounded-md bg-yellow-400 py-1 p-2 my-2 mx-6" href="{{e(route('chatreporte'))}}">Agregar/Eliminar</a>
+        <form action="{{e(route('contacto.agregar'))}}" method="get">
+            <input type="hidden" name="alias" value="{{$user['alias']}}">
+            <input class="border border-black rounded-md bg-yellow-400 py-1 p-2 my-2 mx-6" type="submit" value="Agregar/Eliminar">
+        </form>
+
         <a class="border border-black rounded-md bg-red-500 py-1 px-2 my-2 text-white" href="{{e(route('chatreporte'))}}">Reportar</a>
     </div>
 </div>

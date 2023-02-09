@@ -53,7 +53,8 @@ Route::get('/setSession', [SessionController::class, 'setSessionData'])->name('s
 Route::get('/getAccessSession', [SessionController::class, 'getAccessSession'])->name('getAccessSession')->middleware('auth');
 Route::get('/deleteSessionData', [SessionController::class, 'deleteSetSessionData'])->name('deleteSetSessionData')->middleware('auth');
 
-
+Route::get('vercontancto', [ContactosController::class, 'addContact'])->name('contacto.agregar');
+Route::post('vercontancto', [ContactosController::class, 'addContact'])->name('contacto.agregar');
 // Ejemplo formulario con componentes
 Route::view('sample', 'sample');
 Route::post('sample/registrarse', [MyForm::class, 'handle'])->name('handle');

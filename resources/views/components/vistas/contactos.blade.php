@@ -17,11 +17,8 @@
 
     <section>
         @foreach ($users as $user)
-        {{-- {{$show($user, 'localidad')}} --}}
             <x-vistas.infoContacto :user="$user"/>
-        @endforeach
-            
-            
+        @endforeach            
 
     </section>
 </article>

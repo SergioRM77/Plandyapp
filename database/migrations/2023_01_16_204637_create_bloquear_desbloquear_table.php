@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('bloquear_desbloquear', function (Blueprint $table) {
             $table->foreignId('usuario_bloqueador_id')->constrained('users');
             $table->foreignId('usuario_bloqueado_id')->constrained('users');
-            $table->primary('usuario_bloqueador_id');
+            $table->primary(['usuario_bloqueador_id','usuario_bloqueado_id']);
             $table->timestamps();
         });
     }
