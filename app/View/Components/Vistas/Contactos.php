@@ -15,6 +15,7 @@ class Contactos extends Component
     public function __construct($users)
     {
         $this->users = $users;
+
     }
     /**
      * Get the view / contents that represent the component.
