@@ -14,16 +14,24 @@ use App\Http\Controllers\ChatController;
 use App\View\Components\MyForm;
 
 
+Route::get('/',InicioController::class)->name('inicio')->middleware('auth');
+Route::get('inicio',InicioController::class)->name('inicio')->middleware('auth');
+Route::post('inicio',InicioController::class)->name('inicio')->middleware('auth');
 
-
-
+Route::get('contactos',[ContactosController::class, 'mostrarContactos'])->name('contactos.miscontactos')->middleware('auth');
+Route::get('contactosAll',[ContactosController::class, 'showAllUsers'])->name('contactos')->middleware('auth');
+Route::post('contactos/buscar',[ContactosController::class, 'buscarPorAlias'])->name('contactos.buscar')->middleware('auth');
+Route::post('contactos/filtrar',[ContactosController::class, 'filtrar'])->name('contactos.filtrar')->middleware('auth');
+Route::post('contactos/agregar',[ContactosController::class, 'agregar'])->name('contactos.agregar')->middleware('auth');
+Route::post('contactos/solicitudes',[ContactosController::class, 'solicitudes'])->name('contactos.solicitudes')->middleware('auth');
+Route::post('contactos/aceptar',[ContactosController::class, 'aceptar'])->name('contactos.aceptar')->middleware('auth');
+Route::post('contactos/eliminar',[ContactosController::class, 'eliminar'])->name('contactos.eliminar')->middleware('auth');
+Route::post('contactos/bloquear',[ContactosController::class, 'bloquear'])->name('contactos.bloquear')->middleware('auth');
+Route::post('contactos/desbloquear',[ContactosController::class, 'desbloquear'])->name('contactos.desbloquear')->middleware('auth');
 
 Route::get('evento/eventofinalizado',[EventoController::class, 'eventoFinalizado'])->name('eventofinalizado')->middleware('auth');
 Route::view('evento/conpresupuesto', 'tiposEvento.eventoConPresu')->name('eventoconpresu')->middleware('auth');
 Route::view('evento/sinpresupuesto', 'tiposEvento.eventoSinPresu')->name('eventosinpresu')->middleware('auth');
-Route::get('/',InicioController::class)->name('inicio')->middleware('auth');
-
-
 
 Route::get('mensajeria',MensajeriaController::class)->name('mensajeria')->middleware('auth');
 Route::get('mensajeria/chat',[ChatController::class, 'chatPrivado'])->name('chat')->middleware('auth');
@@ -33,11 +41,6 @@ Route::get('mensajeria/chatreporte/',[ChatController::class, 'chatReporte'])->na
 Route::view('acercade', 'acercade')->name('acercade')->middleware('auth');
 Route::get("ajustes", [AjustesUsuarioController::class, 'ajustes'])->name('ajustes')->middleware('auth');
 Route::patch("ajustes", [AjustesUsuarioController::class, 'update'])->name('updateUser')->middleware('auth');
-// Route::patch("ajustes", [\App\View\Components\Vistas\AjustesUsuario::class, 'update'])->name('updateUser')->middleware('auth');
-Route::get('contactos',[ContactosController::class, 'showAllUsers'])->name('contactos')->middleware('auth');
-Route::get('inicio',InicioController::class)->name('inicio')->middleware('auth');
-Route::post('inicio',InicioController::class)->name('inicio')->middleware('auth');
-
 
 Route::view('login','auth.login')->name('login')->middleware('guest');
 Route::post('login',[LoginRegisterController::class, 'storeLogin'])->middleware('guest');
@@ -53,8 +56,6 @@ Route::get('/setSession', [SessionController::class, 'setSessionData'])->name('s
 Route::get('/getAccessSession', [SessionController::class, 'getAccessSession'])->name('getAccessSession')->middleware('auth');
 Route::get('/deleteSessionData', [SessionController::class, 'deleteSetSessionData'])->name('deleteSetSessionData')->middleware('auth');
 
-Route::get('vercontancto', [ContactosController::class, 'addContact'])->name('contacto.agregar');
-Route::post('vercontancto', [ContactosController::class, 'addContact'])->name('contacto.agregar');
 // Ejemplo formulario con componentes
 Route::view('sample', 'sample');
 Route::post('sample/registrarse', [MyForm::class, 'handle'])->name('handle');

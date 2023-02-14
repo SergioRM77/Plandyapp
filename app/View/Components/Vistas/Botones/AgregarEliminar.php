@@ -11,18 +11,17 @@ class AgregarEliminar extends Component
 {
     public $agregador;
     public $agregado;
-    public $colorBoton;
     public static $texto = "";
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($agregador, $agregado, $colorBoton = '')
+    public function __construct($agregador, $agregado)
     {
         $this->agregador=$agregador;
         $this->agregado=$agregado;
-        $this->colorBoton=$colorBoton;
+
 
 
     }
@@ -44,17 +43,11 @@ class AgregarEliminar extends Component
         $solicitud = DB::select("SELECT * FROM agregar_aceptar WHERE usuario_agreagador_id IN (" . $agregador[0] -> id . ", " . $agregado[0] -> id . ") AND usuario_agreagado_id IN (" . $agregador[0] -> id . ", " . $agregado[0] -> id . ")");
 
         if(count($solicitud) == 0){
-
-            self::$texto = "Agregar";
-            return  "Agregar";
+            return  self::$texto = "Agregar";
         }else if($solicitud[0]->is_aceptado == false){
-
-            self::$texto = "Aceptar";
-            return "Aceptar";
+            return self::$texto = "Aceptar";
         }else if($solicitud[0]->is_aceptado == true){
-
-            self::$texto = "Eliminar";
-            return "Eliminar";
+            return self::$texto = "Eliminar";
         }
         return redirect('contactos');
 

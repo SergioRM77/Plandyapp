@@ -38,8 +38,8 @@ class LoginRegisterController extends Controller
         $usuario->intereses = $request->intereses;
         $usuario->password = bcrypt($request->password);
         $usuario->save();
-
-        session(['alias' => $request->alias]);
+        $miID = User::whereAlias($request->alias)->get('id');
+        session(['alias' => $request->alias,'id' => $miID[0]->id]);
         session()->flash('status', 'Usuario creado, Bienvenido a PlandyApp');
         Auth::login($usuario);
         return view('inicio');
@@ -53,7 +53,8 @@ class LoginRegisterController extends Controller
         if (!Auth::attempt($credentials)) {
             return redirect()->intended('login')->with('status', 'Usuario o Contraseña no encontrados');
         }
-        session(['alias' => $request->alias]);
+        $miID = User::whereAlias($request->alias)->get('id');
+        session(['alias' => $request->alias,'id' => $miID[0]->id]);
         $request->session()->regenerate();
         return redirect()->intended('inicio')->with('status', 'Te has logueado');
     }

@@ -29,4 +29,10 @@ class EventoController extends Controller
         
         return view('tiposEvento.eventoFinalizado');
     }
+
+    /** */
+    
+    public function crearTipoEvento(Request $request){
+
+    }
 }

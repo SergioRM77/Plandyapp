@@ -21,8 +21,8 @@
     </div>
 
     <div class="flex flex-wrap justify-around">
-        <a class="border border-black rounded-md bg-green-700 py-1 p-2 my-2 text-white" href="{{e(route('chatreporte'))}}">Bloquear/Desbloquear</a>
-        <x-vistas.botones.agregar-eliminar agregador="{{session('alias')}}" agregado="{{$user['alias']}}"/>
+        
+        {{$slot}}
 
         <a class="border border-black rounded-md bg-red-500 py-1 px-2 my-2 text-white" href="{{e(route('chatreporte'))}}">Reportar</a>
     </div>
