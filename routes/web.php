@@ -12,7 +12,7 @@ use App\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\ChatController;
 
 use App\View\Components\MyForm;
-
+use App\View\Components\TiposEvento\EventoSinPresu;
 
 Route::get('/',InicioController::class)->name('inicio')->middleware('auth');
 Route::get('inicio',InicioController::class)->name('inicio')->middleware('auth');
@@ -32,6 +32,13 @@ Route::post('contactos/desbloquear',[ContactosController::class, 'desbloquear'])
 Route::get('evento/eventofinalizado',[EventoController::class, 'eventoFinalizado'])->name('eventofinalizado')->middleware('auth');
 Route::view('evento/conpresupuesto', 'tiposEvento.eventoConPresu')->name('eventoconpresu')->middleware('auth');
 Route::view('evento/sinpresupuesto', 'tiposEvento.eventoSinPresu')->name('eventosinpresu')->middleware('auth');
+
+Route::view('evento/crear',[EventoController::class, 'crearTipoEvento'])->name('evento.crear')->middleware('auth');
+Route::get('evento/sinPresupuesto',[EventoController::class, 'newEventoSinPresu'])->name('evento.crear.sin')->middleware('auth');
+Route::post('evento/sinPresupuesto',[EventoController::class, 'saveEventoSinPresu'])->name('evento.sinpresu.guardar')->middleware('auth');
+Route::post('evento/conPresupuesto',[EventoController::class, 'crearTipoEvento'])->name('evento.crear')->middleware('auth');
+
+
 
 Route::get('mensajeria',MensajeriaController::class)->name('mensajeria')->middleware('auth');
 Route::get('mensajeria/chat',[ChatController::class, 'chatPrivado'])->name('chat')->middleware('auth');

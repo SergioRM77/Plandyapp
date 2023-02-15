@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             //$table->foreignId('tipo_evento_id')->constrained('tipo_evento');
             $table->string('nombre_evento');
+            $table->string('descripcion');
             $table->date('fecha_inicio');
             $table->date('fecha_fin')->nullable();
             $table->string('tags')->nullable();
