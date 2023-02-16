@@ -14,12 +14,12 @@ use App\Http\Controllers\ChatController;
 use App\View\Components\MyForm;
 use App\View\Components\TiposEvento\EventoSinPresu;
 
-Route::get('/',InicioController::class)->name('inicio')->middleware('auth');
-Route::get('inicio',InicioController::class)->name('inicio')->middleware('auth');
-Route::post('inicio',InicioController::class)->name('inicio')->middleware('auth');
+Route::get('/',[InicioController::class, 'inicio'])->name('inicio')->middleware('auth');
+// Route::get('inicio',InicioController::class)->name('inicio')->middleware('auth');
+Route::get('inicio',[InicioController::class, 'inicio'])->name('inicio')->middleware('auth');
 
 Route::get('contactos',[ContactosController::class, 'mostrarContactos'])->name('contactos.miscontactos')->middleware('auth');
-Route::get('contactosAll',[ContactosController::class, 'showAllUsers'])->name('contactos')->middleware('auth');
+Route::get('contactosall',[ContactosController::class, 'showAllUsers'])->name('contactos')->middleware('auth');
 Route::post('contactos/buscar',[ContactosController::class, 'buscarPorAlias'])->name('contactos.buscar')->middleware('auth');
 Route::post('contactos/filtrar',[ContactosController::class, 'filtrar'])->name('contactos.filtrar')->middleware('auth');
 Route::post('contactos/agregar',[ContactosController::class, 'agregar'])->name('contactos.agregar')->middleware('auth');
@@ -34,9 +34,11 @@ Route::view('evento/conpresupuesto', 'tiposEvento.eventoConPresu')->name('evento
 Route::view('evento/sinpresupuesto', 'tiposEvento.eventoSinPresu')->name('eventosinpresu')->middleware('auth');
 
 Route::view('evento/crear',[EventoController::class, 'crearTipoEvento'])->name('evento.crear')->middleware('auth');
-Route::get('evento/sinPresupuesto',[EventoController::class, 'newEventoSinPresu'])->name('evento.crear.sin')->middleware('auth');
-Route::post('evento/sinPresupuesto',[EventoController::class, 'saveEventoSinPresu'])->name('evento.sinpresu.guardar')->middleware('auth');
-Route::post('evento/conPresupuesto',[EventoController::class, 'crearTipoEvento'])->name('evento.crear')->middleware('auth');
+Route::get('evento/sin-presupuesto',[EventoController::class, 'newEventoSinPresu'])->name('evento.crear.sin')->middleware('auth');
+Route::post('evento/sin-presupuesto',[EventoController::class, 'saveEventoSinPresu'])->name('evento.sinpresu.guardar')->middleware('auth');
+Route::post('evento/con-presupuesto',[EventoController::class, 'crearTipoEvento'])->name('evento.crear')->middleware('auth');
+
+Route::get('idEvento/{valor}', [EventoController::class, 'valorRoute'])->name('evento.valor')->middleware('auth');
 
 
 

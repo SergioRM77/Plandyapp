@@ -1,4 +1,4 @@
-<a href="{{e(route('eventosinpresu'))}}">
+<a href="{{e(route('evento.valor', $evento->id))}}">
     <div class="max-w-md mx-auto bg-slate-200 rounded-xl shadow-md md:max-w-7xl overflow-auto">
         <div class="md:flex">
             <div class="shrink">
@@ -6,8 +6,8 @@
             </div>
             <div class="p-8 lg:w-full">
                 <div class="flex flex-wrap items-baseline justify-between">
-                    <h4 class="text-xl text-indigo-500">Barbacoa en casa de Antonio</h4>
-                    <p class="">Fecha: $(--/--/-- a --/--/--)</p>
+                    <h4 class="text-xl text-indigo-500">{{$evento->nombre_evento}}</h4>
+                    <p class="">Fecha: ({{$evento->fecha_inicio}} a {{$evento->fecha_fin}})</p>
                 </div>
 
                 <div class="flex flex-wrap items-baseline justify-between">

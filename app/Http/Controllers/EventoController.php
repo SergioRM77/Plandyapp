@@ -61,6 +61,72 @@ class EventoController extends Controller
             'tags' => 'max:250',
             'foto' => '',
         ]);
+        $newEvento = new Evento();
+        $newEvento->tipo_evento_id = 1;
+        $newEvento->nombre_evento = $request->nombre_evento;
+        $newEvento->descripcion = $request->descripcion;
+        $newEvento->fecha_inicio = $request->fecha_inicio;
+        $newEvento->fecha_fin = $request->fecha_fin;
+        $newEvento->tags = $request->tags;
+        $newEvento->foto = $request->foto;
+        $newEvento->save();
+
+
+        $Admin_principal_user_evento = new User_evento();
+        $Admin_principal_user_evento->evento_id = $newEvento->id;
+        $Admin_principal_user_evento->user_id = session('id');
+        $Admin_principal_user_evento->is_admin_principal = true;
+        $Admin_principal_user_evento->save();
+
+
         return $request;
+    }
+
+    public function addGasto(Request $request){
+        $request->validate([
+            'evento_id' => 'required',
+            'usuario_id' => 'required',
+            'descripcion' => '',
+            'coste' => 'required',
+            'fecha_hora' => '',
+            'foto' => '',
+        ]);
+        
+    }
+
+    public function addGastoPresupuesto(Request $request){
+
+    }
+
+    public function eliminarPresupuestoGasto(Request $request){
+
+    }
+
+    public function eliminarGasto(Request $request){
+
+    }
+
+    public function aceptarGasto(Request $request){
+
+    }
+
+    public function addParticipante(Request $request){
+
+    }
+
+    public function eliminarParticipante(Request $request){
+
+    }
+
+    public function makeParticipanteAdminSecun(Request $request){
+
+    }
+
+    public function eliminarParticipanteAdminSecun(Request $request){
+
+    }
+
+    public function valorRoute($id){
+        return $id;
     }
 }
