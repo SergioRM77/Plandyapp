@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Evento;
 use App\Models\User_evento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 
 class EventoController extends Controller
@@ -45,7 +47,7 @@ class EventoController extends Controller
     }
 
     public function newEventoSinPresu(){
-        return view('tiposEvento.admin-sin-presu');
+        return view('tiposEvento.admin-crear-sin-presu');
     }
     public function newEventoConPresu(){
 
@@ -82,6 +84,35 @@ class EventoController extends Controller
         return $request;
     }
 
+    
+
+    public function verEvento(Request $request){
+        $eventos = Evento::whereId($request->id)->get();
+        $evento = $eventos[0];
+        $isAdmins = User_evento::where('evento_id',$evento->id)->where('user_id', session('id'))->get('is_admin_principal');
+        $isAdmin = $isAdmins[0];
+        return view('tiposEvento.eventoSinPresu', compact('evento', 'isAdmin'));
+
+    }
+
+    /**
+     * Formulario para editar por el id del vento
+     */
+    public function editarEventoSinPresu(Request $request){
+        $eventos = Evento::whereId($request->id)->get();
+        $evento = $eventos[0];
+        return view('tiposEvento.editarEventoSinPresu', compact('evento'));
+    }
+
+    public function updateEventoSinPresu(Request $request){
+
+    }
+
+
+
+
+
+    /*
     public function addGasto(Request $request){
         $request->validate([
             'evento_id' => 'required',
@@ -128,5 +159,5 @@ class EventoController extends Controller
 
     public function valorRoute($id){
         return $id;
-    }
+    }*/
 }

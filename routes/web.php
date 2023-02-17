@@ -33,12 +33,13 @@ Route::get('evento/eventofinalizado',[EventoController::class, 'eventoFinalizado
 Route::view('evento/conpresupuesto', 'tiposEvento.eventoConPresu')->name('eventoconpresu')->middleware('auth');
 Route::view('evento/sinpresupuesto', 'tiposEvento.eventoSinPresu')->name('eventosinpresu')->middleware('auth');
 
-Route::view('evento/crear',[EventoController::class, 'crearTipoEvento'])->name('evento.crear')->middleware('auth');
-Route::get('evento/sin-presupuesto',[EventoController::class, 'newEventoSinPresu'])->name('evento.crear.sin')->middleware('auth');
-Route::post('evento/sin-presupuesto',[EventoController::class, 'saveEventoSinPresu'])->name('evento.sinpresu.guardar')->middleware('auth');
-Route::post('evento/con-presupuesto',[EventoController::class, 'crearTipoEvento'])->name('evento.crear')->middleware('auth');
+// Route::view('evento/crear',[EventoController::class, 'crearTipoEvento'])->name('evento.crear')->middleware('auth');
+Route::get('evento/crear/sin-presupuesto',[EventoController::class, 'newEventoSinPresu'])->name('evento.crear.sin')->middleware('auth');
+Route::post('evento/crear/sin-presupuesto',[EventoController::class, 'saveEventoSinPresu'])->name('evento.sinpresu.guardar')->middleware('auth');
+Route::post('evento/editar/sin-presupuesto',[EventoController::class, 'editarEventoSinPresu'])->name('evento.sinpresu.editar')->middleware('auth');
+Route::post('evento/ver/',[EventoController::class, 'verEvento'])->name('evento.ver')->middleware('auth');
 
-Route::get('idEvento/{valor}', [EventoController::class, 'valorRoute'])->name('evento.valor')->middleware('auth');
+// Route::get('idEvento/{valor}', [EventoController::class, 'valorRoute'])->name('evento.valor')->middleware('auth');
 
 
 

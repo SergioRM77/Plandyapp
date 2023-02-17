@@ -1,18 +1,44 @@
 <article>
-    <div class="flex justify-between border border-black bg-lime-50 p-3">
-        <div>
-            <h3 class="text-center border border-black rounded-md bg-yellow-400 font-semibold">Evento SIN PRESUPUESTO</h3>
-            <p><span class="font-semibold italic">Nombre del Evento:</span> $Nombre-Evento</p>
-            <p><span class="font-semibold italic">Fecha inicio: </span>--/--/--
-                <span class="font-semibold italic"> hata:</span> --/--/--</p>
-            <p><span class="font-semibold italic">Tags:</span> #$tags</p>
-        </div>
-        <div class="shrink">
-            <img class="h-32 w-full object-cover rounded-md md:h-full md:w-48" src="https://s1.eestatic.com/2015/06/09/cocinillas/cocinillas_39756026_116187393_1706x960.jpg" alt="Modern building architecture">
-        </div>
-    </div>
+    <form 
+    @if ($evento == null)
+    action="{{e(route('evento.sinpresu.guardar'))}}" 
+    @else
+    action="{{e(route('evento.sinpresu.editar'))}}" 
+    @endif
+    
+    
+    method="post">
+        @csrf
+        <div class="grid grid-cols-3 gap-4 border border-black bg-lime-50 p-3">
+            <div class="grid col-span-2 grid-rows-7">
+                <h3 class="row-start-1 text-center border border-black rounded-md bg-yellow-400 font-semibold">Evento SIN PRESUPUESTO</h3>
+                <label class="row-start-2 font-semibold italic"><span>Nombre del Evento:</span>
+                <input class="w-full border border-blue-500 rounded-md my-1" type="text" name="nombre_evento" id="" value="{{$evento->nombre_evento ?? ""}}">
+                @error('nombre_evento') <span class=""> {{$message}}</span>@enderror</label>
+                <label class="row-start-3"><span class="font-semibold italic">Fecha inicio: </span>
+                    <input class="border border-blue-500 rounded-md my-1" type="date" name="fecha_inicio" id="" value="{{$evento->fecha_inicio ?? ""}}">
+                <span class="font-semibold italic"> hata:</span>
+                    <input class="border border-blue-500 rounded-md my-1" type="date" name="fecha_fin" id="" value="{{$evento->fecha_fin ?? ""}}">
+                    @error('fecha_inicio') <span> {{$message}}</span>@enderror
+                    @error('fecha_fin') <span> {{$message}}</span>@enderror</label>
+                <label class="row-start-4 font-semibold italic">Tags:</label>@error('tags') <span> {{$message}}</span>@enderror
+                <textarea class="row-start-5 border border-blue-500 rounded-md my-1" name="tags" id="" cols="30" rows="1" >{{$evento->tags ?? ""}}</textarea>
+                <label class="row-start-6 font-semibold italic">Descripción:</label>@error('descripcion') <span> {{$message}}</span>@enderror
+                <textarea class="row-start-7 border border-blue-500 rounded-md my-1" name="descripcion" id="" cols="30" rows="1">{{$evento->descripcion ?? ""}}</textarea>
+            </div>
+            <div class="grid place-items-center shrink">
+                <img class="h-full w-full object-cover rounded-md md:h-full md:w-48" src="https://s1.eestatic.com/2015/06/09/cocinillas/cocinillas_39756026_116187393_1706x960.jpg" alt="Modern building architecture">
+            </div>
+            @if ($evento == null)
+                <button class="border border-black rounded-md bg-green-500 py-1 p-2 my-2 mx-2" type="submit">Crear Evento</button>
 
-    <h4 class="border border-black bg-violet-400 pl-2">Participantes</h4>
+            @else
+            <button class="border border-black rounded-md bg-green-500 py-1 p-2 my-2 mx-2" type="submit">Actualizar</button>
+
+            @endif
+        </div>
+    </form>
+    {{-- <h4 class="border border-black bg-violet-400 pl-2">Participantes</h4>
     <div class="border border-black rounded-b-lg p-2 mx-2">
         $lista participantes($pagado/APAGAR)€
     </div>
@@ -44,7 +70,7 @@
                 </div>
             </div>
         </div>
-    <div class="actividades">{{-- iteracion de actividades --}}
+    <div class="actividades">
         <h4 class="border border-black bg-violet-400 pl-2">ACTIVIDADES:</h4>
 
         <div class="border border-black rounded-b-lg mx-2 px-2">
@@ -108,3 +134,4 @@
     <h4 class="border border-black text-center bg-green-500">Has entregado: $pagado/APAGAR€</h4>
     <h4 class="border border-black text-center bg-green-800">Pago total del Evento: $pagadoTodos/APAGARTODOS€</h4>
 </article>
+</article> --}}

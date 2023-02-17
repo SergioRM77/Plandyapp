@@ -1,5 +1,5 @@
 <article>
-    <form action="{{e(route('evento.sinpresu.guardar'))}}" method="post">
+    <form action="{{e(route('evento.sinpresu.editar'))}}" method="post">
         @csrf
         <div class="grid grid-cols-3 gap-4 border border-black bg-lime-50 p-3">
             <div class="grid col-span-2 grid-rows-7">
