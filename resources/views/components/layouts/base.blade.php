@@ -13,7 +13,7 @@
     <x-layouts.sidebar/>
     <hr>
     @if (session('status'))
-        <div class="status mt-10">
+        <div class="mt-10">
             {{session('status')}}
         </div>
     @endif

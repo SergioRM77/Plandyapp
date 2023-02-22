@@ -21,6 +21,6 @@ class InicioController extends Controller
                                 WHERE users.id = ?", [session('id')]);
         
         return view('inicio',compact('eventos'));
-        // return $misEventos;
+        // return $eventos;
     }
 }

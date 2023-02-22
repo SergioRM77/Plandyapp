@@ -17,9 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('descripcion_gasto_pre');
             $table->float('coste', 6 ,2);
-            $table->date('fecha');
             $table->string('foto')->nullable();
-            $table->timestamp('fecha_creacion');
+            $table->timestamps();
         });
     }
 

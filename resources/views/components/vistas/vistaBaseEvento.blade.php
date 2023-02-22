@@ -1,8 +1,8 @@
 <form action="{{e(route('evento.ver'))}}" method="post">
     @csrf
-    <input type="hidden" name="id" value="{{$evento->id}}">
+    
     <button type="submit">
-        
+        <input type="hidden" name="id" value="{{$evento->id}}">
         <div class="max-w-md mx-auto bg-slate-200 rounded-xl shadow-md md:max-w-7xl overflow-auto">
             <div class="md:flex">
                 <div class="shrink">

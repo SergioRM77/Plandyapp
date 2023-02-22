@@ -19,9 +19,8 @@ return new class extends Migration
             $table->foreignId('usuario_id')->constrained('users');
             $table->string('descripcion');
             $table->float('coste', 6, 2);
-            $table->timestamp('fecha_hora');
-            $table->dateTime('fecha_hora_actualizado');
             $table->string('foto')->nullable();
+            $table->timestamps();
             $table->boolean('is_aceptado')->default(false);
         });
     }
