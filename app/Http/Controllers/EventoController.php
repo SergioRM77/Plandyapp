@@ -101,7 +101,8 @@ class EventoController extends Controller
         $isAdmin = $isAdmins[0];
         $gastos = DB::select("SELECT gastos.id, gastos.evento_id, gastos.usuario_id, gastos.descripcion, gastos.coste, gastos.foto, gastos.created_at,  gastos.is_aceptado, users.alias as alias FROM gastos 
                                 LEFT JOIN users ON gastos.usuario_id = users.id  WHERE gastos.evento_id = ?",[$request->id]);
-        return view('tiposEvento.eventoSinPresu', compact('evento', 'isAdmin', 'gastos'));
+        $pagos = $this->pagadoEvento($request->id);
+        return view('tiposEvento.eventoSinPresu', compact('evento', 'isAdmin', 'gastos', 'pagos'));
     }
 
     /**
@@ -115,7 +116,8 @@ class EventoController extends Controller
         //$gastos = Gasto::whereEvento_id($id)->get();
         $gastos = DB::select("SELECT gastos.id, gastos.evento_id, gastos.usuario_id, gastos.descripcion, gastos.coste, gastos.foto, gastos.created_at, gastos.is_aceptado, users.alias as alias FROM gastos 
                                 LEFT JOIN users ON gastos.usuario_id = users.id  WHERE gastos.evento_id = ?",[$id]);
-        return view('tiposEvento.eventoSinPresu', compact('evento', 'isAdmin', 'gastos'));
+        $pagos = $this->pagadoEvento($id);
+        return view('tiposEvento.eventoSinPresu', compact('evento', 'isAdmin', 'gastos', 'pagos'));
 
     }
 
@@ -144,9 +146,9 @@ class EventoController extends Controller
                 $evento->tags = $request->tags;
                 $evento->foto = $request->foto;
                 $evento->save();
+                
         } catch (Exception $e) {
-            
-            session()->flash('status', $e->getMessage());
+            session()->flash('error_datos_evento', $e->getMessage());
         }finally{
             return $this->eventoPorID($request->id);
         }
@@ -167,6 +169,7 @@ class EventoController extends Controller
             $nuevoGasto->coste = $request->coste;
             $nuevoGasto->descripcion = $request->descripcion;
             $nuevoGasto->save();
+            
         } catch (Exception $e) {
             session()->flash('error_gasto',"El campo gasto debe ser mayor a 1 y descripción es obligatorio");
             
@@ -220,12 +223,12 @@ class EventoController extends Controller
     }
 
     /**
-     * Todo lo pagado en evento concreto
+     * Todo lo pagado en evento concreto por el id
      */
-    public function pagadoEvento($request){
-        $pagado = DB::select("SELECT sum(gastos.coste) pagado, usuario_id, users.alias FROM gastos 
-                            RIGHT JOIN users ON users.id = gastos.usuario_id WHERE evento_id = ? GROUP BY usuario_id", [$request]);
-        return $pagado;
+    public function pagadoEvento($id){
+        $pagos = DB::select("SELECT sum(gastos.coste) pagado, usuario_id, users.alias FROM gastos 
+                            RIGHT JOIN users ON users.id = gastos.usuario_id WHERE evento_id = ? AND is_aceptado = true GROUP BY usuario_id", [$id]);
+        return $pagos;
     }
 
 /*

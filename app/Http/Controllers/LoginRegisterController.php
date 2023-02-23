@@ -38,8 +38,8 @@ class LoginRegisterController extends Controller
         $usuario->intereses = $request->intereses;
         $usuario->password = bcrypt($request->password);
         $usuario->save();
-        $miID = User::whereAlias($request->alias)->get('id');
-        session(['alias' => $request->alias,'id' => $miID[0]->id]);
+        $miID = $usuario->id;
+        session(['alias' => $request->alias,'id' => $miID]);
         session()->flash('status', 'Usuario creado, Bienvenido a PlandyApp');
         Auth::login($usuario);
         return view('inicio');

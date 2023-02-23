@@ -14,7 +14,7 @@
     <label class="col-span-1 my-1" for="direccion">Direccion:</label>
     <input class="border-2 border-black rounded-md col-span-1 my-1" type="text" name="direccion" value="{{$show('direccion')}}">@error('direccion') <span> {{$message}}</span> @enderror
     <label class="col-span-1 my-1" for="localidad">Localidad *:</label>
-    <input class="border-2 border-black rounded-md col-span-1 my-1" type="text" name="localidad" value="{{$show('localidad')}}" required>@error('localidad') <span> {{$message}}</span> @enderror
+    <input class="border-2 border-black rounded-md col-span-1 my-1" type="text" name="localidad" value="{{$show('localidad')}}" >@error('localidad') <span> {{$message}}</span> @enderror
     <label class="col-span-1 my-1" for="codigo_postal">Código Postal:</label>
     <input class="border-2 border-black rounded-md col-span-1 my-1" type="text" name="codigo_postal" value="{{$show('codigo_postal')}}">@error('codigo_postal') <span> {{$message}}</span> @enderror
     <label class="col-span-1 my-1" for="intereses">Intereses:</label>

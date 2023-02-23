@@ -34,6 +34,7 @@ Route::view('evento/conpresupuesto', 'tiposEvento.eventoConPresu')->name('evento
 Route::view('evento/sinpresupuesto', 'tiposEvento.eventoSinPresu')->name('eventosinpresu')->middleware('auth');
 
 
+Route::view('evento/crear/sin-presupuesto',[EventoController::class, 'newEventoSinPresu'])->name('evento.crear.sin')->middleware('auth');
 Route::get('evento/crear/sin-presupuesto',[EventoController::class, 'newEventoSinPresu'])->name('evento.crear.sin')->middleware('auth');
 Route::post('evento/crear/sin-presupuesto',[EventoController::class, 'saveEventoSinPresu'])->name('evento.sinpresu.guardar')->middleware('auth');
 Route::post('evento/editar/sin-presupuesto',[EventoController::class, 'editarEventoSinPresu'])->name('evento.sinpresu.editar')->middleware('auth');
@@ -44,7 +45,7 @@ Route::post('evento/presentar-gasto/sin-presupuesto',[EventoController::class, '
 Route::get('evento/presentar-gasto/sin-presupuesto',[EventoController::class, 'addGasto'])->name('evento.add.gasto')->middleware('auth');
 Route::post('evento/aceptar-gasto/sin-presupuesto',[EventoController::class, 'aceptarGasto'])->name('gasto.evento.aceptar')->middleware('auth');
 Route::post('evento/elimianr-gasto/sin-presupuesto',[EventoController::class, 'eliminarGasto'])->name('gasto.evento.eliminar')->middleware('auth');
-Route::get('evento/pagado/{id}',[EventoController::class, 'pagadoEvento'])->name('pagado')->middleware('auth');
+Route::get('evento/pagado',[EventoController::class, 'pagadoEvento'])->name('pagado')->middleware('auth');
 
 
 Route::get('mensajeria',MensajeriaController::class)->name('mensajeria')->middleware('auth');

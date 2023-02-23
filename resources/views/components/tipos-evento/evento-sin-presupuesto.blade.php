@@ -2,6 +2,9 @@
     <div class="flex justify-between border border-black bg-lime-50 p-3">
         <div>
             <h3 class="text-center border border-black rounded-md bg-yellow-400 font-semibold">Evento SIN PRESUPUESTO</h3>
+            @if (session('error_datos_evento'))
+                    <p>{{session('error_datos_evento')}}</p>
+                @endif
             <p><span class="font-semibold italic">Nombre del Evento:</span> {{$evento->nombre_evento}}</p>
             <p><span class="font-semibold italic">Fecha inicio: </span>{{$evento->fecha_inicio}}
                 <span class="font-semibold italic"> hata:</span> {{$evento->fecha_fin}}</p>
@@ -24,7 +27,18 @@
 
     <h4 class="border border-black bg-violet-400 pl-2">Participantes</h4>
     <div class="border border-black rounded-b-lg p-2 mx-2">
-        $lista participantes($pagado/APAGAR)€
+        @php 
+        $total = 0;
+            foreach ($pagos as $key => $pago) {
+                
+            $total += $pago->pagado;
+            }
+             
+        @endphp
+        
+        @foreach ($pagos as $item => $pago)
+            <span>@-{{$pago->alias}} </span class="text-sky-600"><span>({{$pago->pagado}}/{{$total}}€) </span>
+        @endforeach
     </div>
 
     <div class="flex border border-black bg-violet-400 pl-2">
@@ -134,10 +148,12 @@
         
     <h4 class="border border-black bg-violet-400 pl-2">ESTADO DE CUENTAS:</h4>
     <div class="border border-black rounded-b-lg mx-2 px-2">
-        
-        <p>$lista de participantes, ejemplo ->  @-aLexA654 (100/100€), @-AleXTinTin.77 (100/130€), @-Patricio001 (125/100€),
-        @-55-jperex-SS (84/130€), @-PIPOL1P0 (90/130€), @-UsubP67 (103/100€),
+        <p>
+            @foreach ($pagos as $item => $pago)
+                <span>@-{{$pago->alias}} </span class="text-sky-600"><span>({{$pago->pagado}}€) </span>
+            @endforeach
         </p>
+        
         <div class="flex mt-4">
             <div class="w-1/2">
                 <h5>USUARIOS QUE DEBEN A USUARIOS</h5>
