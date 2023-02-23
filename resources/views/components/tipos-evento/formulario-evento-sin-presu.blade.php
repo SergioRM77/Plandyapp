@@ -94,10 +94,10 @@
                         <div class="grid grid-cols-1">
                             <label class="col-span-1 row-span-3 font-semibold">Coste: 
                                 <input class="col-span-2 border border-blue-400 rounded-md my-4" type="number" name="coste" min="0" value="0" step="any">
-                                </label><p>@error('coste') <span class=""> {{$message}}</span>@enderror</p>
-                            <label class="col-span-1 row-span-2 font-semibold">Descripcion del gasto:
+                                </label>
+                            <label class="col-span-1 row-span-2 font-semibold">Descripcion del gasto:</label>
                                 <textarea class="col-span-2 border border-blue-400 rounded-md mt-4" name="descripcion" id="" cols="30" rows="3"></textarea>
-                            </label><p>@error('descripcion') <span class=""> {{$message}}</span>@enderror</p>
+                            
 
                         </div>
                         <div class="grid grid-cols-1">

@@ -41,6 +41,7 @@ Route::post('evento/actualizar/sin-presupuesto',[EventoController::class, 'updat
 Route::post('evento/ver',[EventoController::class, 'verEvento'])->name('evento.ver')->middleware('auth');
 
 Route::post('evento/presentar-gasto/sin-presupuesto',[EventoController::class, 'addGasto'])->name('evento.add.gasto')->middleware('auth');
+Route::get('evento/presentar-gasto/sin-presupuesto',[EventoController::class, 'addGasto'])->name('evento.add.gasto')->middleware('auth');
 Route::post('evento/aceptar-gasto/sin-presupuesto',[EventoController::class, 'aceptarGasto'])->name('gasto.evento.aceptar')->middleware('auth');
 Route::post('evento/elimianr-gasto/sin-presupuesto',[EventoController::class, 'eliminarGasto'])->name('gasto.evento.eliminar')->middleware('auth');
 Route::get('evento/pagado/{id}',[EventoController::class, 'pagadoEvento'])->name('pagado')->middleware('auth');

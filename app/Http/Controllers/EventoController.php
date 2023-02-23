@@ -145,6 +145,7 @@ class EventoController extends Controller
                 $evento->foto = $request->foto;
                 $evento->save();
         } catch (Exception $e) {
+            
             session()->flash('status', $e->getMessage());
         }finally{
             return $this->eventoPorID($request->id);
@@ -167,7 +168,7 @@ class EventoController extends Controller
             $nuevoGasto->descripcion = $request->descripcion;
             $nuevoGasto->save();
         } catch (Exception $e) {
-            session()->flash('status',$e->getMessage());
+            session()->flash('error_gasto',"El campo gasto debe ser mayor a 1 y descripción es obligatorio");
             
         }finally{
             return $this->eventoPorID($request->evento_id);
@@ -177,9 +178,25 @@ class EventoController extends Controller
 
 
     private function validarGastos(Request $request){
+        // $validator = Validator::make($request -> all(), [
+        //     'evento_id' => 'required',
+        //     'descripcion' => 'required',
+        //     'coste' => 'required|numeric|min:1',
+        //     'foto' => '',
+        // ]);
+
+        // if ($validator -> fails()) {
+        //     $errors = $validator -> errors();
+
+        //     if ($errors -> has("descripcion")) $error = ["descripcion" => "Es necesario descripción"];
+        //     if ($errors -> has("coste")) $error = ["coste" => "El coste debe ser mayor a 0"];
+        //     throw ValidationException::withMessages($error);
+        // }
+        // return $validator;
+        
         return $request->validate([
             'evento_id' => 'required',
-            'descripcion' => 'required',
+            'descripcion' => 'required|max:255',
             'coste' => 'required|numeric|min:1',
             'foto' => '',
         ]);

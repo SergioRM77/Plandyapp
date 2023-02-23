@@ -79,22 +79,21 @@
 
     </div>
     <div class="presentar gasto">
-        <h4 class="border border-black bg-violet-400 pl-2">PRESENTAR GASTO:</h4>
+        <h4 class="border border-black bg-violet-400 pl-2">PRESENTAR GASTO:</h4> 
         <form class="border border-black  mx-2 px-2" action="{{e(route('evento.add.gasto'))}}" method="post">
             @csrf
+            @if (session('error_gasto'))<p class="w-full">{{session('error_gasto')}}</p>@endif
             <input type="hidden" name="evento_id" value="{{$evento->id}}">
             <label class="font-semibold">Gasto de:<span class="bg-yellow-300 rounded-full px-2">@-{{session('alias')}}</span></label>
 
             <div class="grid grid-cols-3">
                 <div class="grid grid-cols-1">
                     
-                    <label class="col-span-1 row-span-3 font-semibold" for="coste">Coste:{{session('error_gasto')}}</label>
-                        <input class="col-span-2 border border-blue-400 rounded-md my-4" type="number" name="coste" value="0" step="any">
+                    <label class="col-span-1 row-span-3 font-semibold" for="coste">Coste:
+                        <input class="col-span-2 border border-blue-400 rounded-md my-4" type="number" name="coste" value="0" step="any"></label>
 
                     <label class="col-span-1 row-span-2 font-semibold">Descripcion del gasto:
-                        <textarea class="col-span-2 border border-blue-400 rounded-md mt-4" name="descripcion" id="" cols="30" rows="3"></textarea>
-                        @error('descripcion') <span class=""> {{$message}}</span>@enderror
-                    </label>
+                        <textarea class="col-span-2 border border-blue-400 rounded-md mt-4" name="descripcion" id="" cols="30" rows="3"></textarea></label>
 
                 </div>
                 <div class="grid grid-cols-1">
