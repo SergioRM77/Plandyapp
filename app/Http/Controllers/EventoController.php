@@ -102,23 +102,9 @@ class EventoController extends Controller
         $gastos = DB::select("SELECT gastos.id, gastos.evento_id, gastos.usuario_id, gastos.descripcion, gastos.coste, gastos.foto, gastos.created_at,  gastos.is_aceptado, users.alias as alias FROM gastos 
                                 LEFT JOIN users ON gastos.usuario_id = users.id  WHERE gastos.evento_id = ?",[$request->id]);
         $pagos = $this->pagadoEvento($request->id);
-        return view('tiposEvento.eventoSinPresu', compact('evento', 'isAdmin', 'gastos', 'pagos'));
-    }
-
-    /**
-     * Muestra evento solo por el ID
-     */
-    private function eventoPorID($id){
-        $eventos = Evento::whereId($id)->get();
-        $evento = $eventos[0];
-        $isAdmins = User_evento::where('evento_id',$evento->id)->where('user_id', session('id'))->get('is_admin_principal');
-        $isAdmin = $isAdmins[0];
-        //$gastos = Gasto::whereEvento_id($id)->get();
-        $gastos = DB::select("SELECT gastos.id, gastos.evento_id, gastos.usuario_id, gastos.descripcion, gastos.coste, gastos.foto, gastos.created_at, gastos.is_aceptado, users.alias as alias FROM gastos 
-                                LEFT JOIN users ON gastos.usuario_id = users.id  WHERE gastos.evento_id = ?",[$id]);
-        $pagos = $this->pagadoEvento($id);
-        return view('tiposEvento.eventoSinPresu', compact('evento', 'isAdmin', 'gastos', 'pagos'));
-
+        $listaParticipantes = DB::select("SELECT evento_id, user_id, is_admin_principal, is_admin_secundario, users.alias FROM users_eventos 
+                                        LEFT JOIN users   ON users.id = users_eventos.user_id WHERE evento_id = ?", [$request->id]);
+        return view('tiposEvento.eventoSinPresu', compact('evento', 'isAdmin', 'gastos', 'pagos', 'listaParticipantes'));
     }
 
     /**
@@ -146,14 +132,14 @@ class EventoController extends Controller
                 $evento->tags = $request->tags;
                 $evento->foto = $request->foto;
                 $evento->save();
-                
+                $request = new Request(['id' => $evento->id]);
+                return $this->verEvento($request);
         } catch (Exception $e) {
-            session()->flash('error_datos_evento', $e->getMessage());
-        }finally{
-            return $this->eventoPorID($request->id);
+            session()->flash('error_datos_evento',str_contains($e->getMessage(), 'more error') == true ? 
+                            'Los campos Nombre Evento, Descripción y Fecha inicio son obligatorios' : $e->getMessage());
+            return $this->editarEventoSinPresu($request);
         }
     }
-
 
     //PRESENTAR ACEPTAR Y ELIMINAR GASTOS
 
@@ -174,29 +160,14 @@ class EventoController extends Controller
             session()->flash('error_gasto',"El campo gasto debe ser mayor a 1 y descripción es obligatorio");
             
         }finally{
-            return $this->eventoPorID($request->evento_id);
+            $request = new Request(['id' => $request->evento_id]);
+            return $this->verEvento($request);
         }
         
     }
 
 
-    private function validarGastos(Request $request){
-        // $validator = Validator::make($request -> all(), [
-        //     'evento_id' => 'required',
-        //     'descripcion' => 'required',
-        //     'coste' => 'required|numeric|min:1',
-        //     'foto' => '',
-        // ]);
-
-        // if ($validator -> fails()) {
-        //     $errors = $validator -> errors();
-
-        //     if ($errors -> has("descripcion")) $error = ["descripcion" => "Es necesario descripción"];
-        //     if ($errors -> has("coste")) $error = ["coste" => "El coste debe ser mayor a 0"];
-        //     throw ValidationException::withMessages($error);
-        // }
-        // return $validator;
-        
+    private function validarGastos(Request $request){        
         return $request->validate([
             'evento_id' => 'required',
             'descripcion' => 'required|max:255',
@@ -211,7 +182,8 @@ class EventoController extends Controller
      */
     public function aceptarGasto(Request $request){
         DB::update("UPDATE gastos set is_aceptado = true WHERE gastos.id = ?", [$request->gasto_id]);
-        return $this->eventoPorID($request->evento_id);
+        $request = new Request(['id' => $request->evento_id]);
+        return $this->verEvento($request);
     }
 
     /**
@@ -219,7 +191,8 @@ class EventoController extends Controller
      */
     public function eliminarGasto(Request $request){
         DB::delete("DELETE FROM gastos WHERE evento_id = ? AND id = ?",[$request->evento_id, $request->gasto_id]);
-        return $this->eventoPorID($request->evento_id);
+        $request = new Request(['id' => $request->evento_id]);
+        return $this->verEvento($request);
     }
 
     /**

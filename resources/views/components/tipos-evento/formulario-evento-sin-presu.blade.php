@@ -1,13 +1,7 @@
 <article>
     @error('nombre_evento') <span class=""> {{$message}}</span>@enderror
-    <form 
-    @if ($evento == null)
-    action="{{e(route('evento.sinpresu.guardar'))}}" 
-    @else
-    action="{{e(route('evento.sinpresu.update'))}}" 
-    @endif
-    
-    
+    <form action="{{ $evento == null ? e(route('evento.sinpresu.guardar')) : e(route('evento.sinpresu.update'))}}" 
+        
     method="post">
         @csrf
         <input type="hidden" name="id" value="{{$evento->id ?? ''}}">
@@ -17,14 +11,14 @@
                 @if (session('error_datos_evento'))
                     <p>{{session('error_datos_evento')}}</p>
                 @endif
-                <label class="row-start-2 font-semibold italic"><span>Nombre del Evento:</span>
+                <label class="row-start-2 font-semibold italic" for="nombre_evento"><span>Nombre del Evento:</span>
                 <input class="w-full border border-blue-500 rounded-md my-1" type="text" name="nombre_evento" id="" value="{{$evento->nombre_evento ?? ""}}">    
                 @error('nombre_evento') 
                     <span class=""> {{$message}} </span> 
                 @enderror</label>
                 <label class="row-start-3"><span class="font-semibold italic">Fecha inicio: </span>
                     <input class="border border-blue-500 rounded-md my-1" type="date" name="fecha_inicio" id="" value="{{$evento->fecha_inicio ?? ""}}">
-                <span class="font-semibold italic"> hata:</span>
+                <span class="font-semibold italic"> hasta:</span>
                     <input class="border border-blue-500 rounded-md my-1" type="date" name="fecha_fin" id="" value="{{$evento->fecha_fin ?? ""}}">
                     @error('fecha_inicio') <span> {{$message}}</span>@enderror
                     @error('fecha_fin') <span> {{$message}}</span>@enderror</label>

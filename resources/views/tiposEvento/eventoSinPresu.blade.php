@@ -3,5 +3,5 @@
     <h2>Evento Activo</h2>
     <x-tipos-evento.evento-sin-presupuesto 
         :evento="$evento ?? null" :isAdmin="$isAdmin" 
-        :gastos="$gastos ?? null" :pagos="$pagos ?? null"/>
+        :gastos="$gastos ?? null" :pagos="$pagos ?? null" :listaParticipantes="$listaParticipantes"/>
 </x-layouts.base>

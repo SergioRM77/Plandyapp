@@ -27,23 +27,23 @@
 
     <h4 class="border border-black bg-violet-400 pl-2">Participantes</h4>
     <div class="border border-black rounded-b-lg p-2 mx-2">
-        @php 
-        $total = 0;
-            foreach ($pagos as $key => $pago) {
-                
-            $total += $pago->pagado;
-            }
-             
-        @endphp
         
-        @foreach ($pagos as $item => $pago)
-            <span>@-{{$pago->alias}} </span class="text-sky-600"><span>({{$pago->pagado}}/{{$total}}€) </span>
+        
+        @foreach ($listaParticipantes as $item => $participante)
+            <span class="bg-yellow-300 rounded-full px-2">@-{{$participante->alias}} </span>
         @endforeach
     </div>
 
     <div class="flex border border-black bg-violet-400 pl-2">
-        <h4>Administradores: </h4>
-        <p><span class="bg-yellow-300 rounded-full px-2">@-Principal</span>, <span class="bg-yellow-300 rounded-full px-2">@-Secundarios</span>...</p>
+        <h4>Administradores:</h4>
+        <p>@foreach ($listaParticipantes as $item => $participante)
+                @if ($participante->is_admin_principal || $participante->is_admin_secundario)
+                    <span class="{{$participante->is_admin_principal ? 'bg-lime-400' : 'bg-blue-300'}} rounded-full px-2">@-{{$participante->alias}} </span>
+                @endif
+            @endforeach</p>
+        
+        
+
     </div>
 
         <h4 class="flex border border-black bg-violet-400 pl-2">DESGLOSE DE GASTOS:</h4>
@@ -148,9 +148,16 @@
         
     <h4 class="border border-black bg-violet-400 pl-2">ESTADO DE CUENTAS:</h4>
     <div class="border border-black rounded-b-lg mx-2 px-2">
+        @php 
+        $total = 0;
+            foreach ($pagos as $key => $pago) {
+                
+            $total += $pago->pagado;
+            }
+        @endphp
         <p>
             @foreach ($pagos as $item => $pago)
-                <span>@-{{$pago->alias}} </span class="text-sky-600"><span>({{$pago->pagado}}€) </span>
+                <span class="bg-yellow-300 rounded-full px-2">@-{{$pago->alias}} </span class="text-sky-600"><span>({{$pago->pagado}}€) </span>
             @endforeach
         </p>
         
