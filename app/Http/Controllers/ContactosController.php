@@ -16,16 +16,20 @@ class ContactosController extends Controller
     public function buscarPorAlias(Request $request){
         $IDusuario=User::whereAlias($request->alias)->get('id');
         $busqueda = $this->datosPorAlias($request->alias);
-        $isContacto = $this->isContactoAceptadoAlias($request->alias);
-        $isBloqueadoPorMi = $this->isBloqueadoPorMi($IDusuario[0]->id);
-
-        return view('vistasContactos.busqueda', compact('busqueda', 'isContacto', 'isBloqueadoPorMi'));
+        if (!is_string($busqueda)) {
+            $isContacto = $this->isContactoAceptadoAlias($request->alias);
+            $isBloqueadoPorMi = $this->isBloqueadoPorMi($IDusuario[0]->id);
+        } else {
+            $isContacto = null;
+            $isBloqueadoPorMi = null;
+        }
+        return view('vistasContactos.busquedaVista', compact('busqueda', 'isContacto', 'isBloqueadoPorMi'));
     }
 
     public function showAllUsers(Request $request)
     {
         $users = User::all()->where('alias', '!=', session()->get('alias'));
-        return view('vistasContactos.contactos', compact('users'));
+        return view('vistasContactos.contactosVista', compact('users'));
     }
     
     public function mostrarContactos(){
@@ -40,7 +44,7 @@ class ContactosController extends Controller
             }
         }
         $users = User::whereIn('id',$IDsContactos)->get();
-        return view('vistasContactos.contactos', compact('users'));
+        return view('vistasContactos.contactosVista', compact('users'));
     }
     public function agregar(Request $request){
         $agregador=User::whereAlias(session('alias'))->get('id');
@@ -97,10 +101,10 @@ class ContactosController extends Controller
                 }
             }
             $solicitudes = User::all()->whereIn('id',$allIDs);
-            return view('vistasContactos.solicitudes', compact('solicitudes', 'agregadorID'));
+            return view('vistasContactos.solicitudesVista', compact('solicitudes', 'agregadorID'));
         }      
         $solicitudes = 'NOsolicitudes';
-        return view('vistasContactos.solicitudes', compact('solicitudes', 'agregadorID'));
+        return view('vistasContactos.solicitudesVista', compact('solicitudes', 'agregadorID'));
     }
 
     public function aceptar(Request $request){
@@ -152,7 +156,7 @@ class ContactosController extends Controller
             }
             $bloqueados = User::all()->whereIn('id',$soloIDsBloqueados);
         }
-        return view('vistasContactos.bloqueados', compact('bloqueados'));
+        return view('vistasContactos.bloqueadosVista', compact('bloqueados'));
     }
 
     public function bloquear(Request $request){
@@ -201,7 +205,7 @@ class ContactosController extends Controller
         if (count($usuario) >0) {
             return $usuario;
         }
-        return "No Existe usuario";
+        return "No se ha encontrado coincidencias";
     }
 
     private function isContactoAceptadoAlias($alias){

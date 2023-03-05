@@ -20,7 +20,7 @@ class InicioController extends Controller
                                 LEFT JOIN users ON users_eventos.user_id = users.id
                                 WHERE users.id = ?", [session('id')]);
         
-        return view('inicio',compact('eventos'));
+        return view('inicioVista',compact('eventos'));
         // return $eventos;
     }
 }

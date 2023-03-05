@@ -32,6 +32,13 @@
         @foreach ($listaParticipantes as $item => $participante)
             <span class="bg-yellow-300 rounded-full px-2">@-{{$participante->alias}} </span>
         @endforeach
+        @if ($isAdmin->is_admin_principal == true || $isAdmin->is_admin_secundario == true)
+        <form action="{{e(route('evento.contactos.ver'))}}" method="post">
+            @csrf
+            <input type="hidden" name="evento_id" value="{{$evento->id}}">
+            <button class="border border-black rounded-md bg-blue-500 py-1 p-2 my-2 mx-2">Añadir participante</button>
+        </form>
+        @endif
     </div>
 
     <div class="flex border border-black bg-violet-400 pl-2">
@@ -41,8 +48,6 @@
                     <span class="{{$participante->is_admin_principal ? 'bg-lime-400' : 'bg-blue-300'}} rounded-full px-2">@-{{$participante->alias}} </span>
                 @endif
             @endforeach</p>
-        
-        
 
     </div>
 
@@ -53,17 +58,19 @@
             @if ($gastos != null)
                 @foreach ($gastos as $id => $gasto)
                     <div class=" mx-auto overflow-hidden">
-                    <div class="md:flex justify-between">
-                            <div class="px-8">
-                                <p><span class="font-semibold">Gasto de: </span><span class="bg-yellow-300 rounded-full px-2">@-{{$gasto->alias}}</span></p>
-                                <p><span class="font-semibold">Coste: </span> {{$gasto->coste}}</p>
-                                <p><span class="font-semibold">Fecha: </span>{{$gasto->created_at}}</p>
-                                <p><span class="font-semibold">Descripcion del gasto:</span> {{$gasto->descripcion}}</p>
+                        @if (($isAdmin->is_admin_principal == true && $gasto->is_aceptado == false) || $gasto->is_aceptado == true)
+                            <div class="md:flex justify-between">
+                                <div class="px-8">
+                                    <p><span class="font-semibold">Gasto de: </span><span class="bg-yellow-300 rounded-full px-2">@-{{$gasto->alias}}</span></p>
+                                    <p><span class="font-semibold">Coste: </span> {{$gasto->coste}}</p>
+                                    <p><span class="font-semibold">Fecha: </span>{{$gasto->created_at}}</p>
+                                    <p><span class="font-semibold">Descripcion del gasto:</span> {{$gasto->descripcion}}</p>
+                                </div>
+                                <div class="flex md:shrink-0 items-center p-2">
+                                    <img class="h-32 w-full object-cover rounded-md md:w-48" src="https://img.freepik.com/vector-premium/paisaje-dibujos-animados-vista-campos-verdes-verano-colina-cesped-primavera-cielo-azul_313905-688.jpg?w=2000" alt="Modern building architecture">
+                                </div>
                             </div>
-                            <div class="flex md:shrink-0 items-center p-2">
-                                <img class="h-32 w-full object-cover rounded-md md:w-48" src="https://img.freepik.com/vector-premium/paisaje-dibujos-animados-vista-campos-verdes-verano-colina-cesped-primavera-cielo-azul_313905-688.jpg?w=2000" alt="Modern building architecture">
-                            </div>
-                        </div>
+                        @endif
                         <div class="flex">
                             @if ($isAdmin->is_admin_principal == true && $gasto->is_aceptado == false)
                         <form action="{{e(route('gasto.evento.aceptar'))}}" method="post">
@@ -157,7 +164,7 @@
         @endphp
         <p>
             @foreach ($pagos as $item => $pago)
-                <span class="bg-yellow-300 rounded-full px-2">@-{{$pago->alias}} </span class="text-sky-600"><span>({{$pago->pagado}}€) </span>
+                <span class="bg-yellow-300 rounded-full px-2">@-{{$pago->alias}} </span class="text-sky-600"><span>({{$pago->pagado}}/{{$total}}€) </span>
             @endforeach
         </p>
         

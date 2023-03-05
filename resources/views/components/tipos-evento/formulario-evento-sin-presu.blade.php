@@ -1,9 +1,14 @@
 <article>
     @error('nombre_evento') <span class=""> {{$message}}</span>@enderror
     <form action="{{ $evento == null ? e(route('evento.sinpresu.guardar')) : e(route('evento.sinpresu.update'))}}" 
-        
     method="post">
+    
         @csrf
+        @if ($evento == null)
+        @method('POST')
+        @else
+            @method('PATCH')
+        @endif
         <input type="hidden" name="id" value="{{$evento->id ?? ''}}">
         <div class="grid grid-cols-3 gap-4 border border-black bg-lime-50 p-3">
             <div class="grid col-span-2 grid-rows-7">

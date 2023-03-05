@@ -37,8 +37,12 @@ Route::view('evento/sinpresupuesto', 'tiposEvento.eventoSinPresu')->name('evento
 Route::get('evento/crear/sin-presupuesto',[EventoController::class, 'newEventoSinPresu'])->name('evento.crear.sin')->middleware('auth');
 Route::post('evento/crear/sin-presupuesto',[EventoController::class, 'saveEventoSinPresu'])->name('evento.sinpresu.guardar')->middleware('auth');
 Route::post('evento/editar/sin-presupuesto',[EventoController::class, 'editarEventoSinPresu'])->name('evento.sinpresu.editar')->middleware('auth');
-Route::post('evento/actualizar/sin-presupuesto',[EventoController::class, 'updateEventoSinPresu'])->name('evento.sinpresu.update')->middleware('auth');
+Route::patch('evento/actualizar/sin-presupuesto',[EventoController::class, 'updateEventoSinPresu'])->name('evento.sinpresu.update')->middleware('auth');
 Route::post('evento/ver',[EventoController::class, 'verEvento'])->name('evento.ver')->middleware('auth');
+Route::post('evento/contactos-para-evento/',[EventoController::class, 'verContactosParaEvento'])->name('evento.contactos.ver')->middleware('auth');
+Route::post('evento/contactos-add-evento/',[EventoController::class, 'addParticipante'])->name('evento.contactos.add')->middleware('auth');
+// Route::get('contacto/paraevento',[EventoController::class, 'verContactosParaEvento'])->name('evento.contacto')->middleware('auth');
+
 
 Route::post('evento/presentar-gasto/sin-presupuesto',[EventoController::class, 'addGasto'])->name('evento.add.gasto')->middleware('auth');
 Route::get('evento/presentar-gasto/sin-presupuesto',[EventoController::class, 'addGasto'])->name('evento.add.gasto')->middleware('auth');

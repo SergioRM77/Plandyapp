@@ -9,18 +9,18 @@ class ChatController extends Controller
     public function chatPrivado()
     {
         
-        return view('tiposChat.chat');
+        return view('tiposChat.chatVista');
     }
 
     public function chatEvento()
     {
         
-        return view('tiposChat.chatEvento');
+        return view('tiposChat.chatEventoVista');
     }
 
     public function chatReporte()
     {
         
-        return view('tiposChat.chatReporte');
+        return view('tiposChat.chatReporteVista');
     }
 }

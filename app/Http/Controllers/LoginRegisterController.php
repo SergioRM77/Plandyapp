@@ -42,7 +42,7 @@ class LoginRegisterController extends Controller
         session(['alias' => $request->alias,'id' => $miID]);
         session()->flash('status', 'Usuario creado, Bienvenido a PlandyApp');
         Auth::login($usuario);
-        return view('inicio');
+        return view('inicioVista');
     }
     public function storeLogin(Request $request){
         $credentials = $request->validate([

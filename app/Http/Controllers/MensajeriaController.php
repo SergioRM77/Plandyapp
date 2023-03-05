@@ -9,6 +9,6 @@ class MensajeriaController extends Controller
     public function __invoke()
     {
         
-        return view('mensajeria');
+        return view('mensajeriaVista');
     }
 }

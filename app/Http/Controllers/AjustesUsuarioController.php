@@ -15,7 +15,7 @@ class AjustesUsuarioController extends Controller
     {
 
         $user = User::where('alias', session()->get('alias'))->get();
-        return view('ajustesUsuario', compact('user'));
+        return view('ajustesUsuarioVista', compact('user'));
     }
 
     public function update(Request $request){
@@ -33,7 +33,7 @@ class AjustesUsuarioController extends Controller
 
             session(['alias' => $usuario->alias]);
             session()->flash('status', 'Has actualizado tus datos');
-            return view('inicio');
+            return view('inicioVista');
         }
 
         return "error";
