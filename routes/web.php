@@ -40,7 +40,12 @@ Route::post('evento/editar/sin-presupuesto',[EventoController::class, 'editarEve
 Route::patch('evento/actualizar/sin-presupuesto',[EventoController::class, 'updateEventoSinPresu'])->name('evento.sinpresu.update')->middleware('auth');
 Route::post('evento/ver',[EventoController::class, 'verEvento'])->name('evento.ver')->middleware('auth');
 Route::post('evento/contactos-para-evento/',[EventoController::class, 'verContactosParaEvento'])->name('evento.contactos.ver')->middleware('auth');
-Route::post('evento/contactos-add-evento/',[EventoController::class, 'addParticipante'])->name('evento.contactos.add')->middleware('auth');
+Route::post('evento/contactos-add/',[EventoController::class, 'addParticipante'])->name('evento.contactos.add')->middleware('auth');
+Route::post('evento/contactos-ver/',[EventoController::class, 'verContactosDeEvento'])->name('evento.contactos.ver')->middleware('auth');
+Route::post('evento/contactos-delete/',[EventoController::class, 'eliminarParticipante'])->name('evento.contactos.eliminar')->middleware('auth');
+Route::post('evento/contactos-make-admin/',[EventoController::class, 'makeParticipanteAdminSecun'])->name('evento.contactos.makeAdmin')->middleware('auth');
+Route::post('evento/contactos-delete-admin/',[EventoController::class, 'eliminarParticipanteAdminSecun'])->name('evento.contactos.deleteAdmin')->middleware('auth');
+
 // Route::get('contacto/paraevento',[EventoController::class, 'verContactosParaEvento'])->name('evento.contacto')->middleware('auth');
 
 

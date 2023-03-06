@@ -24,19 +24,19 @@ class EventoController extends Controller
     public function eventoConPresu()
     {
         
-        return view('VistasTiposEvento.eventoConPresuVista');
+        return view('vistasTiposEvento.eventoConPresuVista');
     }
 
     public function eventoSinPresu()
     {
         
-        return view('VistasTiposEvento.eventoSinPresuVista');
+        return view('vistasTiposEvento.eventoSinPresuVista');
     }
 
     public function eventoFinalizado()
     {
         
-        return view('VistasTiposEvento.eventoFinalizadoVista');
+        return view('vistasTiposEvento.eventoFinalizadoVista');
     }
 
     /**FUNCIONALIDADES PARA CREAR Y MODIFICAR EVENTOS
@@ -44,7 +44,7 @@ class EventoController extends Controller
 
     //PARA CREAR Y MODIFICAR EVENTO
     public function newEventoSinPresu(){
-        return view('VistasTiposEvento.admin-crear-sin-presuVista');
+        return view('vistasTiposEvento.admin-crear-sin-presuVista');
     }
     public function newEventoConPresu(){
 
@@ -99,14 +99,14 @@ class EventoController extends Controller
         $eventos = Evento::whereId($request->id)->get();
         session(["evento_id" => $request->id]);
         $evento = $eventos[0];
-        $isAdmins = User_evento::where('evento_id',$evento->id)->where('user_id', session('id'))->get('is_admin_principal');
+        $isAdmins = User_evento::select('is_admin_principal','is_admin_secundario')->where('evento_id',$evento->id)->where('user_id', session('id'))->get();
         $isAdmin = $isAdmins[0];
         $gastos = DB::select("SELECT gastos.id, gastos.evento_id, gastos.usuario_id, gastos.descripcion, gastos.coste, gastos.foto, gastos.created_at,  gastos.is_aceptado, users.alias as alias FROM gastos 
                                 LEFT JOIN users ON gastos.usuario_id = users.id  WHERE gastos.evento_id = ?",[$request->id]);
         $pagos = $this->pagadoEvento($request->id);
         $listaParticipantes = DB::select("SELECT evento_id, user_id, is_admin_principal, is_admin_secundario, users.alias FROM users_eventos 
                                         LEFT JOIN users   ON users.id = users_eventos.user_id WHERE evento_id = ?", [$request->id]);
-        return view('VistasTiposEvento.eventoSinPresuVista', compact('evento', 'isAdmin', 'gastos', 'pagos', 'listaParticipantes'));
+        return view('vistasTiposEvento.eventoSinPresuVista', compact('evento', 'isAdmin', 'gastos', 'pagos', 'listaParticipantes'));
     }
 
     /**
@@ -117,7 +117,7 @@ class EventoController extends Controller
         $evento = $eventos[0];
         $gastos = DB::select("SELECT gastos.id, gastos.evento_id, gastos.usuario_id, gastos.descripcion, gastos.coste, gastos.foto, gastos.created_at, gastos.is_aceptado, users.alias as alias FROM gastos 
                                 LEFT JOIN users ON gastos.usuario_id = users.id  WHERE gastos.evento_id = ?",[$request->id]);
-        return view('VistasTiposEvento.editarEventoSinPresuVista', compact('evento', 'gastos'));
+        return view('vistasTiposEvento.editarEventoSinPresuVista', compact('evento', 'gastos'));
     }
 
     /**
@@ -233,6 +233,16 @@ class EventoController extends Controller
         return view('vistasTiposEvento.verContactosParaEventoVista', compact('contactos'));
     }
 
+    public function verContactosDeEvento(){
+        $contactos = DB::table('users')->join('users_eventos', 'users.id', '=', 'users_eventos.user_id')
+                                    ->join('eventos','users_eventos.evento_id', '=', 'eventos.id')
+                                    ->where('eventos.id', '=', session('evento_id'))
+                                    ->where('users.id', '<>', session('id'))
+                                    ->select('users.id','users.alias', 'users_eventos.is_admin_principal', 'users_eventos.is_admin_secundario')->get();
+        return view('vistasTiposEvento.verContactosEnEventoVista', compact('contactos'));
+        
+    }
+
     /**
      * Añadir contacto a participante de evento
      */
@@ -271,16 +281,46 @@ class EventoController extends Controller
             session()->flash('participante',"No se ha podido eliminar participante");
         }finally{
             $request = new Request(['id' => session('evento_id')]);
-            return $this->verEvento($request);
+            return $this->verContactosDeEvento($request);
         }
     }
 
     public function makeParticipanteAdminSecun(Request $request){
-
+        try {
+            $validar = $request->validate([
+                "evento_id" => "required|numeric",
+                "user_id" => "required|numeric"
+            ]);
+            $participante = User_evento::where('evento_id', $request->evento_id)
+                            ->where('user_id', $request->user_id)->where('is_admin_secundario', '=', false)
+                            ->update(['is_admin_secundario' => true]);
+            
+            session()->flash('status',"Participante convertido a Admin Secundario");
+            return $this->verContactosDeEvento($request);
+        } catch (Exception $e) {
+            session()->flash('status',"No se ha podido convertir a Admin Secundario");
+            $request = new Request(['id' => session('evento_id')]);
+            return $this->verEvento($request);
+        }
     }
 
     public function eliminarParticipanteAdminSecun(Request $request){
-
+        try {
+            $validar = $request->validate([
+                "evento_id" => "required|numeric",
+                "user_id" => "required|numeric"
+            ]);
+            $participante = User_evento::where('evento_id', $request->evento_id)
+                            ->where('user_id', $request->user_id)->where('is_admin_secundario', '=', true)
+                            ->update(['is_admin_secundario' => false]);
+            
+            session()->flash('status',"Participante ha dejado de ser Admin Secundario");
+            return $this->verContactosDeEvento($request);
+        } catch (Exception $e) {
+            session()->flash('status',"No se ha podido eliminar Admin Secundario");
+            $request = new Request(['id' => session('evento_id')]);
+            return $this->verEvento($request);
+        }
     }
 
 /*
@@ -292,8 +332,7 @@ class EventoController extends Controller
 
     }
 
-
-
+v
     public function valorRoute($id){
         return $id;
     }*/

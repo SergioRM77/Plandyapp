@@ -33,10 +33,15 @@
             <span class="bg-yellow-300 rounded-full px-2">@-{{$participante->alias}} </span>
         @endforeach
         @if ($isAdmin->is_admin_principal == true || $isAdmin->is_admin_secundario == true)
-        <form action="{{e(route('evento.contactos.ver'))}}" method="post">
+        <form action="{{e(route('evento.contactos.add'))}}" method="post">
             @csrf
             <input type="hidden" name="evento_id" value="{{$evento->id}}">
             <button class="border border-black rounded-md bg-blue-500 py-1 p-2 my-2 mx-2">Añadir participante</button>
+        </form>
+        <form action="{{e(route('evento.contactos.ver'))}}" method="post">
+            @csrf
+            <input type="hidden" name="evento_id" value="{{$evento->id}}">
+            <button class="border border-black rounded-md bg-green-500 py-1 p-2 my-2 mx-2">Ver participantes</button>
         </form>
         @endif
     </div>
@@ -58,7 +63,9 @@
             @if ($gastos != null)
                 @foreach ($gastos as $id => $gasto)
                     <div class=" mx-auto overflow-hidden">
-                        @if (($isAdmin->is_admin_principal == true && $gasto->is_aceptado == false) || $gasto->is_aceptado == true)
+                        @if (($isAdmin->is_admin_principal == true && $gasto->is_aceptado == false) || 
+                            ($isAdmin->is_admin_secundario == true && $gasto->is_aceptado == false) ||
+                            $gasto->is_aceptado == true)
                             <div class="md:flex justify-between">
                                 <div class="px-8">
                                     <p><span class="font-semibold">Gasto de: </span><span class="bg-yellow-300 rounded-full px-2">@-{{$gasto->alias}}</span></p>
@@ -72,7 +79,7 @@
                             </div>
                         @endif
                         <div class="flex">
-                            @if ($isAdmin->is_admin_principal == true && $gasto->is_aceptado == false)
+                            @if (($isAdmin->is_admin_principal == true || $isAdmin->is_admin_secundario == true)  && $gasto->is_aceptado == false)
                         <form action="{{e(route('gasto.evento.aceptar'))}}" method="post">
                             @csrf
                             <input type="hidden" name="gasto_id" value="{{$gasto->id}}">
@@ -80,7 +87,7 @@
                             <button class="border border-black rounded-md bg-green-500 py-1 p-2 my-2 mx-2" type="submit">Aceptar Gasto</button>
                         </form>
                         @endif
-                        @if ($isAdmin->is_admin_principal == true)
+                        @if ($isAdmin->is_admin_principal == true || $isAdmin->is_admin_secundario == true)
                         <form action="{{e(route('gasto.evento.eliminar'))}}" method="post">
                             @csrf
                             <input type="hidden" name="gasto_id" value="{{$gasto->id}}">

@@ -2,6 +2,9 @@
 
     <h2>Mis contactos para Añadir a evento</h2>
     <div class="border border-black bg-lime-50 p-3">
+        @if (count($contactos)==0)
+            <p>No hay contactos para añadir a evento</p>
+        @endif
         @foreach ($contactos as $item => $contacto)
             <form action="{{e(route("evento.contactos.add"))}}" method="post">
                 @csrf
