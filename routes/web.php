@@ -21,6 +21,7 @@ Route::get('inicio',[InicioController::class, 'inicio'])->name('inicio')->middle
 Route::get('contactos',[ContactosController::class, 'mostrarContactos'])->name('contactos.miscontactos')->middleware('auth');
 Route::get('contactosall',[ContactosController::class, 'showAllUsers'])->name('contactos')->middleware('auth');
 Route::post('contactos/buscar',[ContactosController::class, 'buscarPorAlias'])->name('contactos.buscar')->middleware('auth');
+Route::get('contactos/ver/{alias}',[ContactosController::class, 'buscarPorAlias'])->name('contactos.ver')->middleware('auth');
 Route::post('contactos/filtrar',[ContactosController::class, 'filtrar'])->name('contactos.filtrar')->middleware('auth');
 Route::post('contactos/agregar',[ContactosController::class, 'agregar'])->name('contactos.agregar')->middleware('auth');
 Route::post('contactos/solicitudes',[ContactosController::class, 'solicitudes'])->name('contactos.solicitudes')->middleware('auth');

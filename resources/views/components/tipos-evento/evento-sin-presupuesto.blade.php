@@ -30,7 +30,8 @@
         
         
         @foreach ($listaParticipantes as $item => $participante)
-            <span class="bg-yellow-300 rounded-full px-2">@-{{$participante->alias}} </span>
+            {{-- <span class="bg-yellow-300 rounded-full px-2">@-{{$participante->alias}} </span> --}}
+            <a href="{{e(route('contactos.ver', $alias = $participante->alias))}}" class="bg-yellow-300 rounded-full px-2">@-{{$participante->alias}} </a>
         @endforeach
         @if ($isAdmin->is_admin_principal == true || $isAdmin->is_admin_secundario == true)
         <form action="{{e(route('evento.contactos.add'))}}" method="post">

@@ -332,7 +332,6 @@ class EventoController extends Controller
 
     }
 
-v
     public function valorRoute($id){
         return $id;
     }*/
