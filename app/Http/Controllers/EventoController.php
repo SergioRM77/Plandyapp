@@ -267,6 +267,9 @@ class EventoController extends Controller
         
     }
 
+    /**
+     * Eliminar participante de un Evento
+     */
     public function eliminarParticipante(Request $request){
         try {
             $validar = $request->validate([
@@ -285,6 +288,9 @@ class EventoController extends Controller
         }
     }
 
+    /**
+     * Hacer usuario
+     */
     public function makeParticipanteAdminSecun(Request $request){
         try {
             $validar = $request->validate([
@@ -323,6 +329,32 @@ class EventoController extends Controller
         }
     }
 
+    public function addActividad(Request $request){
+        try {
+            $validar = $request->validate([
+                'nombre_actividad' => 'required|max:100',
+                'coste' => 'required|numeric|min:1|max:999999',
+                'descripcion_actividad' => 'nullable|max:255',
+                'fecha' => 'nullable|date',
+                'hora' => 'nullable|date_format:H:i'
+            ]);
+
+            $actividad = new Actividad();
+            $actividad->nombre_actividad = $request->input('nombre_actividad');
+            $actividad->coste = $request->input('coste');
+            $actividad->descripcion_actividad = $request->input('fecha');
+            $actividad->fecha = $request->input('fecha');
+            $actividad->hora = $request->input('hora');
+            $actividad->save();
+            session()->flash('status', 'Se ha añadido una nueva actividad');
+        } catch (Exception $e) {
+            session()->flash('status', $e->getMessage());
+            
+        }finally{
+            $evento = new Request(['id' => session('evento_id')]);
+            return $this->verEvento($evento);
+        }
+    }
 /*
     public function addGastoPresupuesto(Request $request){
 
