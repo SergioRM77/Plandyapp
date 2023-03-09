@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
+use function PHPUnit\Framework\returnSelf;
+
 class EventoController extends Controller
 {
     public function inicio()
@@ -289,7 +291,7 @@ class EventoController extends Controller
     }
 
     /**
-     * Hacer usuario
+     * Hacer usuario un administrador secundario
      */
     public function makeParticipanteAdminSecun(Request $request){
         try {
@@ -348,12 +350,58 @@ class EventoController extends Controller
             $actividad->save();
             session()->flash('status', 'Se ha añadido una nueva actividad');
         } catch (Exception $e) {
-            session()->flash('status', $e->getMessage());
+            session()->flash('status', 'No se ha podido crear actividad');
             
         }finally{
             $evento = new Request(['id' => session('evento_id')]);
             return $this->verEvento($evento);
         }
+    }
+
+    public function actualizarActividad(Request $request){
+        try {
+            $validar = $request->validate([
+                'nombre_actividad' => 'required|max:100',
+                'coste' => 'required|numeric|min:1|max:999999',
+                'descripcion_actividad' => 'nullable|max:255',
+                'fecha' => 'nullable|date',
+                'hora' => 'nullable|date_format:H:i'
+            ]);
+
+            $actividad = Actividad::whereId($request->id);
+            $actividad->nombre_actividad = $request->input('nombre_actividad');
+            $actividad->coste = $request->input('coste');
+            $actividad->descripcion_actividad = $request->input('fecha');
+            $actividad->fecha = $request->input('fecha');
+            $actividad->hora = $request->input('hora');
+            $actividad->save();
+            session()->flash('status', 'Se ha actualizado una actividad');
+        } catch (Exception $e) {
+            session()->flash('status', 'No se ha podido actualizar actividad');
+            
+        }finally{
+            $evento = new Request(['id' => session('evento_id')]);
+            return $this->verEvento($evento);
+        }
+    }
+
+    public function eliminarActividad(Request $request){
+        Actividad::where('id', '=', $request->id)
+                    ->where('nombre_actividad', '=', $request->nombre_actividad)->delete();
+        $evento = new Request(['id' => session('evento_id')]);
+        return $this->verEvento($evento);
+    }
+
+    public function verParticipanteParaActividad(){
+
+    }
+
+    public function addParticipanteActividad(Request $request){
+
+    }
+
+    public function eliminarParticipanteActividad(Request $request){
+
     }
 /*
     public function addGastoPresupuesto(Request $request){
