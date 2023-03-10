@@ -108,7 +108,8 @@ class EventoController extends Controller
         $pagos = $this->pagadoEvento($request->id);
         $listaParticipantes = DB::select("SELECT evento_id, user_id, is_admin_principal, is_admin_secundario, users.alias FROM users_eventos 
                                         LEFT JOIN users   ON users.id = users_eventos.user_id WHERE evento_id = ?", [$request->id]);
-        return view('vistasTiposEvento.eventoSinPresuVista', compact('evento', 'isAdmin', 'gastos', 'pagos', 'listaParticipantes'));
+        $actividades = $this->listaActividades();
+        return view('vistasTiposEvento.eventoSinPresuVista', compact('evento', 'isAdmin', 'gastos', 'pagos', 'listaParticipantes', 'actividades'));
     }
 
     /**
@@ -166,6 +167,7 @@ class EventoController extends Controller
         }finally{
             $request = new Request(['id' => $request->evento_id]);
             return $this->verEvento($request);
+
         }
         
     }
@@ -332,6 +334,7 @@ class EventoController extends Controller
     }
 
     public function addActividad(Request $request){
+        // return dump($request);
         try {
             $validar = $request->validate([
                 'nombre_actividad' => 'required|max:100',
@@ -342,15 +345,16 @@ class EventoController extends Controller
             ]);
 
             $actividad = new Actividad();
+            $actividad->evento_id = session('evento_id');
             $actividad->nombre_actividad = $request->input('nombre_actividad');
             $actividad->coste = $request->input('coste');
-            $actividad->descripcion_actividad = $request->input('fecha');
+            $actividad->descripcion_actividad = $request->input('descripcion_actividad');
             $actividad->fecha = $request->input('fecha');
             $actividad->hora = $request->input('hora');
             $actividad->save();
             session()->flash('status', 'Se ha añadido una nueva actividad');
         } catch (Exception $e) {
-            session()->flash('status', 'No se ha podido crear actividad');
+            session()->flash('status', $e->getMessage());
             
         }finally{
             $evento = new Request(['id' => session('evento_id')]);
@@ -358,20 +362,23 @@ class EventoController extends Controller
         }
     }
 
+    public function editarActividad(Request $request){
+        return view('vistasTiposEvento.editarActividadVista');
+    }
     public function actualizarActividad(Request $request){
         try {
             $validar = $request->validate([
                 'nombre_actividad' => 'required|max:100',
-                'coste' => 'required|numeric|min:1|max:999999',
+                'coste' => 'required|numeric|min:1|max:99999',
                 'descripcion_actividad' => 'nullable|max:255',
-                'fecha' => 'nullable|date',
-                'hora' => 'nullable|date_format:H:i'
+                'fecha' => 'nullable',
+                'hora' => 'nullable'
             ]);
 
-            $actividad = Actividad::whereId($request->id);
+            $actividad = Actividad::whereId($request->id)->first();
             $actividad->nombre_actividad = $request->input('nombre_actividad');
             $actividad->coste = $request->input('coste');
-            $actividad->descripcion_actividad = $request->input('fecha');
+            $actividad->descripcion_actividad = $request->input('descripcion_actividad');
             $actividad->fecha = $request->input('fecha');
             $actividad->hora = $request->input('hora');
             $actividad->save();
@@ -386,10 +393,14 @@ class EventoController extends Controller
     }
 
     public function eliminarActividad(Request $request){
-        Actividad::where('id', '=', $request->id)
-                    ->where('nombre_actividad', '=', $request->nombre_actividad)->delete();
+        Actividad::where('id', $request->id_actividad)
+                    ->where('nombre_actividad', $request->nombre_actividad)->delete();
         $evento = new Request(['id' => session('evento_id')]);
         return $this->verEvento($evento);
+    }
+
+    public function listaActividades(){
+        return Actividad::where('evento_id', '=', session('evento_id'))->get();
     }
 
     public function verParticipanteParaActividad(){

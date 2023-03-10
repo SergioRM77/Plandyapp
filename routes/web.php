@@ -56,6 +56,11 @@ Route::post('evento/aceptar-gasto/sin-presupuesto',[EventoController::class, 'ac
 Route::post('evento/elimianr-gasto/sin-presupuesto',[EventoController::class, 'eliminarGasto'])->name('gasto.evento.eliminar')->middleware('auth');
 Route::get('evento/pagado',[EventoController::class, 'pagadoEvento'])->name('pagado')->middleware('auth');
 
+Route::post('evento/crear-actividad', [EventoController::class, 'addActividad'])->name('add.actividad')->middleware('auth');
+Route::get('evento/editar-actividad/{id_actividad}', [EventoController::class, 'editarActividad'])->name('editar.actividad')->middleware('auth');
+Route::post('evento/actualizar-actividad/', [EventoController::class, 'actualizarActividad'])->name('update.actividad')->middleware('auth');
+Route::post('evento/eliminar-actividad', [EventoController::class, 'eliminarActividad'])->name('delete.actividad')->middleware('auth');
+
 
 Route::get('mensajeria',MensajeriaController::class)->name('mensajeria')->middleware('auth');
 Route::get('mensajeria/chat',[ChatController::class, 'chatPrivado'])->name('chat')->middleware('auth');

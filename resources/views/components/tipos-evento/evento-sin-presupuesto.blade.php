@@ -26,11 +26,8 @@
     </div>
 
     <h4 class="border border-black bg-violet-400 pl-2">Participantes</h4>
-    <div class="border border-black rounded-b-lg p-2 mx-2">
-        
-        
+    <div class="border border-black rounded-b-lg p-2 mx-2">        
         @foreach ($listaParticipantes as $item => $participante)
-            {{-- <span class="bg-yellow-300 rounded-full px-2">@-{{$participante->alias}} </span> --}}
             <a href="{{e(route('contactos.ver', $alias = $participante->alias))}}" class="bg-yellow-300 rounded-full px-2">@-{{$participante->alias}} </a>
         @endforeach
         @if ($isAdmin->is_admin_principal == true || $isAdmin->is_admin_secundario == true)
@@ -59,7 +56,7 @@
 
         <h4 class="flex border border-black bg-violet-400 pl-2">DESGLOSE DE GASTOS:</h4>
 
-        <h5 class="border border-black bg-blue-600 pl-2 mx-1">GASTO</h5>
+        <h5 class="border border-black bg-blue-600 pl-2 mx-1" id="gasto">GASTO</h5>
         <div class="border border-black rounded-b-lg mx-2">
             @if ($gastos != null)
                 @foreach ($gastos as $id => $gasto)
@@ -141,38 +138,54 @@
     </div>
     <div class="actividades">
         <h4 class="border border-black bg-violet-400 pl-2">ACTIVIDADES:</h4>
-
-        <div class="border border-black rounded-b-lg mx-2 px-2">
-            <div class="flex items-center">
-                <div class="flex-none border border-black rounded-full p-2 w-1 h-1 bg-green-600"></div>
+    <div class="border border-black rounded-b-lg mx-2 px-2">
+        @if (count($actividades)>0)
+            @foreach ($actividades as $item => $actividad)
+            <div class="">
+                <div class="flex-none border border-black rounded-full p-2 w-1 h-1  
+                {{date("Y-m-d H:i") > date("Y-m-d H:i", strtotime($actividad->fecha . $actividad->hora)) ? 'bg-red-600'
+                : ' bg-green-600'}}"></div>
                 <div class="border border-black rounded-md w-full m-2 px-2">
-                    <p><span class="font-semibold">Nombre de actividad: </span>$nombre</p>
-                    <p><span class="font-semibold">Coste individual: </span>$coste</p>
+                    <p><span class="font-semibold">Nombre de actividad: </span>{{$actividad->nombre_actividad}}</p>
+                    <p><span class="font-semibold">Coste individual: </span>{{$actividad->coste}}</p>
                     <p><span class="font-semibold">Participantes: </span>$listaParticipantes</p>
-                    <p><span class="font-semibold">Descripcion: </span>$descripcion</p>
-                    <label class="col-span-1 row-span-2 font-semibold">Fecha inicio:
-                        <input class="col-span-2 border border-blue-400 rounded-md my-4" type="date" name="fecha">
-                        @error('fecha') <span class=""> {{$message}}</span>@enderror</label>
-                    <label class="col-span-1 row-span-2 font-semibold">Hora inicio:
-                        <input class="col-span-2 border border-blue-400 rounded-md my-4" type="time" name="hora">
-                        @error('hora') <span class=""> {{$message}}</span>@enderror</label>
+                    <p><span class="font-semibold">Descripcion: </span>{{$actividad->descripcion_actividad}}</p>
+                    <p><span class="font-semibold">Fecha: </span>{{$actividad->fecha}}</p>
+                    <p><span class="font-semibold">Hora de inicio: </span>{{date("H:i",strtotime($actividad->hora))}}</p>
+                    @if ($isAdmin->is_admin_principal == true || $isAdmin->is_admin_secundario)
+                        <form action="{{e(route('delete.actividad'))}}" method="post">
+                            @csrf
+                            <input type="hidden" name="id_actividad" value="{{$actividad->id}}">
+                            <input type="hidden" name="nombre_actividad" value="{{$actividad->nombre_actividad}}">
+                            <button class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-red-500" type="submit">Eliminar Actividad</button>
+
+                        </form>
+                        <a href="{{e(route('editar.actividad', $actividad->id))}}" class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-green-500">Actualizar Actividad</a>
+
+                    @endif
+                    
+                    
                 </div>
+            @endforeach
+        @else
+            <p>No hay actividades</p>
+        @endif
+            
+            
                 
             </div>
                 
     </div>
     <div class="crear actividad mx-2 px-2">
         <h4 class="border border-black bg-violet-400 pl-2">CREAR ACTIVIDAD:</h4>
-        <form class="border border-black rounded-md w-full mx-2 px-2">
+        <form action="{{e(route('add.actividad'))}}" class="border border-black rounded-md w-full mx-2 px-2" method="post">
+            @csrf
             <div class="grid">
                 <label class="my-1 font-semibold">Nombre de actividad: 
-                    <input type="text" class="col-span-2 border border-blue-400 rounded-md my-2">
-                </label>
-                <label class="font-semibold">Nombre de actividad:
-                    <input type="text" class="col-span-2 border border-blue-400 rounded-md my-2">
+                    <input type="text" name="nombre_actividad" class="col-span-2 border border-blue-400 rounded-md my-2">
                 </label>
                 <label class="font-semibold">Coste individual: 
-                    <input type="text" class="col-span-2 border border-blue-400 rounded-md my-2">
+                    <input type="number" name="coste" class="col-span-2 border border-blue-400 rounded-md my-2" value="0" step="any">
                 </label>
                 <label class=" font-semibold">Fecha inicio:
                     <input class="border border-blue-400 rounded-md my-2" type="date" name="fecha">
@@ -180,12 +193,10 @@
                 <label class="font-semibold">Hora inicio:
                     <input class="border border-blue-400 rounded-md my-2" type="time" name="hora">
                     @error('hora') <span class=""> {{$message}}</span>@enderror</label>
-                <label class="font-semibold">Descripcion: 
-                    
-                </label>
+                <label class="font-semibold">Descripcion: </label>
             </div>
-            
-            <textarea name="" id="" cols="30" rows="3" class="col-span-2 border border-blue-400 rounded-md my-2"></textarea>
+            <textarea name="descripcion_actividad" id="" cols="30" rows="3" class="col-span-2 border border-blue-400 rounded-md my-2"></textarea>
+            <button class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-green-500" type="submit">Crear Actividad</button>
         </form>
     </div>
         
