@@ -8,10 +8,12 @@ use App\Models\Gasto;
 use App\Models\Gasto_de_presupuesto;
 use App\Models\User;
 use App\Models\User_evento;
+use App\Models\Usuario_participa_actividad;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -109,7 +111,8 @@ class EventoController extends Controller
         $listaParticipantes = DB::select("SELECT evento_id, user_id, is_admin_principal, is_admin_secundario, users.alias FROM users_eventos 
                                         LEFT JOIN users   ON users.id = users_eventos.user_id WHERE evento_id = ?", [$request->id]);
         $actividades = $this->listaActividades();
-        return view('vistasTiposEvento.eventoSinPresuVista', compact('evento', 'isAdmin', 'gastos', 'pagos', 'listaParticipantes', 'actividades'));
+        $listaParticipantesActividades = $this->participantesEnActividades();
+        return view('vistasTiposEvento.eventoSinPresuVista', compact('evento', 'isAdmin', 'gastos', 'pagos', 'listaParticipantes', 'actividades', 'listaParticipantesActividades'));
     }
 
     /**
@@ -316,11 +319,11 @@ class EventoController extends Controller
 
     public function eliminarParticipanteAdminSecun(Request $request){
         try {
-            $validar = $request->validate([
+            $request->validate([
                 "evento_id" => "required|numeric",
                 "user_id" => "required|numeric"
             ]);
-            $participante = User_evento::where('evento_id', $request->evento_id)
+            User_evento::where('evento_id', $request->evento_id)
                             ->where('user_id', $request->user_id)->where('is_admin_secundario', '=', true)
                             ->update(['is_admin_secundario' => false]);
             
@@ -395,6 +398,7 @@ class EventoController extends Controller
     public function eliminarActividad(Request $request){
         Actividad::where('id', $request->id_actividad)
                     ->where('nombre_actividad', $request->nombre_actividad)->delete();
+                    session()->flash('status', 'Se ha eliminado actividad');
         $evento = new Request(['id' => session('evento_id')]);
         return $this->verEvento($evento);
     }
@@ -403,17 +407,48 @@ class EventoController extends Controller
         return Actividad::where('evento_id', '=', session('evento_id'))->get();
     }
 
-    public function verParticipanteParaActividad(){
 
+    public function unirseActividad(Request $request){
+        try {
+            $request->validate([
+                'actividad_id' => 'required|numeric'
+            ]);
+            $participante = new Usuario_participa_actividad();
+            $participante->actividad_id = $request->input('actividad_id');
+            $participante->participante_id = session('id');
+            $participante->save();
+            session()->flash('status', 'Añadido a Actividad');
+        } catch (Exception $th) {
+            session()->flash('status', 'No se ha podido añadir a Actividad');
+        }finally{
+            $evento = new Request(['id' => session('evento_id')]);
+            return $this->verEvento($evento);
+        }
     }
 
-    public function addParticipanteActividad(Request $request){
-
+    public function salirDeActividad(Request $request){
+        try {
+            $request->validate([
+                'actividad_id' => 'required|numeric'
+            ]);
+            Usuario_participa_actividad::where('actividad_id', '=', $request->actividad_id)
+                                        ->where('participante_id', '=', session('id'))->delete();
+            session()->flash('status', 'Has salido de una Actividad');
+        } catch (Exception $e) {
+            session()->flash('status', 'No ha sido posible salir de una Actividad');
+        }finally{
+            $evento = new Request(['id' => session('evento_id')]);
+            return $this->verEvento($evento);
+        }
+    }
+    public function participantesEnActividades(){
+        return DB::table('usuario_participa_actividad')
+                    ->join('actividades', 'usuario_participa_actividad.actividad_id', '=', 'actividades.id')
+                    ->join('users', 'users.id', '=', 'usuario_participa_actividad.participante_id')
+                    ->select('usuario_participa_actividad.actividad_id', 'usuario_participa_actividad.participante_id', 'users.alias')
+                    ->where('actividades.evento_id', '=', session('evento_id'))->get();
     }
 
-    public function eliminarParticipanteActividad(Request $request){
-
-    }
 /*
     public function addGastoPresupuesto(Request $request){
 

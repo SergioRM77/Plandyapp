@@ -3,5 +3,5 @@
     <x-tipos-evento.evento-sin-presupuesto 
         :evento="$evento" :isAdmin="$isAdmin" :gastos="$gastos"
         :pagos="$pagos" :listaParticipantes="$listaParticipantes"
-        :actividades="$actividades"/>
+        :actividades="$actividades" :listaParticipantesActividades="$listaParticipantesActividades"/>
 </x-layouts.base>

@@ -1,3 +1,13 @@
+@php 
+    $total = 0;
+        foreach ($pagos as $key => $pago) {
+            if ($pago->alias == session('alias')) {
+                session(['pagado' => $pago->pagado]);
+            }
+        $total += $pago->pagado;
+        }
+        session(['mediaPagos' => $total/count($pagos), 'total' => $total]);
+@endphp
 <article>
     <div class="flex justify-between border border-black bg-lime-50 p-3">
         <div>
@@ -6,8 +16,8 @@
                     <p>{{session('error_datos_evento')}}</p>
                 @endif
             <p><span class="font-semibold italic">Nombre del Evento:</span> {{$evento->nombre_evento}}</p>
-            <p><span class="font-semibold italic">Fecha inicio: </span>{{$evento->fecha_inicio}}
-                <span class="font-semibold italic"> hata:</span> {{$evento->fecha_fin}}</p>
+            <p><span class="font-semibold italic">Fecha inicio: </span>{{date("d-m-Y", strtotime($evento->fecha_inicio))}}
+                <span class="font-semibold italic"> hata:</span> {{$evento->fecha_fin == null ? '' : date("d-m-Y", strtotime($evento->fecha_fin))}}</p>
             <p><span class="font-semibold italic">Tags:</span> {{$evento->tags}}</p>
             <p><span class="font-semibold italic">Descripcion:</span> {{$evento->descripcion}}</p>
             @if ($isAdmin->is_admin_principal == true)
@@ -15,7 +25,6 @@
                     @csrf
                     <input type="hidden" name="id" value="{{$evento->id}}">
                     <button class="border border-black rounded-md bg-green-500 py-1 p-2 my-2 mx-2" type="submit">Editar</button>
-
                 </form>
             @endif
             
@@ -68,7 +77,7 @@
                                 <div class="px-8">
                                     <p><span class="font-semibold">Gasto de: </span><span class="bg-yellow-300 rounded-full px-2">@-{{$gasto->alias}}</span></p>
                                     <p><span class="font-semibold">Coste: </span> {{$gasto->coste}}</p>
-                                    <p><span class="font-semibold">Fecha: </span>{{$gasto->created_at}}</p>
+                                    <p><span class="font-semibold">Fecha: </span>{{date("d-m-Y H:i", strtotime($gasto->created_at))}}</p>
                                     <p><span class="font-semibold">Descripcion del gasto:</span> {{$gasto->descripcion}}</p>
                                 </div>
                                 <div class="flex md:shrink-0 items-center p-2">
@@ -141,17 +150,21 @@
     <div class="border border-black rounded-b-lg mx-2 px-2">
         @if (count($actividades)>0)
             @foreach ($actividades as $item => $actividad)
-            <div class="">
                 <div class="flex-none border border-black rounded-full p-2 w-1 h-1  
                 {{date("Y-m-d H:i") > date("Y-m-d H:i", strtotime($actividad->fecha . $actividad->hora)) ? 'bg-red-600'
                 : ' bg-green-600'}}"></div>
                 <div class="border border-black rounded-md w-full m-2 px-2">
                     <p><span class="font-semibold">Nombre de actividad: </span>{{$actividad->nombre_actividad}}</p>
                     <p><span class="font-semibold">Coste individual: </span>{{$actividad->coste}}</p>
-                    <p><span class="font-semibold">Participantes: </span>$listaParticipantes</p>
+                    <p><span class="font-semibold">Participantes: </span>
+                        @foreach ($listaParticipantesActividades as $key => $participanteActividad)
+                        @if ($participanteActividad->actividad_id == $actividad->id)
+                            <span class="bg-yellow-300 rounded-full px-2">@-{{$participanteActividad->alias}} </span>
+                        @endif
+                        @endforeach
+                    </p>
+                    <p><span class="font-semibold">Fecha y hora de inicio: </span>{{$actividad->fecha == null ? '--/--/-- --:--': date("d-m-Y H:i", strtotime($actividad->fecha . $actividad->hora))}}</p>
                     <p><span class="font-semibold">Descripcion: </span>{{$actividad->descripcion_actividad}}</p>
-                    <p><span class="font-semibold">Fecha: </span>{{$actividad->fecha}}</p>
-                    <p><span class="font-semibold">Hora de inicio: </span>{{date("H:i",strtotime($actividad->hora))}}</p>
                     @if ($isAdmin->is_admin_principal == true || $isAdmin->is_admin_secundario)
                         <form action="{{e(route('delete.actividad'))}}" method="post">
                             @csrf
@@ -161,19 +174,32 @@
 
                         </form>
                         <a href="{{e(route('editar.actividad', $actividad->id))}}" class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-green-500">Actualizar Actividad</a>
-
                     @endif
-                    
-                    
+
+                    @foreach ($listaParticipantesActividades as $key => $participanteActividad)
+                        @if ($participanteActividad->actividad_id == $actividad->id && $participanteActividad->participante_id == session('id'))
+                            <form action="{{e(route('delete.participante.actividad'))}}" method="post">
+                                @csrf
+                                <input type="hidden" name="actividad_id" value="{{$actividad->id}}">
+                                <button class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-yellow-500" type="submit">Salir de Actividad</button>
+                            </form>
+                            @break
+                        @endif
+                        @if (isset($listaParticipantesActividades[$key+1]) == false && count($listaParticipantesActividades)  == $key+1)
+                            <form action="{{e(route('add.participante.actividad'))}}" method="post">
+                                @csrf
+                                <input type="hidden" name="actividad_id" value="{{$actividad->id}}">
+                                <button class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-blue-500" type="submit">Unirse a Actividad</button>
+                            </form>
+                        @endif
+                        @endforeach
+
                 </div>
             @endforeach
+
         @else
             <p>No hay actividades</p>
         @endif
-            
-            
-                
-            </div>
                 
     </div>
     <div class="crear actividad mx-2 px-2">
@@ -204,16 +230,10 @@
     
     <h4 class="border border-black bg-violet-400 pl-2">ESTADO DE CUENTAS:</h4>
     <div class="border border-black rounded-b-lg mx-2 px-2">
-        @php 
-        $total = 0;
-            foreach ($pagos as $key => $pago) {
-                
-            $total += $pago->pagado;
-            }
-        @endphp
+        
         <p>
             @foreach ($pagos as $item => $pago)
-                <span class="bg-yellow-300 rounded-full px-2">@-{{$pago->alias}} </span class="text-sky-600"><span>({{$pago->pagado}}/{{$total}}€) </span>
+                <span class="bg-yellow-300 rounded-full px-2">@-{{$pago->alias}} </span class="text-sky-600"><span>({{$pago->pagado}}/{{$total/count($pagos)}}€) </span>
             @endforeach
         </p>
         
@@ -229,6 +249,6 @@
     
 </article>
 <article class="my-10">
-    <h4 class="border border-black text-center bg-green-500">Has entregado: $pagado/APAGAR€</h4>
-    <h4 class="border border-black text-center bg-green-800">Pago total del Evento: $pagadoTodos/APAGARTODOS€</h4>
+    <h4 class="border border-black text-center bg-green-500 text-xl">Has entregado: {{session('pagado')}}€/{{session('mediaPagos')}}€</h4>
+    <h4 class="border border-black text-center bg-green-800 text-neutral-100 text-xl">Pago total del Evento: {{session('total')}}€</h4>
 </article>
