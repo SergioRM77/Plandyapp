@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use App\Http\Controllers\ActividadesController;
+use App\Http\Controllers\GastosController;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -25,23 +27,23 @@ class EventoController extends Controller
         return view('inicioVista');
     }
 
-    public function eventoConPresu()
-    {
+    // public function eventoConPresu()
+    // {
         
-        return view('vistasTiposEvento.eventoConPresuVista');
-    }
+    //     return view('vistasTiposEvento.eventoConPresuVista');
+    // }
 
-    public function eventoSinPresu()
-    {
+    // public function eventoSinPresu()
+    // {
         
-        return view('vistasTiposEvento.eventoSinPresuVista');
-    }
+    //     return view('vistasTiposEvento.eventoSinPresuVista');
+    // }
 
-    public function eventoFinalizado()
-    {
+    // public function eventoFinalizado()
+    // {
         
-        return view('vistasTiposEvento.eventoFinalizadoVista');
-    }
+    //     return view('vistasTiposEvento.eventoFinalizadoVista');
+    // }
 
     /**FUNCIONALIDADES PARA CREAR Y MODIFICAR EVENTOS
      * FALTA MENSAJES DE SESION **/
@@ -100,19 +102,25 @@ class EventoController extends Controller
      * Muestra un evento en concreto, solo texto plano
      */
     public function verEvento(Request $request){
-        $eventos = Evento::whereId($request->id)->get();
+        $evento = Evento::whereId($request->id)->first();
         session(["evento_id" => $request->id]);
-        $evento = $eventos[0];
-        $isAdmins = User_evento::select('is_admin_principal','is_admin_secundario')->where('evento_id',$evento->id)->where('user_id', session('id'))->get();
-        $isAdmin = $isAdmins[0];
+        $isAdmin = User_evento::select('is_admin_principal','is_admin_secundario')->where('evento_id',$evento->id)->where('user_id', session('id'))->first();
         $gastos = DB::select("SELECT gastos.id, gastos.evento_id, gastos.usuario_id, gastos.descripcion, gastos.coste, gastos.foto, gastos.created_at,  gastos.is_aceptado, users.alias as alias FROM gastos 
                                 LEFT JOIN users ON gastos.usuario_id = users.id  WHERE gastos.evento_id = ?",[$request->id]);
-        $pagos = $this->pagadoEvento($request->id);
+        $pagos = (new GastosController)->pagadoEvento($request->id);
         $listaParticipantes = DB::select("SELECT evento_id, user_id, is_admin_principal, is_admin_secundario, users.alias FROM users_eventos 
                                         LEFT JOIN users   ON users.id = users_eventos.user_id WHERE evento_id = ?", [$request->id]);
-        $actividades = $this->listaActividades();
-        $listaParticipantesActividades = $this->participantesEnActividades();
+        $actividades = (new ActividadesController)->listaActividades();
+        $listaParticipantesActividades = (new ActividadesController)->participantesEnActividades();
         return view('vistasTiposEvento.eventoSinPresuVista', compact('evento', 'isAdmin', 'gastos', 'pagos', 'listaParticipantes', 'actividades', 'listaParticipantesActividades'));
+    }
+
+    public function verEventoGet($evento_id){
+        if ($evento_id == session('evento_id')) {
+            $evento = new Request(['id' => session('evento_id')]);
+            return $this->verEvento($evento);
+        }
+            return 'error';
     }
 
     /**
@@ -147,74 +155,6 @@ class EventoController extends Controller
                             'Los campos Nombre Evento, Descripción y Fecha inicio son obligatorios' : $e->getMessage());
             return $this->editarEventoSinPresu($request);
         }
-    }
-
-    //PRESENTAR ACEPTAR Y ELIMINAR GASTOS
-
-    /**
-     * Presentar un nuevo gasto
-     */
-    public function addGasto(Request $request){
-        try {
-            $this->validarGastos($request);
-            $nuevoGasto = new Gasto();
-            $nuevoGasto->evento_id = $request->evento_id;
-            $nuevoGasto->usuario_id = session('id');
-            $nuevoGasto->coste = $request->coste;
-            $nuevoGasto->descripcion = $request->descripcion;
-            $nuevoGasto->save();
-            
-        } catch (Exception $e) {
-            session()->flash('error_gasto',"El campo gasto debe ser mayor a 1 y descripción es obligatorio");
-            
-        }finally{
-            $request = new Request(['id' => $request->evento_id]);
-            return $this->verEvento($request);
-
-        }
-        
-    }
-
-    /**
-     * Validar datos de un gasto
-     */
-    private function validarGastos(Request $request){        
-        return $request->validate([
-            'evento_id' => 'required',
-            'descripcion' => 'required|max:255',
-            'coste' => 'required|numeric|min:1',
-            'foto' => '',
-        ]);
-        
-    }
-
-    /**
-     * Aceptar Gasto para hacerlo visible para usuarios no Administradores
-     */
-    public function aceptarGasto(Request $request){
-        DB::update("UPDATE gastos set is_aceptado = true WHERE gastos.id = ?", [$request->gasto_id]);
-        $request = new Request(['id' => $request->evento_id]);
-        return $this->verEvento($request);
-    }
-
-    /**
-     * Eliminar gasto por ID de gasto
-     */
-    public function eliminarGasto(Request $request){
-        DB::delete("DELETE FROM gastos WHERE evento_id = ? AND id = ?",[$request->evento_id, $request->gasto_id]);
-        $request = new Request(['id' => $request->evento_id]);
-        return $this->verEvento($request);
-    }
-
-    /**
-     * Todo lo pagado en evento concreto por el id
-     */
-    public function pagadoEvento($id){
-        $pagos = DB::select("SELECT sum(gastos.coste) pagado, usuario_id, users.alias FROM gastos 
-                            RIGHT JOIN users ON users.id = gastos.usuario_id WHERE evento_id = ? AND is_aceptado = true GROUP BY usuario_id", [$id]);
-        // $pagos = DB::select("SELECT sum(gastos.coste) pagado, usuario_id, users.alias FROM gastos 
-        //                     RIGHT JOIN users ON users.id = gastos.usuario_id WHERE evento_id = ? AND is_aceptado = true GROUP BY usuario_id", [$id]);
-        return $pagos;
     }
 
     //AÑADIR PARTICIPANTES Y ADMINISTRADORES SECUNDARIOS
@@ -334,119 +274,6 @@ class EventoController extends Controller
             $request = new Request(['id' => session('evento_id')]);
             return $this->verEvento($request);
         }
-    }
-
-    public function addActividad(Request $request){
-        // return dump($request);
-        try {
-            $validar = $request->validate([
-                'nombre_actividad' => 'required|max:100',
-                'coste' => 'required|numeric|min:1|max:999999',
-                'descripcion_actividad' => 'nullable|max:255',
-                'fecha' => 'nullable|date',
-                'hora' => 'nullable|date_format:H:i'
-            ]);
-
-            $actividad = new Actividad();
-            $actividad->evento_id = session('evento_id');
-            $actividad->nombre_actividad = $request->input('nombre_actividad');
-            $actividad->coste = $request->input('coste');
-            $actividad->descripcion_actividad = $request->input('descripcion_actividad');
-            $actividad->fecha = $request->input('fecha');
-            $actividad->hora = $request->input('hora');
-            $actividad->save();
-            session()->flash('status', 'Se ha añadido una nueva actividad');
-        } catch (Exception $e) {
-            session()->flash('status', $e->getMessage());
-            
-        }finally{
-            $evento = new Request(['id' => session('evento_id')]);
-            return $this->verEvento($evento);
-        }
-    }
-
-    public function editarActividad(Request $request){
-        return view('vistasTiposEvento.editarActividadVista');
-    }
-    public function actualizarActividad(Request $request){
-        try {
-            $validar = $request->validate([
-                'nombre_actividad' => 'required|max:100',
-                'coste' => 'required|numeric|min:1|max:99999',
-                'descripcion_actividad' => 'nullable|max:255',
-                'fecha' => 'nullable',
-                'hora' => 'nullable'
-            ]);
-
-            $actividad = Actividad::whereId($request->id)->first();
-            $actividad->nombre_actividad = $request->input('nombre_actividad');
-            $actividad->coste = $request->input('coste');
-            $actividad->descripcion_actividad = $request->input('descripcion_actividad');
-            $actividad->fecha = $request->input('fecha');
-            $actividad->hora = $request->input('hora');
-            $actividad->save();
-            session()->flash('status', 'Se ha actualizado una actividad');
-        } catch (Exception $e) {
-            session()->flash('status', 'No se ha podido actualizar actividad');
-            
-        }finally{
-            $evento = new Request(['id' => session('evento_id')]);
-            return $this->verEvento($evento);
-        }
-    }
-
-    public function eliminarActividad(Request $request){
-        Actividad::where('id', $request->id_actividad)
-                    ->where('nombre_actividad', $request->nombre_actividad)->delete();
-                    session()->flash('status', 'Se ha eliminado actividad');
-        $evento = new Request(['id' => session('evento_id')]);
-        return $this->verEvento($evento);
-    }
-
-    public function listaActividades(){
-        return Actividad::where('evento_id', '=', session('evento_id'))->get();
-    }
-
-
-    public function unirseActividad(Request $request){
-        try {
-            $request->validate([
-                'actividad_id' => 'required|numeric'
-            ]);
-            $participante = new Usuario_participa_actividad();
-            $participante->actividad_id = $request->input('actividad_id');
-            $participante->participante_id = session('id');
-            $participante->save();
-            session()->flash('status', 'Añadido a Actividad');
-        } catch (Exception $th) {
-            session()->flash('status', 'No se ha podido añadir a Actividad');
-        }finally{
-            $evento = new Request(['id' => session('evento_id')]);
-            return $this->verEvento($evento);
-        }
-    }
-
-    public function salirDeActividad(Request $request){
-        try {
-            $request->validate([
-                'actividad_id' => 'required|numeric'
-            ]);
-            Usuario_participa_actividad::where('actividad_id', '=', $request->actividad_id)
-                                        ->where('participante_id', '=', session('id'))->delete();
-            session()->flash('status', 'Has salido de una Actividad');
-        } catch (Exception $e) {
-            session()->flash('status', 'No ha sido posible salir de una Actividad');
-        }finally{
-            $evento = new Request(['id' => session('evento_id')]);
-            return $this->verEvento($evento);
-        }
-    }
-    public function participantesEnActividades(){
-        return DB::table('usuario_participa_actividad')
-                    ->join('actividades', 'usuario_participa_actividad.actividad_id', '=', 'actividades.id')
-                    ->join('users', 'users.id', '=', 'usuario_participa_actividad.participante_id')
-                    ->select('usuario_participa_actividad.actividad_id', 'usuario_participa_actividad.participante_id', 'users.alias')
-                    ->where('actividades.evento_id', '=', session('evento_id'))->get();
     }
 
 /*

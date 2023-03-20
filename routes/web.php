@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ActividadesController;
+use App\Http\Controllers\GastosController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AjustesUsuarioController;
 use App\Http\Controllers\ContactosController;
@@ -40,6 +42,7 @@ Route::post('evento/crear/sin-presupuesto',[EventoController::class, 'saveEvento
 Route::post('evento/editar/sin-presupuesto',[EventoController::class, 'editarEventoSinPresu'])->name('evento.sinpresu.editar')->middleware('auth');
 Route::patch('evento/actualizar/sin-presupuesto',[EventoController::class, 'updateEventoSinPresu'])->name('evento.sinpresu.update')->middleware('auth');
 Route::post('evento/ver',[EventoController::class, 'verEvento'])->name('evento.ver')->middleware('auth');
+Route::get('evento/ver/{id}',[EventoController::class, 'verEventoGet'])->name('evento.ver.get')->middleware('auth');
 Route::post('evento/contactos-para-evento/',[EventoController::class, 'verContactosParaEvento'])->name('evento.contactos.ver')->middleware('auth');
 Route::post('evento/contactos-add/',[EventoController::class, 'addParticipante'])->name('evento.contactos.add')->middleware('auth');
 Route::post('evento/contactos-ver/',[EventoController::class, 'verContactosDeEvento'])->name('evento.contactos.ver')->middleware('auth');
@@ -50,18 +53,18 @@ Route::post('evento/contactos-delete-admin/',[EventoController::class, 'eliminar
 // Route::get('contacto/paraevento',[EventoController::class, 'verContactosParaEvento'])->name('evento.contacto')->middleware('auth');
 
 
-Route::post('evento/presentar-gasto/sin-presupuesto',[EventoController::class, 'addGasto'])->name('evento.add.gasto')->middleware('auth');
-Route::get('evento/presentar-gasto/sin-presupuesto',[EventoController::class, 'addGasto'])->name('evento.add.gasto')->middleware('auth');
-Route::post('evento/aceptar-gasto/sin-presupuesto',[EventoController::class, 'aceptarGasto'])->name('gasto.evento.aceptar')->middleware('auth');
-Route::post('evento/elimianr-gasto/sin-presupuesto',[EventoController::class, 'eliminarGasto'])->name('gasto.evento.eliminar')->middleware('auth');
-Route::get('evento/pagado',[EventoController::class, 'pagadoEvento'])->name('pagado')->middleware('auth');
+Route::post('evento/presentar-gasto/sin-presupuesto',[GastosController::class, 'addGasto'])->name('evento.add.gasto')->middleware('auth');
+Route::get('evento/presentar-gasto/sin-presupuesto',[GastosController::class, 'addGasto'])->name('evento.add.gasto')->middleware('auth');
+Route::post('evento/aceptar-gasto/sin-presupuesto',[GastosController::class, 'aceptarGasto'])->name('gasto.evento.aceptar')->middleware('auth');
+Route::post('evento/elimianr-gasto/sin-presupuesto',[GastosController::class, 'eliminarGasto'])->name('gasto.evento.eliminar')->middleware('auth');
+Route::get('evento/pagado',[GastosController::class, 'pagadoEvento'])->name('pagado')->middleware('auth');
 
-Route::post('evento/crear-actividad', [EventoController::class, 'addActividad'])->name('add.actividad')->middleware('auth');
-Route::get('evento/editar-actividad/{id_actividad}', [EventoController::class, 'editarActividad'])->name('editar.actividad')->middleware('auth');
-Route::post('evento/actualizar-actividad/', [EventoController::class, 'actualizarActividad'])->name('update.actividad')->middleware('auth');
-Route::post('evento/eliminar-actividad', [EventoController::class, 'eliminarActividad'])->name('delete.actividad')->middleware('auth');
-Route::post('evento/add-participante-actividad',  [EventoController::class, 'unirseActividad'])->name('add.participante.actividad')->middleware('auth');
-Route::post('evento/eliminar-participante-actividad',  [EventoController::class, 'salirDeActividad'])->name('delete.participante.actividad')->middleware('auth');
+Route::post('evento/crear-actividad', [ActividadesController::class, 'addActividad'])->name('add.actividad')->middleware('auth');
+Route::post('evento/editar-actividad', [ActividadesController::class, 'editarActividad'])->name('editar.actividad')->middleware('auth');
+Route::post('evento/actualizar-actividad/', [ActividadesController::class, 'actualizarActividad'])->name('update.actividad')->middleware('auth');
+Route::post('evento/eliminar-actividad', [ActividadesController::class, 'eliminarActividad'])->name('delete.actividad')->middleware('auth');
+Route::post('evento/add-participante-actividad',  [ActividadesController::class, 'unirseActividad'])->name('add.participante.actividad')->middleware('auth');
+Route::post('evento/eliminar-participante-actividad',  [ActividadesController::class, 'salirDeActividad'])->name('delete.participante.actividad')->middleware('auth');
 
 Route::get('mensajeria',MensajeriaController::class)->name('mensajeria')->middleware('auth');
 Route::get('mensajeria/chat',[ChatController::class, 'chatPrivado'])->name('chat')->middleware('auth');

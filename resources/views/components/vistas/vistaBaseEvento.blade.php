@@ -2,7 +2,7 @@
     @csrf
     
     <button type="submit">
-        <input type="hidden" name="id" value="{{$evento->id}}">
+        <input type="hidden" name="id" value="{{$evento['id']}}">
         <div class="max-w-md mx-auto bg-slate-200 rounded-xl shadow-md md:max-w-7xl overflow-auto">
             <div class="md:flex">
                 <div class="shrink">
@@ -10,14 +10,14 @@
                 </div>
                 <div class="p-8 lg:w-full">
                     <div class="flex flex-wrap items-baseline justify-between">
-                        <h4 class="text-xl text-indigo-500">{{$evento->nombre_evento}}</h4>
-                        <p class="">Fecha: ({{$evento->fecha_inicio}} a {{$evento->fecha_fin}})</p>
+                        <h4 class="text-xl text-indigo-500">{{$evento['nombre_evento']}}</h4>
+                        <p class="">Fecha: ({{$evento['fecha_inicio']}} a {{$evento['fecha_fin'] == null ? '--/--/--' : $evento['fecha_fin']}})</p>
                     </div>
 
                     <div class="flex flex-wrap items-baseline justify-between">
-                        <p>$Usuarios: <span>5</span> <span>(Admin: $@-Admin)</span></p>
-                        <p>Actividades:<span>5</span></p>
-                        <p>$pagado/$APAGAR</p>
+                        <p>Participantes: <span>{{$evento['numParticipantes']}}</span> <span>(Admin: @-{{$evento['admin']}})</span></p>
+                        <p>Actividades: <span>{{$evento['numActividades']}}</span></p>
+                        <p>Pagado: {{$evento['pagado']}}</p>
                     </div>
                 </div>
             </div>
