@@ -17,7 +17,7 @@
                     <div class="flex flex-wrap items-baseline justify-between">
                         <p>Participantes: <span>{{$evento['numParticipantes']}}</span> <span>(Admin: @-{{$evento['admin']}})</span></p>
                         <p>Actividades: <span>{{$evento['numActividades']}}</span></p>
-                        <p>Pagado: {{$evento['pagado']}}</p>
+                        <p>Pago TOTAL: {{$evento['pagado']}}€</p>
                     </div>
                 </div>
             </div>

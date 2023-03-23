@@ -107,12 +107,13 @@ class EventoController extends Controller
         $isAdmin = User_evento::select('is_admin_principal','is_admin_secundario')->where('evento_id',$evento->id)->where('user_id', session('id'))->first();
         $gastos = DB::select("SELECT gastos.id, gastos.evento_id, gastos.usuario_id, gastos.descripcion, gastos.coste, gastos.foto, gastos.created_at,  gastos.is_aceptado, users.alias as alias FROM gastos 
                                 LEFT JOIN users ON gastos.usuario_id = users.id  WHERE gastos.evento_id = ?",[$request->id]);
-        $pagos = (new GastosController)->pagadoEvento($request->id);
+        $listapagos = (new GastosController)->pagadoEvento($request->id);
+        $deben = (new GastosController)->usuarioDebeUsuario($request->id);
         $listaParticipantes = DB::select("SELECT evento_id, user_id, is_admin_principal, is_admin_secundario, users.alias FROM users_eventos 
                                         LEFT JOIN users   ON users.id = users_eventos.user_id WHERE evento_id = ?", [$request->id]);
         $actividades = (new ActividadesController)->listaActividades();
         $listaParticipantesActividades = (new ActividadesController)->participantesEnActividades();
-        return view('vistasTiposEvento.eventoSinPresuVista', compact('evento', 'isAdmin', 'gastos', 'pagos', 'listaParticipantes', 'actividades', 'listaParticipantesActividades'));
+        return view('vistasTiposEvento.eventoSinPresuVista', compact('evento', 'isAdmin', 'gastos', 'listapagos', 'deben', 'listaParticipantes', 'actividades', 'listaParticipantesActividades'));
     }
 
     public function verEventoGet($evento_id){

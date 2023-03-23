@@ -58,6 +58,9 @@ Route::get('evento/presentar-gasto/sin-presupuesto',[GastosController::class, 'a
 Route::post('evento/aceptar-gasto/sin-presupuesto',[GastosController::class, 'aceptarGasto'])->name('gasto.evento.aceptar')->middleware('auth');
 Route::post('evento/elimianr-gasto/sin-presupuesto',[GastosController::class, 'eliminarGasto'])->name('gasto.evento.eliminar')->middleware('auth');
 Route::get('evento/pagado',[GastosController::class, 'pagadoEvento'])->name('pagado')->middleware('auth');
+Route::get('evento/cuentas/{id}',[GastosController::class, 'usuarioDebeUsuario'])->name('cuentas')->middleware('auth');
+Route::post('evento/ventana-pago-a-usuario',[GastosController::class, 'vistaPagoUsuario'])->name('gasto.vista.pago.usuario')->middleware('auth');
+Route::post('evento/pago-a-usuario',[GastosController::class, 'pagarUsuario'])->name('gasto.pago.usuario')->middleware('auth');
 
 Route::post('evento/crear-actividad', [ActividadesController::class, 'addActividad'])->name('add.actividad')->middleware('auth');
 Route::post('evento/editar-actividad', [ActividadesController::class, 'editarActividad'])->name('editar.actividad')->middleware('auth');
