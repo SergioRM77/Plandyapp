@@ -5,6 +5,9 @@ module.exports = {
     "./resources/**/*.js",
     "./resources/**/*.vue",
   ],
+  daisyui: {
+    themes: [false],
+  },
   theme: {
     container: {
       center: true,
@@ -14,5 +17,5 @@ module.exports = {
 
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 }

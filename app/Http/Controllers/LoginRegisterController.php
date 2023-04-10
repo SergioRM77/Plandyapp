@@ -8,6 +8,7 @@ use Illuminate\Validation\Validate;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Http\Controllers\ImagenesController;
 
 class LoginRegisterController extends Controller
 {
@@ -24,7 +25,7 @@ class LoginRegisterController extends Controller
             'intereses' => 'max:200',
             'password' => 'min:4|required_with:confirm-password|same:confirm-password',
             'confirm-password' => 'min:4|required',
-            'foto' => ''
+            'foto' => 'nullable|image|max:2048'
         ]);
 
         $usuario = new User();
@@ -36,10 +37,11 @@ class LoginRegisterController extends Controller
         $usuario->localidad = $request->localidad;
         $usuario->codigo_postal = $request->codigo_postal;
         $usuario->intereses = $request->intereses;
+        if($request->foto != null) $usuario->foto = ImagenesController::guardarImagen($request);
         $usuario->password = bcrypt($request->password);
         $usuario->save();
         $miID = $usuario->id;
-        session(['alias' => $request->alias,'id' => $miID]);
+        session(['alias' => $request->alias,'id' => $miID,'foto_perfil' => $usuario->foto]);
         session()->flash('status', 'Usuario creado, Bienvenido a PlandyApp');
         Auth::login($usuario);
         return view('inicioVista');
@@ -53,8 +55,8 @@ class LoginRegisterController extends Controller
         if (!Auth::attempt($credentials)) {
             return redirect()->intended('login')->with('status', 'Usuario o Contraseña no encontrados');
         }
-        $miID = User::whereAlias($request->alias)->get('id');
-        session(['alias' => $request->alias,'id' => $miID[0]->id]);
+        $miusuario = User::whereAlias($request->alias)->first();
+        session(['alias' => $request->alias,'id' => $miusuario->id, 'foto_perfil' => $miusuario->foto]);
         $request->session()->regenerate();
         return redirect()->intended('inicio')->with('status', 'Te has logueado');
     }

@@ -15,7 +15,9 @@ class Evento extends Model
         'fecha_inicio',
         'fecha_fin',
         'tags',
-        'foto'
+        'foto',
+        'is_aceptado',
+        'is_visible'
     ];
 
     /**

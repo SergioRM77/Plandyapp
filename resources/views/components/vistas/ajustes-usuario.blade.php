@@ -1,8 +1,9 @@
-<form action="{{route('updateUser')}}" method="POST" class="grid grid-cols-2">
+<form action="{{route('updateUser')}}" method="POST" class="grid grid-cols-2" enctype="multipart/form-data">
     @csrf @method('PATCH')
     <label class="col-span-1 my-1" for="foto">Foto</label>
-    <img class="col-span-1 h-24 rounded-full"  src="https://img.freepik.com/fotos-premium/paisaje-verano-relajese-paradise-beach-blue-sea-clean-sand-espacio-copiar_638259-177.jpg?w=2000" alt="foto perfil">
-    <input class=" col-start-2 col-span-1" type="file" name="foto">
+    <img class="col-span-1 h-24 rounded-full"  src="{{session('foto_perfil') != null ? asset(session('foto_perfil')) :
+        'https://img2.freepng.es/20190221/gw/kisspng-computer-icons-user-profile-clip-art-portable-netw-c-svg-png-icon-free-download-389-86-onlineweb-5c6f7efd8fecb7.6156919015508108775895.jpg'}}" name="foto" alt="foto perfil">
+    <input class=" col-start-2 col-span-1" type="file" name="foto" accept="image/*">
     <label class="col-span-1 my-1" for="nombre_completo">Nombre completo *:</label>
     <input class="border-2 border-black rounded-md col-span-1 my-1" class="border-2 border-black rounded-md" type="text" name="nombre_completo" value="{{$show('nombre_completo')}}" required>@error('nombre_completo') <span> {{$message}}</span> @enderror
     <label class="col-span-1 my-1" for="alias">Alias *:</label>

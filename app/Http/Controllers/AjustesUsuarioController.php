@@ -8,6 +8,8 @@ use Illuminate\Validation\Validate;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Http\Controllers\ImagenesController;
+use App\Http\Controllers\InicioController;
 
 class AjustesUsuarioController extends Controller
 {
@@ -20,7 +22,7 @@ class AjustesUsuarioController extends Controller
 
     public function update(Request $request){
         if($this->validateUser($request)){
-            $usuario = User::whereAlias(session()->get('alias'))->get()->first();
+            $usuario = User::whereAlias(session()->get('alias'))->first();
 
             $usuario->nombre_completo = $request->input('nombre_completo');
             $usuario->telefono = $request->input('telefono');
@@ -28,12 +30,13 @@ class AjustesUsuarioController extends Controller
             $usuario->localidad = $request->input('localidad');
             $usuario->codigo_postal = $request->input('codigo_postal');
             $usuario->intereses = $request->input('intereses');
+            if($request->foto != null) $usuario->foto = ImagenesController::guardarImagen($request);
             $usuario->password = bcrypt($request->input('password'));
             $usuario->save();
 
-            session(['alias' => $usuario->alias]);
+            session(['alias' => $usuario->alias, 'foto_perfil' => $usuario->foto]);
             session()->flash('status', 'Has actualizado tus datos');
-            return view('inicioVista');
+            return (new InicioController)->inicio();
         }
 
         return "error";
@@ -51,7 +54,7 @@ class AjustesUsuarioController extends Controller
                     'intereses' => 'max:200',
                     'password' => 'min:4|required_with:confirm-password|same:confirm-password',
                     'confirm-password' => 'min:4|required',
-                    'foto' => ''
+                    'foto' => 'nullable|image|max:2048'
                 ]);
     }
     

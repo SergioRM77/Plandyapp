@@ -15,10 +15,20 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use App\Http\Controllers\EventoController;
+use App\Http\Controllers\ImagenesController;
 
 
 class GastosController extends Controller
 {
+
+    /**
+     * Obtener lista de todos los gastos de un evento por el id
+     */
+    public function getListaGastos($evento_id){
+        return DB::select("SELECT gastos.id, gastos.evento_id, gastos.usuario_id, gastos.descripcion, gastos.coste, gastos.foto, gastos.created_at,  gastos.is_aceptado, users.alias as alias, gastos.foto FROM gastos 
+                            LEFT JOIN users ON gastos.usuario_id = users.id  WHERE gastos.evento_id = ?",[$evento_id]);
+    }
+
     /**
      * Presentar un nuevo gasto
      */
@@ -30,14 +40,14 @@ class GastosController extends Controller
             $nuevoGasto->usuario_id = session('id');
             $nuevoGasto->coste = $request->coste;
             $nuevoGasto->descripcion = $request->descripcion;
+            $nuevoGasto->foto = ImagenesController::guardarImagen($request);
             $nuevoGasto->save();
             
         } catch (Exception $e) {
-            session()->flash('error_gasto',"El campo gasto debe ser mayor a 1 y descripción es obligatorio");
+            session()->flash('error_gasto',$e->getMessage());
             
         }finally{
-            $request = new Request(['id' => $request->evento_id]);
-            return (new EventoController)->verEvento($request);
+            return (new EventoController)->verEventoGet($request->evento_id);
 
         }
         
@@ -51,7 +61,7 @@ class GastosController extends Controller
             'evento_id' => 'required',
             'descripcion' => 'required|max:255',
             'coste' => 'required|numeric|min:1',
-            'foto' => '',
+            'foto' => 'nullable|image|max:2048'
         ]);
         
     }
@@ -61,8 +71,7 @@ class GastosController extends Controller
      */
     public function aceptarGasto(Request $request){
         DB::update("UPDATE gastos set is_aceptado = true WHERE gastos.id = ?", [$request->gasto_id]);
-        $request = new Request(['id' => $request->evento_id]);
-        return (new EventoController)->verEvento($request);
+        return (new EventoController)->verEventoGet($request->evento_id);
     }
 
     /**
@@ -70,8 +79,7 @@ class GastosController extends Controller
      */
     public function eliminarGasto(Request $request){
         DB::delete("DELETE FROM gastos WHERE evento_id = ? AND id = ?",[$request->evento_id, $request->gasto_id]);
-        $request = new Request(['id' => $request->evento_id]);
-        return (new EventoController)->verEvento($request);
+        return (new EventoController)->verEventoGet($request->evento_id);
     }
 
     /**
@@ -155,13 +163,12 @@ class GastosController extends Controller
                 'alias' => 'required',
                 'evento_id' => 'required',
                 'costeMax' => 'required|numeric|min:1',
-                'foto' => '',
+                'foto' => 'nullable|image|max:2048'
             ]);
             return view('vistasTiposEvento.pagarAUsuarioVista', compact('request'));
         } catch (Exception $th) {
             session()->flash('status', 'No se puede acceder a pago de usuario');
-            $request = new Request(['id' => $request->evento_id]);
-            return (new EventoController)->verEvento($request);
+            return (new EventoController)->verEventoGet($request->evento_id);
         }
     }
 
@@ -172,7 +179,7 @@ class GastosController extends Controller
                 'alias' => 'required',
                 'evento_id' => 'required',
                 'coste' => 'required|numeric|min:1',
-                'foto' => '',
+                'foto' => 'nullable|image|max:2048'
             ]);
             
             //crear gasto para pagador
@@ -197,8 +204,69 @@ class GastosController extends Controller
         } catch (Exception $th) {
             session()->flash('status',$th->getMessage());
         }finally{
-            $request = new Request(['id' => $request->evento_id]);
-            return (new EventoController)->verEvento($request);
+            return (new EventoController)->verEventoGet($request->evento_id);
         }
     }
+
+
+    /* APARTADO DE GASTOS DE PRESUPUESTO */
+
+    /**
+     * Obtener lista de gastos en Presupuesto de un evento por el id
+     */
+    public function getListaGastosPresu($evento_id){
+        return DB::select("SELECT gastos_de_presupuesto.id, gastos_de_presupuesto.evento_id, gastos_de_presupuesto.admin_id, 
+                                    gastos_de_presupuesto.descripcion_gasto_pre, gastos_de_presupuesto.coste, 
+                                    gastos_de_presupuesto.foto, gastos_de_presupuesto.created_at, 
+                                    users.alias as alias FROM gastos_de_presupuesto 
+                            LEFT JOIN users ON gastos_de_presupuesto.admin_id = users.id  WHERE gastos_de_presupuesto.evento_id = ?",[$evento_id]);
+    }
+
+    /**
+     * Añadir un gasto para presupuesto
+     */
+    public function addGastoPresu(Request $request){
+        try {
+            $this->validarGastosPresu($request);
+            $nuevoPresu = new Gasto_de_presupuesto();
+            $nuevoPresu->evento_id = $request->evento_id;
+            $nuevoPresu->admin_id = session('id');
+            $nuevoPresu->coste = $request->coste;
+            $nuevoPresu->descripcion_gasto_pre = $request->descripcion_gasto_pre;
+            $nuevoPresu->foto = ImagenesController::guardarImagen($request);
+            $nuevoPresu->save();
+            session()->flash('status',"Se ha añadido un gasto de presupuesto");
+        } catch (Exception $e) {
+            session()->flash('status',"El campo gasto debe ser mayor a 1 y descripción es obligatorio");
+            
+        }finally{
+            return (new EventoController)->verEventoGet($request->evento_id);
+        }
+        
+    }
+
+    /**
+     * Validar datos para Presupuesto
+     */
+    private function validarGastosPresu(Request $request){        
+        return $request->validate([
+            'admin_id' => 'required',
+            'evento_id' => 'required',
+            'descripcion_gasto_pre' => 'required|max:255',
+            'coste' => 'required|numeric|min:1',
+            'foto' => 'nullable|image|max:2048'
+        ]);
+        
+    }
+
+    /**
+     * Eliminar gasto de Presupuesto por ID
+     */
+    public function eliminarGastoPresu(Request $request){
+        DB::delete("DELETE FROM gastos_de_presupuesto WHERE evento_id = ? AND id = ? 
+                    AND admin_id = ?",[session('evento_id'), $request->gasto_id, $request->admin_id]);
+        return (new EventoController)->verEventoGet($request->evento_id);
+    }
+
+
 }

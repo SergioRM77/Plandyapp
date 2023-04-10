@@ -6,7 +6,9 @@
         <div class="max-w-md mx-auto bg-slate-200 rounded-xl shadow-md md:max-w-7xl overflow-auto">
             <div class="md:flex">
                 <div class="shrink">
-                    <img class="h-32 w-full object-cover md:h-full md:w-48" src="https://s1.eestatic.com/2015/06/09/cocinillas/cocinillas_39756026_116187393_1706x960.jpg" alt="Modern building architecture">
+                    <img class="h-32 w-full object-cover md:h-full md:w-48" src="
+                    {{$evento['foto'] != null ? asset($evento['foto']) :
+                        'https://img.freepik.com/vector-premium/paisaje-dibujos-animados-vista-campos-verdes-verano-colina-cesped-primavera-cielo-azul_313905-688.jpg?w=2000'}}" alt="Foto de evento">
                 </div>
                 <div class="p-8 lg:w-full">
                     <div class="flex flex-wrap items-baseline justify-between">

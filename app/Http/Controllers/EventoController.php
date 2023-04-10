@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use App\Http\Controllers\ActividadesController;
 use App\Http\Controllers\GastosController;
+use App\Http\Controllers\ImagenesController;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -49,29 +50,31 @@ class EventoController extends Controller
      * FALTA MENSAJES DE SESION **/
 
     //PARA CREAR Y MODIFICAR EVENTO
-    public function newEventoSinPresu(){
-        return view('vistasTiposEvento.admin-crear-sin-presuVista');
-    }
-    public function newEventoConPresu(){
 
+    public function selectTipoEvento(){
+        return view('vistasTiposEvento.select-tipo-evento-Vista');
+    }
+
+    public function newEvento($tipo){
+        return view('vistasTiposEvento.admin-crear-Vista', compact('tipo'));
     }
 
     /**
      * Crear un nuevo evento
      */
-    public function saveEventoSinPresu(Request $request){
+    public function saveEvento(Request $request){
         
         if($this->validarDatosEvento($request)){
             $newEvento = new Evento();
-            $newEvento->tipo_evento_id = 1;
+            $newEvento->tipo_evento_id = $request->tipo_evento;
             $newEvento->nombre_evento = $request->nombre_evento;
             $newEvento->descripcion = $request->descripcion;
             $newEvento->fecha_inicio = $request->fecha_inicio;
             $newEvento->fecha_fin = $request->fecha_fin;
             $newEvento->tags = $request->tags;
-            $newEvento->foto = $request->foto;
+            $newEvento->foto = ImagenesController::guardarImagen($request);
             $newEvento->save();
-
+            
             $Admin_principal_user_evento = new User_evento();
             $Admin_principal_user_evento->evento_id = $newEvento->id;
             $Admin_principal_user_evento->user_id = session('id');
@@ -89,11 +92,12 @@ class EventoController extends Controller
     private function validarDatosEvento(Request $request){
         return $request->validate([
             'nombre_evento' => 'required|max:250',
+            'tipo_evento' => 'required|numeric|min:1|max:2',
             'descripcion' => 'required|max:250',
             'fecha_inicio' => 'required',
             'fecha_fin' => 'nullable|after_or_equal:fecha_inicio',
             'tags' => 'max:250',
-            'foto' => '',
+            'foto' => 'nullable|image|max:2048',
         ]);
     }
 
@@ -103,17 +107,19 @@ class EventoController extends Controller
      */
     public function verEvento(Request $request){
         $evento = Evento::whereId($request->id)->first();
-        session(["evento_id" => $request->id]);
+        session(["evento_id" => $request->id,'tipo_evento' => $evento->tipo_evento_id, 
+                'is_activo' => $evento->is_activo, 'is_visible' => $evento->is_visible]);
         $isAdmin = User_evento::select('is_admin_principal','is_admin_secundario')->where('evento_id',$evento->id)->where('user_id', session('id'))->first();
-        $gastos = DB::select("SELECT gastos.id, gastos.evento_id, gastos.usuario_id, gastos.descripcion, gastos.coste, gastos.foto, gastos.created_at,  gastos.is_aceptado, users.alias as alias FROM gastos 
-                                LEFT JOIN users ON gastos.usuario_id = users.id  WHERE gastos.evento_id = ?",[$request->id]);
+        $gastos = (new GastosController)->getListaGastos($request->id);
+        $gastospresu = (new GastosController)->getListaGastosPresu($request->id);
         $listapagos = (new GastosController)->pagadoEvento($request->id);
         $deben = (new GastosController)->usuarioDebeUsuario($request->id);
         $listaParticipantes = DB::select("SELECT evento_id, user_id, is_admin_principal, is_admin_secundario, users.alias FROM users_eventos 
                                         LEFT JOIN users   ON users.id = users_eventos.user_id WHERE evento_id = ?", [$request->id]);
         $actividades = (new ActividadesController)->listaActividades();
         $listaParticipantesActividades = (new ActividadesController)->participantesEnActividades();
-        return view('vistasTiposEvento.eventoSinPresuVista', compact('evento', 'isAdmin', 'gastos', 'listapagos', 'deben', 'listaParticipantes', 'actividades', 'listaParticipantesActividades'));
+        return view('vistasTiposEvento.eventoVista', compact('evento', 'isAdmin', 'gastos', 'listapagos', 'deben', 'listaParticipantes',
+                    'actividades', 'listaParticipantesActividades','gastospresu'));
     }
 
     public function verEventoGet($evento_id){
@@ -121,24 +127,24 @@ class EventoController extends Controller
             $evento = new Request(['id' => session('evento_id')]);
             return $this->verEvento($evento);
         }
-            return 'error';
+            session()->flash('status','Ha ocurrido un error');
+            return redirect('inicio');
     }
 
     /**
      * Formulario para editar por el id del evento
      */
-    public function editarEventoSinPresu(Request $request){
-        $eventos = Evento::whereId($request->id)->get();
-        $evento = $eventos[0];
+    public function editarEvento(Request $request){
+        $evento = Evento::whereId($request->id)->first();
         $gastos = DB::select("SELECT gastos.id, gastos.evento_id, gastos.usuario_id, gastos.descripcion, gastos.coste, gastos.foto, gastos.created_at, gastos.is_aceptado, users.alias as alias FROM gastos 
                                 LEFT JOIN users ON gastos.usuario_id = users.id  WHERE gastos.evento_id = ?",[$request->id]);
-        return view('vistasTiposEvento.editarEventoSinPresuVista', compact('evento', 'gastos'));
+        return view('vistasTiposEvento.editarEventoVista', compact('evento'));
     }
 
     /**
      * Editar evento ya creado y guardar cambios
      */
-    public function updateEventoSinPresu(Request $request){
+    public function updateEvento(Request $request){
         try {
                 $this->validarDatosEvento($request);
                 $evento = Evento::whereId($request->id)->get()->first();
@@ -147,14 +153,13 @@ class EventoController extends Controller
                 $evento->fecha_inicio = $request->fecha_inicio;
                 $evento->fecha_fin = $request->fecha_fin;
                 $evento->tags = $request->tags;
-                $evento->foto = $request->foto;
+                $evento->foto = $request->foto == null ? $evento->foto : ImagenesController::guardarImagen($request);
                 $evento->save();
-                $request = new Request(['id' => $evento->id]);
-                return $this->verEvento($request);
+                return $this->verEventoGet($evento->id);
         } catch (Exception $e) {
             session()->flash('error_datos_evento',str_contains($e->getMessage(), 'more error') == true ? 
                             'Los campos Nombre Evento, Descripción y Fecha inicio son obligatorios' : $e->getMessage());
-            return $this->editarEventoSinPresu($request);
+            return $this->editarEvento($request);
         }
     }
 
@@ -220,11 +225,11 @@ class EventoController extends Controller
      */
     public function eliminarParticipante(Request $request){
         try {
-            $validar = $request->validate([
+            $request->validate([
                 "evento_id" => "required|numeric",
                 "user_id" => "required|numeric"
             ]);
-            $participante = User_evento::where('evento_id', $request->evento_id)
+            User_evento::where('evento_id', $request->evento_id)
                             ->where('user_id', $request->user_id)->delete();
             
             session()->flash('participante',"Participante eliminado");
@@ -253,8 +258,7 @@ class EventoController extends Controller
             return $this->verContactosDeEvento($request);
         } catch (Exception $e) {
             session()->flash('status',"No se ha podido convertir a Admin Secundario");
-            $request = new Request(['id' => session('evento_id')]);
-            return $this->verEvento($request);
+            return $this->verEventoGet(session('evento_id'));
         }
     }
 
@@ -272,21 +276,34 @@ class EventoController extends Controller
             return $this->verContactosDeEvento($request);
         } catch (Exception $e) {
             session()->flash('status',"No se ha podido eliminar Admin Secundario");
-            $request = new Request(['id' => session('evento_id')]);
-            return $this->verEvento($request);
+            return $this->verEventoGet(session('evento_id'));
         }
     }
 
-/*
-    public function addGastoPresupuesto(Request $request){
-
+    public function finalizarEvento(){
+        try {
+            DB::table("eventos")->where("id","=", session("evento_id"))->where("is_activo","=", true)
+                        ->update(["is_activo" => false]);
+            
+            session()->flash('status',"Has finalizado un evento");
+        } catch (Exception $th) {
+            session()->flash('status',"No se ha podido finalizar evento");
+        }finally{
+            return redirect('inicio');
+        }
+        
     }
 
-    public function eliminarPresupuestoGasto(Request $request){
-
+    public function eliminarEvento(){
+        try {
+            DB::table("eventos")->where("id","=", session("evento_id"))->where("is_activo","=", false)
+                        ->update(["is_visible" => false]);
+            
+            session()->flash('status',"Se ha eliminado evento para ti");
+        } catch (Exception $th) {
+            session()->flash('status',"No se ha podido eliminar evento");
+        }finally{
+            return redirect('inicio');
+        }
     }
-
-    public function valorRoute($id){
-        return $id;
-    }*/
 }

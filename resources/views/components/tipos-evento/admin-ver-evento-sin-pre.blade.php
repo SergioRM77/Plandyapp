@@ -19,7 +19,7 @@
                 <textarea class="row-start-7 border border-blue-500 rounded-md my-1" name="descripcion" id="" cols="30" rows="1"></textarea>
             </div>
             <div class="grid place-items-center shrink">
-                <img class="h-full w-full object-cover rounded-md md:h-full md:w-48" src="https://s1.eestatic.com/2015/06/09/cocinillas/cocinillas_39756026_116187393_1706x960.jpg" alt="Modern building architecture">
+                <img class="h-full w-full object-cover rounded-md md:h-full md:w-48" src="https://s1.eestatic.com/2015/06/09/cocinillas/cocinillas_39756026_116187393_1706x960.jpg" alt="Foto de evento">
             </div>
             <button class="border border-black rounded-md bg-green-500 py-1 p-2 my-2 mx-2" type="submit">Enviar</button>
         </div>

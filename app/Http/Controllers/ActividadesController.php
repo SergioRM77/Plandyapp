@@ -42,8 +42,7 @@ class ActividadesController extends Controller
             session()->flash('status', $e->getMessage());
             
         }finally{
-            $evento = new Request(['id' => session('evento_id')]);
-            return (new EventoController)->verEvento($evento);
+            return (new EventoController)->verEventoGet($actividad->evento_id);
         }
     }
 
@@ -58,8 +57,7 @@ class ActividadesController extends Controller
 
         } catch (\Throwable $th) {
             session()->flash('status', 'No se puede editar actividad');
-            $evento = new Request(['id' => session('evento_id')]);
-            return (new EventoController)->verEvento($evento);
+            return (new EventoController)->verEventoGet(session('evento_id'));
         }
         // return view('vistasTiposEvento.editarActividadVista');
     }
@@ -87,8 +85,7 @@ class ActividadesController extends Controller
             session()->flash('status', 'No se ha podido actualizar actividad');
             
         }finally{
-            $evento = new Request(['id' => session('evento_id')]);
-            return (new EventoController)->verEvento($evento);
+            return (new EventoController)->verEventoGet(session('evento_id'));
         }
     }
 
@@ -101,8 +98,7 @@ class ActividadesController extends Controller
         } catch (Exception $th) {
             session()->flash('status', 'No se ha podido eliminar actividad');
         }finally{
-            $evento = new Request(['id' => session('evento_id')]);
-            return (new EventoController)->verEvento($evento);
+            return (new EventoController)->verEventoGet(session('evento_id'));
         }
         
         
@@ -126,8 +122,7 @@ class ActividadesController extends Controller
         } catch (Exception $th) {
             session()->flash('status', 'No se ha podido añadir a Actividad');
         }finally{
-            $evento = new Request(['id' => session('evento_id')]);
-            return (new EventoController)->verEvento($evento);
+            return (new EventoController)->verEventoGet(session('evento_id'));
         }
     }
 
@@ -142,8 +137,7 @@ class ActividadesController extends Controller
         } catch (Exception $e) {
             session()->flash('status', 'No ha sido posible salir de una Actividad');
         }finally{
-            $evento = new Request(['id' => session('evento_id')]);
-            return (new EventoController)->verEvento($evento);
+            return (new EventoController)->verEventoGet(session('evento_id'));
         }
     }
     public function participantesEnActividades(){
