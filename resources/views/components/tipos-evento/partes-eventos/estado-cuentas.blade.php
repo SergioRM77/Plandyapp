@@ -12,7 +12,8 @@
             <h5>USUARIOS QUE DEBEN A USUARIOS</h5>
             @foreach ($deben as $item => $debe)
                     <p>{{$debe}}</p>
-                    @if ($listapagos[$item]['pagado'] > session('mediaPagos') && session('pagado') < session('mediaPagos') && !str_contains($debe, "no debe ni le deben dinero"))
+                    @if ($listapagos[$item]['pagado'] > session('mediaPagos') && session('pagado') < session('mediaPagos') 
+                        && !str_contains($debe, "no debe ni le deben dinero") && session('is_activo'))
                         <form action="{{e(route('gasto.vista.pago.usuario'))}}" method="post">
                             @csrf
                             <input type="hidden" name="usuario_id" value="{{$listapagos[$item]['usuario_id']}}">

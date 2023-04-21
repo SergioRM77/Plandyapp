@@ -22,30 +22,7 @@ use function PHPUnit\Framework\returnSelf;
 
 class EventoController extends Controller
 {
-    public function inicio()
-    {
-        
-        return view('inicioVista');
-    }
-
-    // public function eventoConPresu()
-    // {
-        
-    //     return view('vistasTiposEvento.eventoConPresuVista');
-    // }
-
-    // public function eventoSinPresu()
-    // {
-        
-    //     return view('vistasTiposEvento.eventoSinPresuVista');
-    // }
-
-    // public function eventoFinalizado()
-    // {
-        
-    //     return view('vistasTiposEvento.eventoFinalizadoVista');
-    // }
-
+    
     /**FUNCIONALIDADES PARA CREAR Y MODIFICAR EVENTOS
      * FALTA MENSAJES DE SESION **/
 
@@ -107,9 +84,10 @@ class EventoController extends Controller
      */
     public function verEvento(Request $request){
         $evento = Evento::whereId($request->id)->first();
-        session(["evento_id" => $request->id,'tipo_evento' => $evento->tipo_evento_id, 
-                'is_activo' => $evento->is_activo, 'is_visible' => $evento->is_visible]);
-        $isAdmin = User_evento::select('is_admin_principal','is_admin_secundario')->where('evento_id',$evento->id)->where('user_id', session('id'))->first();
+        
+        // tabla users_eventos.is_visible
+        $isAdmin = User_evento::select('is_admin_principal','is_admin_secundario', 'is_visible')->where('evento_id',$evento->id)->where('user_id', session('id'))->first();
+
         $gastos = (new GastosController)->getListaGastos($request->id);
         $gastospresu = (new GastosController)->getListaGastosPresu($request->id);
         $listapagos = (new GastosController)->pagadoEvento($request->id);
@@ -118,6 +96,8 @@ class EventoController extends Controller
                                         LEFT JOIN users   ON users.id = users_eventos.user_id WHERE evento_id = ?", [$request->id]);
         $actividades = (new ActividadesController)->listaActividades();
         $listaParticipantesActividades = (new ActividadesController)->participantesEnActividades();
+        session(["evento_id" => $request->id,'tipo_evento' => $evento->tipo_evento_id, 
+                        'is_activo' => $evento->is_activo, 'is_visible' => $isAdmin->is_visible]);
         return view('vistasTiposEvento.eventoVista', compact('evento', 'isAdmin', 'gastos', 'listapagos', 'deben', 'listaParticipantes',
                     'actividades', 'listaParticipantesActividades','gastospresu'));
     }
@@ -125,6 +105,22 @@ class EventoController extends Controller
     public function verEventoGet($evento_id){
         if ($evento_id == session('evento_id')) {
             $evento = new Request(['id' => session('evento_id')]);
+            return $this->verEvento($evento);
+        }
+            session()->flash('status','Ha ocurrido un error');
+            return redirect('inicio');
+    }
+
+    /**
+     * Retorna por get vista de evento, al actualizar no se genera envío de formulario
+     */
+    public function verEventoGet2($id, $nombre){
+        $idConsulta = DB::select("SELECT users_eventos.evento_id FROM users_eventos
+                                LEFT JOIN eventos ON users_eventos.evento_id = eventos.id 
+                                WHERE users_eventos.evento_id = ? AND eventos.nombre_evento = ?
+                                AND users_eventos.user_id = ?", [$id, $nombre, session('id')]);
+        if($idConsulta[0]->evento_id == $id){
+            $evento = new Request(['id' => $id]);
             return $this->verEvento($evento);
         }
             session()->flash('status','Ha ocurrido un error');
@@ -296,12 +292,11 @@ class EventoController extends Controller
 
     public function eliminarEvento(){
         try {
-            DB::table("eventos")->where("id","=", session("evento_id"))->where("is_activo","=", false)
-                        ->update(["is_visible" => false]);
+            DB::table("users_eventos")->where("user_id","=", session("id"))->where("evento_id", "=", session("evento_id"))->update(["is_visible" => false]);
             
             session()->flash('status',"Se ha eliminado evento para ti");
         } catch (Exception $th) {
-            session()->flash('status',"No se ha podido eliminar evento");
+            session()->flash('status',$th->getMessage());
         }finally{
             return redirect('inicio');
         }

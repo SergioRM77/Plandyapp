@@ -1,5 +1,5 @@
 <h5 class="border border-black bg-blue-400 pl-2 mx-1" id="gasto">GASTO</h5>
-    <div class="border border-black rounded-b-lg mx-2">
+    <div class="border border-black rounded-b-lg mx-2 overflow-y-auto h-96" >
         @if ($gastos != null)
             @foreach ($gastos as $id => $gasto)
                 <div class=" mx-auto overflow-hidden">
@@ -48,9 +48,25 @@
 
     </div>
     @if ($evento["is_activo"])
+        <div class="flex justify-center">
+            <label for="my-modal-5" class="border-black w-2/5 btn py-2 px-4 bg-blue-500 text-white font-semibold shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+                    <lord-icon
+                        src="https://cdn.lordicon.com/mecwbjnp.json"
+                        trigger="hover">
+                    </lord-icon>
+            Añadir gasto
+            </label>
+        </div>
+
+    
+    <input type="checkbox" id="my-modal-5" class="modal-toggle" />
+    <div class="modal">
+    <div class="modal-box w-11/12 max-w-full">
+
+    
     <div class="presentar gasto">
         <h4 class="border border-black bg-blue-600 pl-2">PRESENTAR GASTO:</h4> 
-        <form class="border border-black  mx-2 px-2" action="{{e(route('evento.add.gasto'))}}" method="post" enctype="multipart/form-data">
+        <form class="border border-black  mx-2 px-2 bg-orange-100" action="{{e(route('evento.add.gasto'))}}" method="post" enctype="multipart/form-data">
             @csrf
             @if (session('error_gasto'))<p class="w-full">{{session('error_gasto')}}</p>@endif
             <input type="hidden" name="evento_id" value="{{$evento->id}}">
@@ -70,14 +86,17 @@
 
                 </div>
                 <div class="grid grid-cols-1 justify-items-center items-center">
-                    <input class="border-2 border-blue-800 border-dashed rounded-md bg-blue-400 px-6 py-6" type="file" name="foto" value="Subir foto" accept="image/*">
+                    <input class="" type="file" name="foto" value="Subir foto" accept="image/*">
                 </div>
             </div>
 
             <div class="flex flex-row justify-center my-4">
-                <input class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-green-500" type="submit" value="Subir">
-                <a class="basis-1/4 h-10 pt-2.5 ml-1 col-span-1 inline-block align-middle text-center border border-black rounded-md bg-red-500" href="{{e(route('evento.ver.get', session('evento_id')))}}">Cancelar</a>
+                <input class=" btn basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-green-500" type="submit" value="Subir">
+                <label for="my-modal-5" class="btn basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-red-500">Cancelar</label>
             </div>
         </form>
     </div>
-    @endif
+
+    </div>
+</div>
+@endif

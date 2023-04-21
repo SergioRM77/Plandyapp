@@ -74,10 +74,25 @@
         @endif
 
 </div>
+
 @if ($evento["is_activo"] && ($isAdmin->is_admin_principal == true || $isAdmin->is_admin_secundario == true))
+<div class="flex justify-center">
+    <label for="my-modal-2" class="border-black w-2/5 btn py-2 px-4 bg-violet-400 text-white font-semibold shadow-md hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+        <lord-icon
+            src="https://cdn.lordicon.com/mecwbjnp.json"
+            trigger="hover">
+        </lord-icon>
+        Crear Actividad
+    </label>
+</div>
+
+<input type="checkbox" id="my-modal-2" class="modal-toggle" />
+    <div class="modal">
+    <div class="modal-box w-11/12 max-w-full">
+
 <div class="crear actividad mx-2 px-2">
     <h4 class="border border-black bg-violet-400 pl-2">CREAR ACTIVIDAD:</h4>
-    <form action="{{e(route('add.actividad'))}}" class="border border-black rounded-md w-full mx-2 px-2" method="post">
+    <form action="{{e(route('add.actividad'))}}" class="border border-black rounded-md w-full mx-2 px-2  bg-orange-100" method="post">
         @csrf
         <div class="grid">
             <label class="my-1 font-semibold">Nombre de actividad: 
@@ -95,8 +110,12 @@
             <label class="font-semibold">Descripcion: </label>
         </div>
         <textarea name="descripcion_actividad" id="" cols="30" rows="3" class="col-span-2 border border-blue-400 rounded-md my-2"></textarea>
-        <button class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-green-500" type="submit">Crear Actividad</button>
-        <a class="basis-1/4 h-10 pt-2.5 ml-1 col-span-1 inline-block align-middle text-center border border-black rounded-md bg-red-500" href="{{e(route('evento.ver.get', session('evento_id')))}}">Cancelar</a>
+        <button class="btn basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-green-500" type="submit">Crear Actividad</button>
+        {{-- <a class="basis-1/4 h-10 pt-2.5 ml-1 col-span-1 inline-block align-middle text-center border border-black rounded-md bg-red-500" href="{{e(route('evento.ver.get', session('evento_id')))}}">Cancelar</a> --}}
+        <label for="my-modal-2" class="btn basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-red-500">Cancelar</label>
+
     </form>
+</div>
+</div>
 </div>
 @endif

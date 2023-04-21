@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('eventos', function (Blueprint $table) {
+        Schema::table('users_eventos', function (Blueprint $table) {
             $table->boolean('is_visible')->default(true);
         });
     }
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('eventos', function (Blueprint $table) {
+        Schema::table('users_eventos', function (Blueprint $table) {
             $table->dropColumn('is_visible');
         });
     }

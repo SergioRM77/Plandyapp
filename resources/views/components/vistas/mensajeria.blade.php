@@ -1,37 +1,51 @@
 <article>
-    <h3>CHAT DE EVENTO</h3>
-    <section class="mensajes-de-evento">{{-- iteracion de chats de evento --}}
-        <h4>Chat Evento: @-nombre</h4>
-        <div class="participantes-evento">{{-- iteracion de participantes --}}
-            <h5>Participantes</h5>
-            <div class="participante">
-                <div>Foto</div>
-                <p>Nombre Usuario:</p>
-                <p>Ciudad:</p>
-                <p>Intereses:</p>
-                <form action="" method="POST">
-                    <a href="{{e(route('chat'))}}">Abrir chat</a>
-                    <a href="{{e(route('chatreporte'))}}">Abrir Chat Reporte</a>
-                    <input type="button" value="Agregar/Eliminar">
-                    <input type="button" value="Bloquear/Desbloquear">
-                    <input type="button" value="Reportar">
-                    <input type="button" value="Enviar Mensaje">
-                
-                    <label for="">Enviar mensaje/Reportar</label>
-                    <input type="text">
-                    <button type="submit">Enviar</button>
-                    
-                </form>
-                
+    
+    <section class="mensajes-de-evento">
+        <h3 class="border border-black bg-green-300 pl-2 mx-1 text-center">CHAT DE EVENTOS</h3>
+        <div class="">
+            <div class="participantes-evento">
+            <div class="flex items-center border rounded-md border-black bg-blue-500 p-1">
+                <img class="h-14 rounded-full"  src="https://img.freepik.com/fotos-premium/paisaje-verano-relajese-paradise-beach-blue-sea-clean-sand-espacio-copiar_638259-177.jpg?w=2000" alt="foto perfil">
+                <p class="bg-yellow-300 rounded-full px-2 ml-2">@-</p>
             </div>
-        </div>    
+            <div class="border border-black rounded-md p-2 bg-slate-300 mx-2">
+                <div class="flex justify-between items-center ">
+            
+                    <div class="flex flex-wrap items-center">
+                        <img class="h-14 rounded-full"  src="https://img.freepik.com/fotos-premium/paisaje-verano-relajese-paradise-beach-blue-sea-clean-sand-espacio-copiar_638259-177.jpg?w=2000" alt="foto perfil">
+                        <div class="px-2 ml-2">
+                            <p class="bg-yellow-300 rounded-full px-1">@-</p>
+                        </div>
+                    </div>
+                        <div class="items-center border border-black rounded-md bg-blue-500 p-1 mr-4">
+                            <a class="text-white px-4" href="{{e(route('chat'))}}">Abrir chat</a>
+                        </div>
+                </div>
+                <div class="pl-3">
+                    <p>Ciudad: </p>
+                    <p>Intereses: </p>
+                </div>
+            
+                <div class="flex flex-wrap justify-around">
+                    
+                    
+                </div>
+            </div>
+        </div>  
+        </div>
+        <hr class="border border-black my-2 rounded-full">
+          
             <a href="{{e(route('chatevento'))}}">abrir chat de evento</a>
     </section>
     <hr>
 </article>
+
+
+{{-- 
+
 <article>
     <h3>CHAT PRIVADOS</h3>
-    <section class="mensajes-privados">{{-- iteracion de mensajes privados --}}
+    <section class="mensajes-privados">
         <div class="chat-privado">
             <div>Foto</div>
             <p>Nombre Usuario:</p>
@@ -55,4 +69,4 @@
     </section>   
 </article>
 
-    
+     --}}

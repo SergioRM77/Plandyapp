@@ -19,9 +19,8 @@ use App\View\Components\MyForm;
 use App\View\Components\TiposEvento\EventoSinPresu;
 
 Route::get('/',[InicioController::class, 'inicio'])->name('inicio')->middleware('auth');
-// Route::get('inicio',InicioController::class)->name('inicio')->middleware('auth');
-Route::get('inicio',[InicioController::class, 'inicio'])->name('inicio')->middleware('auth');
 
+Route::get('samplechat', [ChatController::class, 'chatPrivadoEjemplo'])->name('samplechat');
 Route::get('subirfoto', [ImagenesController::class, 'subirImagen'])->name('subir.foto');
 Route::post('guardarfoto', [ImagenesController::class, 'guardarImagen'])->name('guardar.foto');
 // Route::post('guardarfoto', [ImagenesController::class, 'store'])->name('store.foto');
@@ -48,8 +47,9 @@ Route::get('evento/crear/{tipo}',[EventoController::class, 'newEvento'])->name('
 Route::post('evento/crear',[EventoController::class, 'saveEvento'])->name('evento.guardar')->middleware('auth');
 Route::post('evento/editar',[EventoController::class, 'editarEvento'])->name('evento.editar')->middleware('auth');
 Route::patch('evento/actualizar',[EventoController::class, 'updateEvento'])->name('evento.update')->middleware('auth');
-Route::post('evento/ver',[EventoController::class, 'verEvento'])->name('evento.ver')->middleware('auth');
 Route::get('evento/ver/{id}',[EventoController::class, 'verEventoGet'])->name('evento.ver.get')->middleware('auth');
+Route::get('evento/verget/{id}/{nombre}',[EventoController::class, 'verEventoGet2'])->name('evento.ver.get.get')->middleware('auth');
+Route::post('evento/ver',[EventoController::class, 'verEvento'])->name('evento.ver')->middleware('auth');
 Route::post('evento/contactos-para-evento/',[EventoController::class, 'verContactosParaEvento'])->name('evento.contactos.ver')->middleware('auth');
 Route::post('evento/contactos-add/',[EventoController::class, 'addParticipante'])->name('evento.contactos.add')->middleware('auth');
 Route::post('evento/contactos-ver/',[EventoController::class, 'verContactosDeEvento'])->name('evento.contactos.ver')->middleware('auth');

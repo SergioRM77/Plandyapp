@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class User_evento extends Model
+class Chat extends Model
 {
-    protected $table  = "users_eventos";
+    protected $table = "chat";
     use HasFactory;
     protected $fillable = [
-        'evento_id',
-        'user_id',
-        'is_admin_principal',
-        'is_admin_secundario',
-        'is_visible'
+        'usuario_origen_id',
+        'usuario_destino_id',
+        'fecha_y_hora',
+        'contenido'
     ];
 
     /**
