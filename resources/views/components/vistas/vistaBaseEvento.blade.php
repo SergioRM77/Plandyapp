@@ -1,7 +1,7 @@
 <form action="{{e(route('evento.ver.get.get', [$evento['id'], $evento['nombre_evento']]))}}" method="get">
     
-    <button type="submit">
-        <div class="max-w-md mx-auto bg-slate-200 rounded-xl shadow-md md:max-w-7xl overflow-auto">
+    <button type="submit" class="w-full sm:w-3/4">
+        <div class="max-w-md mx-auto bg-gradient-to-r from-slate-200 to-orange-50 rounded-lg shadow-md md:max-w-7xl overflow-auto">
             <div class="md:flex">
                 <div class="shrink">
                     <img class="h-32 w-full object-cover md:h-full md:w-48" src="
@@ -11,13 +11,13 @@
                 <div class="p-8 lg:w-full">
                     <div class="flex flex-wrap items-baseline justify-between">
                         <h4 class="text-xl text-indigo-500">{{$evento['nombre_evento']}}</h4>
-                        <p class="">Fecha: ({{$evento['fecha_inicio']}} a {{$evento['fecha_fin'] == null ? '--/--/--' : $evento['fecha_fin']}})</p>
+                        <p><span class="font-bold">Fecha:</span> ({{$evento['fecha_inicio']}} a {{$evento['fecha_fin'] == null ? '--/--/--' : $evento['fecha_fin']}})</p>
                     </div>
 
                     <div class="flex flex-wrap items-baseline justify-between">
-                        <p>Participantes: <span>{{$evento['numParticipantes']}}</span> <span>(Admin: @-{{$evento['admin']}})</span></p>
-                        <p>Actividades: <span>{{$evento['numActividades']}}</span></p>
-                        <p>Pago TOTAL: {{$evento['pagado']}}€</p>
+                        <p><span class="font-bold">Participantes:</span> {{$evento['numParticipantes']}} (<span class="font-bold">Admin:</span> @-{{$evento['admin']}})</p>
+                        <p><span class="font-bold">Actividades:</span> {{$evento['numActividades']}}</p>
+                        <p><span class="font-bold">Pago TOTAL:</span> {{$evento['pagado']}}€</p>
                     </div>
                 </div>
             </div>

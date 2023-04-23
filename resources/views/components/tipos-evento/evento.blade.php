@@ -21,12 +21,12 @@
 
 @if (session("is_activo") && $isAdmin->is_admin_principal)
     <form class="grid justify-items-center" action="{{e(route('evento.finalizar'))}}" method="get">
-        <button class="border border-black rounded-md bg-red-700 py-1 p-2 my-2 mx-2">Finalizar Evento</button>
+        <button class="border-black w-2/5 btn py-2 px-4 bg-red-600 text-white font-semibold shadow-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75" >Finalizar Evento</button>
     </form>
 @endif
 @if (!session("is_activo"))
     <form class="grid justify-items-center" action="{{e(route('evento.eliminar'))}}" method="get">
-        <button class="border border-black rounded-md bg-red-700 py-1 p-2 my-2 mx-2">Borrar Evento para mi</button>
+        <button class="border-black w-2/5 btn py-2 px-4 bg-red-600 text-white font-semibold shadow-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75" >Borrar Evento para mi</button>
     </form>
 @endif
 <article class="my-10">

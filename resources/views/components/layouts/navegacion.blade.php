@@ -1,4 +1,4 @@
-<nav class="fixed h-full from-gray-200 to-gray-400 mt-10 overflow-hidden w-14 hover:w-52 group border-r-2 border-gray-200" id="main-menu">
+<nav class="fixed h-full from-gray-200 to-gray-400 mt-10 overflow-hidden w-14 hover:w-52 group border-r-2 border-gray-200 ease-in-out duration-300" id="main-menu">
 
 
         <div class="relative bg-gradient-to-r bg-gray-200  h-full p-3 shadow-lg">

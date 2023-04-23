@@ -1,5 +1,5 @@
 <article>
-    <h3 class="bg-green-500 border-2 border-black">EVENTOS ACTIVOS</h3>
+    <h3 class="rounded-md shadow-lg bg-gradient-to-r from-green-500 to-green-700  border border-green-800 text-lg pl-4">EVENTOS ACTIVOS</h3>
     @if ($eventos != null)
         @foreach ($eventos as $item => $evento)
             @if ($evento["is_activo"])
@@ -15,7 +15,7 @@
 </article>
 <hr>
 <article>
-        <h3 class="bg-blue-500 border-2 border-black">EVENTOS FINALIZADOS</h3>
+        <h3 class="rounded-md shadow-lg bg-gradient-to-r from-cyan-500 to-blue-500  border border-blue-800 text-lg pl-4">EVENTOS FINALIZADOS</h3>
         @if ($eventos != null)
             @foreach ($eventos as $item => $evento)
                 @if (!$evento["is_activo"])

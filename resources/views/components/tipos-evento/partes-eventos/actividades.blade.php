@@ -1,13 +1,15 @@
 <div class="actividades">
     <h4 class="border border-black bg-violet-400 pl-2">ACTIVIDADES:</h4>
-    <div class="border border-black rounded-b-lg mx-2 px-2">
+    <div class="border border-black rounded-b-lg mx-2 px-2 {{
+        count($actividades) > 4 ? 'overflow-y-auto h-96 scrollbar-thin scrollbar-thumb-violet-400 scrollbar-thumb-rounded-lg scrollbar-track-rounded-md scrollbar-track-slate-300' : ''
+    }}">
         @if (count($actividades)>0)
             @foreach ($actividades as $item => $actividad)
-            <div class="flex items-center">
-                <div class="flex-none border border-black rounded-full p-2 w-1 h-1  
+            <div class="flex items-center ">
+                <div class="flex-none border border-black rounded-full p-2 w-1 h-1 
                 {{date("Y-m-d H:i") > date("Y-m-d H:i", strtotime($actividad->fecha . $actividad->hora)) ? 'bg-red-600'
                 : ' bg-green-600'}}"></div>
-                <div class="grid md:grid-rows-1 md:grid-cols-3 grid-rows-2 grid-cols-1 border border-black rounded-md w-full m-2 px-2">
+                <div class="grid md:grid-rows-1 md:grid-cols-3 shadow-lg grid-rows-2 grid-cols-1 border border-black rounded-md w-full m-2 px-2">
                     <div class="row-span-2 w-full">
                         <p><span class="font-semibold">Nombre de actividad: </span>{{$actividad->nombre_actividad}}</p>
                         <p><span class="font-semibold">Coste individual: </span>{{$actividad->coste}}</p>
@@ -77,7 +79,7 @@
 
 @if ($evento["is_activo"] && ($isAdmin->is_admin_principal == true || $isAdmin->is_admin_secundario == true))
 <div class="flex justify-center">
-    <label for="my-modal-2" class="border-black w-2/5 btn py-2 px-4 bg-violet-400 text-white font-semibold shadow-md hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+    <label for="my-modal-3" class="border-black w-2/5 btn py-2 px-4 bg-violet-400 text-white font-semibold shadow-md hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
         <lord-icon
             src="https://cdn.lordicon.com/mecwbjnp.json"
             trigger="hover">
@@ -86,7 +88,7 @@
     </label>
 </div>
 
-<input type="checkbox" id="my-modal-2" class="modal-toggle" />
+<input type="checkbox" id="my-modal-3" class="modal-toggle" />
     <div class="modal">
     <div class="modal-box w-11/12 max-w-full">
 
@@ -112,7 +114,7 @@
         <textarea name="descripcion_actividad" id="" cols="30" rows="3" class="col-span-2 border border-blue-400 rounded-md my-2"></textarea>
         <button class="btn basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-green-500" type="submit">Crear Actividad</button>
         {{-- <a class="basis-1/4 h-10 pt-2.5 ml-1 col-span-1 inline-block align-middle text-center border border-black rounded-md bg-red-500" href="{{e(route('evento.ver.get', session('evento_id')))}}">Cancelar</a> --}}
-        <label for="my-modal-2" class="btn basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-red-500">Cancelar</label>
+        <label for="my-modal-3" class="btn basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-red-500">Cancelar</label>
 
     </form>
 </div>

@@ -11,7 +11,7 @@
     <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
 </head>
-<body>
+<body class="scrollbar scrollbar-thumb-gray-400 scrollbar-thumb-rounded-sm">
     <x-layouts.sidebar/>
     <hr>
     @if (session('status'))
