@@ -19,6 +19,7 @@ use App\View\Components\MyForm;
 use App\View\Components\TiposEvento\EventoSinPresu;
 
 Route::get('/',[InicioController::class, 'inicio'])->name('inicio')->middleware('auth');
+Route::get('/inicio',[InicioController::class, 'inicio'])->name('inicio')->middleware('auth');
 
 Route::get('samplechat', [ChatController::class, 'chatPrivadoEjemplo'])->name('samplechat');
 Route::get('subirfoto', [ImagenesController::class, 'subirImagen'])->name('subir.foto');

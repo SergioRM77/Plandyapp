@@ -89,33 +89,37 @@
 </div>
 
 <input type="checkbox" id="my-modal-3" class="modal-toggle" />
-    <div class="modal">
-    <div class="modal-box w-11/12 max-w-full">
-
-<div class="crear actividad mx-2 px-2">
-    <h4 class="border border-black bg-violet-400 pl-2">CREAR ACTIVIDAD:</h4>
-    <form action="{{e(route('add.actividad'))}}" class="border border-black rounded-md w-full mx-2 px-2  bg-orange-100" method="post">
+    
+<div class="modal">
+<div class="modal-box w-11/12 max-w-3xl bg-orange-50">
+<div class="crear actividad">
+    <h4 class="text-center border shadow-lg border-black rounded-sm bg-blue-600 pl-2 w-full mb-2">CREAR ACTIVIDAD:</h4>
+    <form action="{{e(route('add.actividad'))}}" class="mx-2 px-2" method="post">
         @csrf
         <div class="grid">
-            <label class="my-1 font-semibold">Nombre de actividad: 
-                <input type="text" name="nombre_actividad" class="col-span-2 border border-blue-400 rounded-md my-2">
+            <label  class="font-semibold my-1 mr-4">Nombre de actividad: 
+                <input type="text" name="nombre_actividad" class="border border-blue-400 rounded-md">
             </label>
-            <label class="font-semibold">Coste individual: 
-                <input type="number" name="coste" class="col-span-2 border border-blue-400 rounded-md my-2" value="0" step="any">
+            <label class="font-semibold my-1 mr-4">Coste individual: 
+                <input type="number" name="coste" class="border border-blue-400 rounded-md" value="0" step="any">
             </label>
-            <label class=" font-semibold">Fecha inicio:
-                <input class="border border-blue-400 rounded-md my-2" type="date" name="fecha">
+            <div class="flex">
+                <label class="font-semibold my-1 mr-4">Fecha inicio:
+                    <input class="border border-blue-400 rounded-md my-2" type="date" name="fecha">
                 @error('fecha') <span class=""> {{$message}}</span>@enderror</label>
-            <label class="font-semibold">Hora inicio:
-                <input class="border border-blue-400 rounded-md my-2" type="time" name="hora">
+                <label class="font-semibold my-1 mr-4">Hora inicio:
+                    <input class="border border-blue-400 rounded-md my-2" type="time" name="hora">
                 @error('hora') <span class=""> {{$message}}</span>@enderror</label>
-            <label class="font-semibold">Descripcion: </label>
+            </div>
+            
+            <label class="font-semibold my-1 mr-4">Descripcion: </label>
         </div>
-        <textarea name="descripcion_actividad" id="" cols="30" rows="3" class="col-span-2 border border-blue-400 rounded-md my-2"></textarea>
-        <button class="btn basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-green-500" type="submit">Crear Actividad</button>
-        {{-- <a class="basis-1/4 h-10 pt-2.5 ml-1 col-span-1 inline-block align-middle text-center border border-black rounded-md bg-red-500" href="{{e(route('evento.ver.get', session('evento_id')))}}">Cancelar</a> --}}
-        <label for="my-modal-3" class="btn basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-red-500">Cancelar</label>
-
+        <textarea name="descripcion_actividad" id="" cols="30" rows="3" class="border border-blue-400 rounded-md mt-4 w-full"></textarea>
+        <div class="flex flex-row justify-center my-4 w-full">
+            <button class=" btn basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-green-500 hover:bg-green-700 hover:text-white hover:border-blue-100" type="submit">Crear Actividad</button>
+            <label for="my-modal-3" class="btn basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-red-500 hover:bg-red-700 hover:text-white">Cancelar</label>
+        </div>
+        
     </form>
 </div>
 </div>

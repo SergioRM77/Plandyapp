@@ -20,14 +20,47 @@
 </article>
 
 @if (session("is_activo") && $isAdmin->is_admin_principal)
-    <form class="grid justify-items-center" action="{{e(route('evento.finalizar'))}}" method="get">
-        <button class="border-black w-2/5 btn py-2 px-4 bg-red-600 text-white font-semibold shadow-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75" >Finalizar Evento</button>
-    </form>
+<div class="flex justify-center">
+<label for="my-modal-6" class="border-black w-2/5 btn py-2 px-4 bg-red-600 text-white font-semibold shadow-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">Finalizar Evento</label>
+</div>
+<input type="checkbox" id="my-modal-6" class="modal-toggle" />
+
+<div class="modal">
+<div class="modal-box w-11/12 max-w-5xl bg-red-50">
+    <h3 class="font-bold text-lg">¡Vas a finalizar evento!</h3>
+    <p class="py-4">Si finalizas evento tanto tú como los demás usuarios no podréis modificar y añadir nada.¿Estás seguro?</p>
+    <div class="modal-action">
+        <div class="flex flex-row justify-center my-4 w-full">
+            <form  action="{{e(route('evento.finalizar'))}}" method="get">
+                <button class="btn basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-red-500 hover:bg-red-700 hover:text-white">Finalizar Evento</button>
+            </form>
+            <label for="my-modal-6" class=" btn basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-green-500 hover:bg-green-700 hover:text-white hover:border-blue-100">Cancelar</label>
+        </div>
+    </div>
+  </div>
+</div>
 @endif
 @if (!session("is_activo"))
-    <form class="grid justify-items-center" action="{{e(route('evento.eliminar'))}}" method="get">
-        <button class="border-black w-2/5 btn py-2 px-4 bg-red-600 text-white font-semibold shadow-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75" >Borrar Evento para mi</button>
-    </form>
+<div class="flex justify-center">
+<label for="my-modal-5" class="border-black w-2/5 btn py-2 px-4 bg-red-600 text-white font-semibold shadow-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">Borrar evento para mi</label>
+</div>
+
+<input type="checkbox" id="my-modal-5" class="modal-toggle" />
+
+<div class="modal">
+  <div class="modal-box w-11/12 max-w-5xl bg-red-50">
+    <h3 class="font-bold text-lg">¡Borrar evento!</h3>
+    <p class="py-4">Si borras este evento dejarás de verlo en tus eventos finalizados.¿Estás seguro?</p>
+    <div class="modal-action">
+        <div class="flex flex-row justify-center my-4 w-full">
+            <form  action="{{e(route('evento.eliminar'))}}" method="get">
+                <button class="btn basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-red-500 hover:bg-red-700 hover:text-white">Borrar Evento para mi</button>
+            </form>
+            <label for="my-modal-5" class="btn basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-green-500 hover:bg-green-700 hover:text-white hover:border-blue-100">Cancelar</label>
+        </div>
+    </div>
+  </div>
+</div>
 @endif
 <article class="my-10">
     <h4 class="border border-black text-center bg-green-500 text-xl">Has entregado: {{session('pagado')}}€/{{session('mediaPagos')}}€</h4>
@@ -42,3 +75,7 @@
             <p>Pegar aqui el formulario, hay que corregir el width por defecto</p>
         </label>
     </label>  --}}
+<!-- The button to open modal -->
+
+
+<!-- Put this part before </body> tag -->

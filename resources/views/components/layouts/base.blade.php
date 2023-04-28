@@ -14,12 +14,17 @@
 <body class="scrollbar scrollbar-thumb-gray-400 scrollbar-thumb-rounded-sm">
     <x-layouts.sidebar/>
     <hr>
-    @if (session('status'))
-        <div class="mt-10">
-            {{session('status')}}
-        </div>
-    @endif
+    
     <main class="md:container md:w-3/4 md:my-10 m-3 mt-8">
+        @if (session('status'))
+          <div class="flex justify-center">
+            <div class="alert shadow-lg bg-blue-50 sm:w-2/4 border border-blue-300">
+                <p>{{session('status')}}</p>
+            </div>
+          </div>
+      @endif
+      
+      
         {{$slot}}
     </main>
     {{-- <label for="my-modal-4" class="btn ml-44">Modal que desaparece pinchando fuera</label>
