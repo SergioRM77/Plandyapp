@@ -79,7 +79,7 @@ Route::post('evento/eliminar-actividad', [ActividadesController::class, 'elimina
 Route::post('evento/add-participante-actividad',  [ActividadesController::class, 'unirseActividad'])->name('add.participante.actividad')->middleware('auth');
 Route::post('evento/eliminar-participante-actividad',  [ActividadesController::class, 'salirDeActividad'])->name('delete.participante.actividad')->middleware('auth');
 
-Route::get('mensajeria',MensajeriaController::class)->name('mensajeria')->middleware('auth');
+Route::get('mensajeria',[MensajeriaController::class, 'verMensajeria'])->name('mensajeria')->middleware('auth');
 // Route::get('mensajeria/chat',[ChatController::class, 'chatPrivado'])->name('chat')->middleware('auth');
 Route::get('mensajeria/chat/{user}-{contacto}',[ChatController::class, 'abrirChatPrivado'])->name('abrirChatPrivadoGet')->middleware('auth');
 // Route::post('mensajeria/chat',[ChatController::class, 'abrirChatPrivado'])->name('abrirChatPrivado')->middleware('auth');

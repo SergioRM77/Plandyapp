@@ -1,7 +1,7 @@
 <h4 class="border border-black bg-violet-400 pl-2">Participantes</h4>
     <div class="border border-black rounded-b-lg p-2 mx-2">        
         @foreach ($listaParticipantes as $item => $participante)
-            <a href="{{e(route('contactos.ver', $alias = $participante->alias))}}" class="bg-yellow-300 rounded-full px-2">@-{{$participante->alias}} </a>
+            <a href="{{e(route('contactos.ver', $participante->alias))}}" class="bg-yellow-300 rounded-full px-2">@-{{$participante->alias}} </a>
         @endforeach
         @if ( $evento["is_activo"] && ($isAdmin->is_admin_principal == true || $isAdmin->is_admin_secundario == true))
         <div class="flex">

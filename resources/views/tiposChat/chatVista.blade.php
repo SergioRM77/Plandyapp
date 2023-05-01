@@ -14,7 +14,7 @@
             @endif
             <div class="flex flex-col leading-tight">
                <div class="text-2xl mt-1 flex items-center">
-                  <span class="text-gray-700 mr-3">@-{{session('alias')}}</span>
+                  <span class="text-gray-700 mr-3">@-{{$contacto->alias}}</span>
                </div>
             </div>
          </div>

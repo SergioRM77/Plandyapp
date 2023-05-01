@@ -19,14 +19,15 @@ class MensajeriaController extends Controller
     }
 
     public static function verMensajeria(){
-        $mensajeriaPrivadaIDs = DB::select("SELECT usuario_origen_id as usuario_id FROM chat
-                                                WHERE usuario_destino_id = ?
-                                            UNION SELECT ususario_destino_id as usuario_id FROM chat
-                                                WHERE  usuario_origen_id = ? ", 
-                                        [session('id'), session('id')]);
+        $usuariosChatPrivados = DB::select("SELECT alias, id, localidad, foto, intereses FROM users
+                                            WHERE users.id IN (
+                                            SELECT IF(usuario_origen_id = ?,  usuario_destino_id, usuario_origen_id) as usuario_id  FROM chat
+                                            WHERE usuario_origen_id = ? OR usuario_destino_id = ?
+                                            group by usuario_id)", 
+                                        [session('id'), session('id'), session('id')]);
         $mensajeriaEventosIDs = DB::select("SELECT evento_id FROM chats_eventos
                                                 WHERE usuario_id = ?", [session('id')]);
-        return view('mensajeriaVista', compact('mensajeriaPrivadaIDs', 'mensajeriaEventosIDs'));
+        return view('mensajeriaVista', compact('usuariosChatPrivados'));
         
     }
 }
