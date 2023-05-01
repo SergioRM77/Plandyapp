@@ -11,6 +11,7 @@ use App\Models\User_evento;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use App\Http\ControllersMensajeriaController;
+use DateTime;
 
 class ChatController extends Controller
 {
@@ -22,42 +23,52 @@ class ChatController extends Controller
         return view('tiposChat.chatVista');
     }
 
-    public function abrirChatPrivado(Request $request){
-        $conversacion = DB::select("SELECT chat.usuario_origen_id, chat.usuario_destino_id FROM chat
+    public function abrirChatPrivado($user, $contacto){
+        $contacto = User::select('id','alias', 'foto')->where('alias', $contacto)->first();
+        $conversacion = DB::select("SELECT chat.usuario_origen_id, chat.contenido FROM chat
                                         WHERE (usuario_origen_id = ? AND usuario_destino_id = ?)
-                                            OR (usuario_origen_id = ? AND usuario_destino_id = ?)",
-                                            [session('id'), $request->usuario_id, $request->uauario_id, session('id')]);
-        $alias = DB::select("SELECT users.id, users.alias FROM users
-                                WHERE users.id = ?", [session('id')]);
+                                            OR (usuario_origen_id = ? AND usuario_destino_id = ?)
+                                            ORDER BY fecha_y_hora ASC",
+                                            [session('id'), $contacto->id, $contacto->id, session('id')]);
         
-        return view('tiposChat.chatVista', compact('conversacion', 'alias'));
+        return view('tiposChat.chatVista', compact('conversacion', 'contacto'));
     }
+    // public function abrirChatPrivado(Request $request){
+    //     $conversacion = DB::select("SELECT chat.usuario_origen_id, chat.contenido FROM chat
+    //                                     WHERE (usuario_origen_id = ? AND usuario_destino_id = ?)
+    //                                         OR (usuario_origen_id = ? AND usuario_destino_id = ?)
+    //                                         ORDER BY fecha_y_hora ASC",
+    //                                         [session('id'), $request->usuario_id, $request->usuario_id, session('id')]);
+    //     $alias = User::select('id','alias')->where('id', $request->usuario_id)->first();
+    //     // return compact('alias', 'conversacion');
+    //     return view('tiposChat.chatVista', compact('conversacion', 'alias'));
+    // }
 
     public function enviarMensajeChatPrivado(Request $request){
+        $contacto = User::select('id')->where('alias', $request->contacto)->first();
         try {
-            if ($this->validarMensaje($request)) {
+            if ($this->validarMensaje($request, $contacto->id)) {
                 $mensaje = new Chat();
                 $mensaje->usuario_origen_id = session('id');
-                $mensaje->usuario_destino_id = $request->input('usuario_id');
+                $mensaje->usuario_destino_id = $contacto->id;
                 $mensaje->contenido = $request->input('contenido');
+                $mensaje->fecha_y_hora = now();
+                $mensaje->timestamps = false;
                 $mensaje->save();
             }
-            return $this->enviarMensajeChatPrivado($request);
         } catch (Exception $th) {
-            session()->flash('status', 'No se ha podido enviar mensaje');
-            return MensajeriaController::verMensajeria();
+            session()->flash('status', $th->getMessage());
         }
-        
+        return redirect()->route('abrirChatPrivadoGet', [session('alias'), $request->contacto]);
         
         
 
     }
 
-    public function validarMensaje(Request $request){
-        return $request->validate([
-            'contenido' => 'required|max:254',
-            'usuario_id' => 'required|numeric'
-        ]);
+    public function validarMensaje(Request $request, int $idContacto){
+
+        return $request->validate(['contenido' => 'required|max:254']) && is_numeric($idContacto);
+        
     }
 
     //CHATS DE EVENTOS

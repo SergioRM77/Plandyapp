@@ -11,9 +11,16 @@
                 <p class="bg-yellow-300 rounded-full px-1">@-{{$user['alias']}}</p>
             </div>
         </div>
-            <div class="items-center border border-black rounded-md bg-blue-500 p-1 mr-4">
-                <a class="text-white px-4" href="{{e(route('chat'))}}">Abrir chat</a>
-            </div>
+            
+            {{-- <form class="items-center border border-black rounded-md bg-blue-500 p-1 mr-4" action="{{route('abrirChatPrivado')}}" method="POST">
+            @csrf
+            <input type="hidden" name="usuario_id" value="{{$user['id']}}">
+                <button class="text-white px-4" >Abrir chat</button>
+            </form> --}}
+            <form class="items-center border border-black rounded-md bg-blue-500 p-1 mr-4" action="{{route('abrirChatPrivadoGet', [session('alias'),$user['alias']])}}" method="GET">
+                {{-- <input type="hidden" name="usuario_id" value="{{$user['id']}}"> --}}
+                    <button class="text-white px-4" >Abrir chat</button>
+                </form>
     </div>
     <div class="pl-3">
         <p>Ciudad: {{$user['localidad']}}</p>
