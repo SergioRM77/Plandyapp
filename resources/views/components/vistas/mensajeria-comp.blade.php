@@ -1,6 +1,6 @@
 <article>
     
-    <section class="mensajes-de-evento">
+    <section class="mensajes-chat">
         <h3 class="border border-black bg-green-300 pl-2 mx-1 text-center">CHATS PRIVADOS</h3>
         @foreach ($chatPrivados as $usuario)
             <div class="">
@@ -25,9 +25,25 @@
                     </div>
             </div>
         @endforeach
-        <hr class="border border-black my-2 rounded-full">
-          
-            <a href="{{e(route('chatevento'))}}">abrir chat de evento</a>
+        
+    </section>
+    <hr class="border border-black my-2 rounded-full">
+    <section>
+        <h3 class="border border-black bg-orange-400 pl-2 mx-1 text-center">CHATS DE EVENTOS</h3>
+        @foreach ($eventosChat as $evento)
+            <div class="">
+                    <div class="flex items-center justify-between border rounded-md border-black bg-blue-400 p-1">
+                        <div class="flex items-center bg-orange-400 p-2">
+                            <p>Nombre: <span class="bg-yellow-300 rounded-md px-2">{{$evento->nombre_evento}}</span> </p>
+                        </div>
+                        <a href="{{e(route('evento.ver.get.get', [$evento->id, $evento->nombre_evento]))}}" class="btn bg-yellow-300 border-2 border-gray-400 rounded-full hover:bg-orange-400 mr-2">Ver Evento</a>
+                        <div class="flex justify-end p-1 mr-4">
+                            <a class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded border-b-2 border-green-900" 
+                                    href="{{route('chatevento',[$evento->nombre_evento, $evento->id, session('alias')])}}">Abrir chat Evento</a>
+                        </div>
+                    </div>
+            </div>
+        @endforeach
     </section>
     <hr>
 </article>

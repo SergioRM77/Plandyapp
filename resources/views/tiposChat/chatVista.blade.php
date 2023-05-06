@@ -50,7 +50,7 @@
                @csrf
                <div class="relative flex">
                   <input type="hidden" name="contacto" value="{{$contacto->alias}}">
-                  <input type="text" name="contenido" placeholder="Escribe tu mensaje!" class="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3">
+                  <input type="text" name="contenido" placeholder="Escribe tu mensaje!"  autocomplete="off" class="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3">
                   <div class="absolute right-0 items-center inset-y-0 hidden sm:flex">
                   <button type="submit" class="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none">enviar mensaje</button>
                </div>
@@ -60,32 +60,9 @@
    </div>
 </div>
 
-<style>
-.scrollbar-w-2::-webkit-scrollbar {
-width: 0.25rem;
-height: 0.25rem;
-}
-
-.scrollbar-track-blue-lighter::-webkit-scrollbar-track {
---bg-opacity: 1;
-background-color: #f7fafc;
-background-color: rgba(247, 250, 252, var(--bg-opacity));
-}
-
-.scrollbar-thumb-blue::-webkit-scrollbar-thumb {
---bg-opacity: 1;
-background-color: #edf2f7;
-background-color: rgba(237, 242, 247, var(--bg-opacity));
-}
-
-.scrollbar-thumb-rounded::-webkit-scrollbar-thumb {
-border-radius: 0.25rem;
-}
-</style>
-
+</div>
 <script>
    const el = document.getElementById('messages')
    el.scrollTop = el.scrollHeight
 </script>
-
 </x-layouts.base>

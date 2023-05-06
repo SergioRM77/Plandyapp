@@ -84,8 +84,8 @@ Route::get('mensajeria',[MensajeriaController::class, 'verMensajeria'])->name('m
 Route::get('mensajeria/chat/{user}-{contacto}',[ChatController::class, 'abrirChatPrivado'])->name('abrirChatPrivadoGet')->middleware('auth');
 // Route::post('mensajeria/chat',[ChatController::class, 'abrirChatPrivado'])->name('abrirChatPrivado')->middleware('auth');
 Route::post('mensajeria/chat/enviar',[ChatController::class, 'enviarMensajeChatPrivado'])->name('enviar.mensaje.privado')->middleware('auth');
-Route::get('mensajeria/chatevento/',[ChatController::class, 'chatEvento'])->name('chatevento')->middleware('auth');
-Route::get('mensajeria/chatreporte/',[ChatController::class, 'chatReporte'])->name('chatreporte')->middleware('auth');
+Route::get('mensajeria/chat/evento/{nombre_evento}-{id_evento}-{user}',[ChatController::class, 'abrirChatEvento'])->name('chatevento')->middleware('auth');
+Route::post('mensajeria/chat/evento/enviar',[ChatController::class, 'enviarMensajeChatEvento'])->name('enviar.mensaje.chat.evento')->middleware('auth');
 
 Route::view('acercade', 'acercade')->name('acercade')->middleware('auth');
 Route::get("ajustes", [AjustesUsuarioController::class, 'ajustes'])->name('ajustes')->middleware('auth');

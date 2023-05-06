@@ -27,7 +27,11 @@ class MensajeriaController extends Controller
                                         [session('id'), session('id'), session('id')]);
         $mensajeriaEventosIDs = DB::select("SELECT evento_id FROM chats_eventos
                                                 WHERE usuario_id = ?", [session('id')]);
-        return view('mensajeriaVista', compact('usuariosChatPrivados'));
+        $eventosChat = DB::select("SELECT eventos.id, eventos.nombre_evento FROM eventos
+                                        RIGHT JOIN users_eventos ON users_eventos.evento_id = eventos.id
+                                        LEFT JOIN users ON users.id = users_eventos.user_id
+                                    WHERE users.id = ? AND eventos.is_activo = TRUE", [session('id')]);//users_eventos.is_visible = TRUE
+        return view('mensajeriaVista', compact('usuariosChatPrivados', 'eventosChat'));
         
     }
 }

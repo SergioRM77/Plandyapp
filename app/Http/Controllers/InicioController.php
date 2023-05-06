@@ -15,7 +15,7 @@ class InicioController extends Controller
     public function inicio()
     {
         $cadenaEventos =  $this->getEventosActivos();
-        $this->getDatosEventosActivos($cadenaEventos);
+        // $this->getDatosEventosActivos($cadenaEventos);
 
         $datosEventos = $this->getDatosEventos();
         $numEventosFinalizados = $this->getNumEventosFinalizados();
@@ -24,13 +24,14 @@ class InicioController extends Controller
         $actividades = $this->getActividadesEventos();
         $pagado = $this->getPagadoEventos();
         $eventos=[];
+        // return [ $datosEventos, $admins];
         for ($i=0; $i < count($datosEventos); $i++) { 
             $eventos[$i] = array_merge((array)$datosEventos[$i],(array)$participantes[$i],
                         (array)$admins[$i],
                         (array)$actividades[$i], 
                         (array)$pagado[$i]);
         }
-        // return $eventos;
+        
         return view('inicioVista',compact('eventos', 'numEventosFinalizados'));
     }
     

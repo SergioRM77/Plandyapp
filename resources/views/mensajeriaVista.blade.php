@@ -2,5 +2,5 @@
 
 <h2>Mensajería</h2>
 
-<x-vistas.mensajeria-comp :chatPrivados="$usuariosChatPrivados"/>
+<x-vistas.mensajeria-comp :chatPrivados="$usuariosChatPrivados" :eventosChat="$eventosChat"/>
 </x-layouts.base>
