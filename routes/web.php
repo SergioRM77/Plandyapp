@@ -15,6 +15,9 @@ use App\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ImagenesController;
 
+use App\Mail\PlandyAppMail;
+use Illuminate\Support\Facades\Mail;
+
 use App\View\Components\MyForm;
 use App\View\Components\TiposEvento\EventoSinPresu;
 
@@ -104,6 +107,13 @@ Route::delete('borrar-cuenta', [AjustesUsuarioController::class, 'deleteUser'])-
 Route::get('/setSession', [SessionController::class, 'setSessionData'])->name('setSessionData')->middleware('auth');
 Route::get('/getAccessSession', [SessionController::class, 'getAccessSession'])->name('getAccessSession')->middleware('auth');
 Route::get('/deleteSessionData', [SessionController::class, 'deleteSetSessionData'])->name('deleteSetSessionData')->middleware('auth');
+
+Route::get('enviarmensaje', function(){
+    $correo = new PlandyAppMail();
+
+    Mail::to('sr.work.pap01@gmail.com')->send($correo);
+    return "mensaje enviado2";
+});
 
 // Ejemplo formulario con componentes
 Route::view('sample', 'sample');
