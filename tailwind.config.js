@@ -27,7 +27,10 @@ module.exports = {
       'large': '12px',
     },
     extend: {
-
+      backgroundImage: {
+        'fondo-inicio': "url('/public/images/playa.jpg')",
+        
+      }
     },
   },
   plugins: [

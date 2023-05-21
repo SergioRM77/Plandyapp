@@ -87,7 +87,8 @@ class EventoController extends Controller
         
         // tabla users_eventos.is_visible
         $isAdmin = User_evento::select('is_admin_principal','is_admin_secundario', 'is_visible')->where('evento_id',$evento->id)->where('user_id', session('id'))->first();
-
+        session(["evento_id" => $request->id,'tipo_evento' => $evento->tipo_evento_id, 
+        'is_activo' => $evento->is_activo, 'is_visible' => $isAdmin->is_visible]);
         $gastos = (new GastosController)->getListaGastos($request->id);
         $gastospresu = (new GastosController)->getListaGastosPresu($request->id);
         $listapagos = (new GastosController)->pagadoEvento($request->id);
@@ -96,8 +97,7 @@ class EventoController extends Controller
                                         LEFT JOIN users   ON users.id = users_eventos.user_id WHERE evento_id = ?", [$request->id]);
         $actividades = (new ActividadesController)->listaActividades();
         $listaParticipantesActividades = (new ActividadesController)->participantesEnActividades();
-        session(["evento_id" => $request->id,'tipo_evento' => $evento->tipo_evento_id, 
-                        'is_activo' => $evento->is_activo, 'is_visible' => $isAdmin->is_visible]);
+        
         return view('vistasTiposEvento.eventoVista', compact('evento', 'isAdmin', 'gastos', 'listapagos', 'deben', 'listaParticipantes',
                     'actividades', 'listaParticipantesActividades','gastospresu'));
     }

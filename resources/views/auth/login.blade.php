@@ -12,47 +12,47 @@
 <body>
     <header class="fixed w-full flex items-center justify-between h-10 z-10 bg-gradient-to-r from-blue-700 to-blue-500">
     </header>
-    
-    <main class="grid bg-blue-100 grid-cols-1 md:grid-cols-3 content-center h-screen">
-        <div></div>
-        <h1 class="grid md:col-start-2">Bienvenido a PlandyApp</h1>
-        <p class="grid md:col-start-2">Plataforma de gestion de gastos para viajes, eventos y actividades en grupo.
-             @if (session('status'))
-                        <span class="text-red-500">*{{session('status')}}</span>
-            @endif
-        </p>
-       
-        <div class="grid bg-blue-300 md:col-start-2 border-2 rounded-md border-blue-500 p-4 sm:w-full">
-            <h2>Login:</h2>
-            <form  action="{{route('login')}}" method="POST">
-                @csrf
-                <div class="grid content-center">
-                    <div class="grid grid-row-2">
-                        <label for="alias">Nombre de usuario (Alias):</label>
-                        <input class="w-3/4 lg:w-3/4 sm:w-full border border-blue-500 rounded-md my-1" type="text" name="alias">@error('alias') <span> {{$message}}</span> @enderror
-                        
+    <div class="bg-fondo-inicio bg-no-repeat bg-blue-100 bg-cover">
+        <main class="grid grid-cols-1 md:grid-cols-3 content-center h-screen">
+            
+            <h1 class="grid md:col-start-2">Bienvenido a PlandyApp</h1>
+            <p class="grid md:col-start-2">Plataforma de gestion de gastos para viajes, eventos y actividades en grupo.
+                @if (session('status'))
+                            <span class="text-red-500">*{{session('status')}}</span>
+                @endif
+            </p>
+        
+            <div class="grid bg-blue-300 md:col-start-2 border-2 rounded-md border-blue-500 p-4 sm:w-full">
+                <h2>Login:</h2>
+                <form  action="{{route('login')}}" method="POST">
+                    @csrf
+                    <div class="grid content-center">
+                        <div class="grid grid-row-2">
+                            <label for="alias">Nombre de usuario (Alias):</label>
+                            <input class="w-3/4 lg:w-3/4 sm:w-full border border-blue-500 rounded-md my-1" type="text" name="alias">@error('alias') <span> {{$message}}</span> @enderror
+                            
+                        </div>
+                        <div class="grid grid-row-2">
+                            <label for="password">Contraseña:</label>
+                            <input class="w-3/4 lg:w-3/4 sm:w-full border border-blue-500 rounded-md my-1" type="password" name="password">@error('password') <span> {{$message}}</span> @enderror
+                        </div>
                     </div>
-                    <div class="grid grid-row-2">
-                        <label for="password">Contraseña:</label>
-                        <input class="w-3/4 lg:w-3/4 sm:w-full border border-blue-500 rounded-md my-1" type="password" name="password">@error('password') <span> {{$message}}</span> @enderror
+                    
+                    <div class="flex md:justify-between">
+                        <a class="btn bg-blue-500 hover:bg-blue-700 hover:text-white w-2/5" href="{{e(route('registrarse'))}}">Registrate aquí</a>
+                        <button class="btn bg-green-500 hover:bg-green-700 hover:text-white w-2/5" type="submit">Entrar</button>
                     </div>
-                </div>
-                
-                <div class="grid content-center lg:flex md:flex lg:justify-center md:justify-center">
-                    <a class="btn w-3/4 sm:w-full md:w-full lg:w-1/2 border border-black rounded-md bg-blue-500 py-1 p-2 my-2 mx-2 text-center" href="{{e(route('registrarse'))}}">Registrate aquí</a>
-                    <button class="btn w-3/4 sm:w-full md:w-full lg:w-1/2 border border-black rounded-md bg-green-500 py-1 p-2 my-2 mx-2" type="submit">Entrar</button>
-                </div>
-            </form>
-            <label for="my-modal-1" class="btn bg-amber-300 my-3">¿Has olvidado contraseña o nombre de usuario?
-            </label>
-        </div>
-    </main>
-    
+                </form>
+                <label for="my-modal-1" class="btn bg-orange-300 hover:bg-orange-700 hover:text-white mt-2">¿Has olvidado contraseña o nombre de usuario?
+                </label>
+            </div>
+        </main>
+    </div>
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="my-modal-1" class="modal-toggle" />
 <div class="modal modal-bottom sm:modal-middle">
-  <div class="modal-box bg-amber-300 my-3">
+  <div class="modal-box bg-orange-100 my-3">
     <h3 class="font-bold text-lg">Para recuperar contraseña ingresa tu correo electrónico</h3>
     <p class="py-4">Ingresa el correo electrónico y recibirás un email con los pasos para cambiar contraseña</p>
     <form action="{{route('solicitud.cambio.password')}}" method="post">
@@ -72,7 +72,7 @@
 
 <input type="checkbox" id="my-modal-2" class="modal-toggle" />
 <div class="modal modal-bottom sm:modal-middle">
-  <div class="modal-box bg-amber-300 my-3">
+  <div class="modal-box bg-orange-200 my-3">
     <h3 class="font-bold text-lg">Has solicitado cambio de contraseña</h3>
     <p class="py-4">Si existe en nuestra aplicación el correo proporcionado recibirá
         un código de verificación, rellena los siguientes campos y recibirás otro con la nueva

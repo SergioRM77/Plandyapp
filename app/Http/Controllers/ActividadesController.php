@@ -105,7 +105,7 @@ class ActividadesController extends Controller
     }
 
     public function listaActividades(){
-        return Actividad::where('evento_id', '=', session('evento_id'))->get();
+        return Actividad::where('evento_id', '=', session('evento_id'))->orderBy('created_at', 'desc')->get();
     }
 
 

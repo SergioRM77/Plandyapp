@@ -26,7 +26,7 @@ class GastosController extends Controller
      */
     public function getListaGastos($evento_id){
         return DB::select("SELECT gastos.id, gastos.evento_id, gastos.usuario_id, gastos.descripcion, gastos.coste, gastos.foto, gastos.created_at,  gastos.is_aceptado, users.alias as alias, gastos.foto FROM gastos 
-                            LEFT JOIN users ON gastos.usuario_id = users.id  WHERE gastos.evento_id = ?",[$evento_id]);
+                            LEFT JOIN users ON gastos.usuario_id = users.id  WHERE gastos.evento_id = ? ORDER BY gastos.created_at DESC",[$evento_id]);
     }
 
     /**
@@ -219,7 +219,7 @@ class GastosController extends Controller
                                     gastos_de_presupuesto.descripcion_gasto_pre, gastos_de_presupuesto.coste, 
                                     gastos_de_presupuesto.foto, gastos_de_presupuesto.created_at, 
                                     users.alias as alias FROM gastos_de_presupuesto 
-                            LEFT JOIN users ON gastos_de_presupuesto.admin_id = users.id  WHERE gastos_de_presupuesto.evento_id = ?",[$evento_id]);
+                            LEFT JOIN users ON gastos_de_presupuesto.admin_id = users.id  WHERE gastos_de_presupuesto.evento_id = ? ORDER BY gastos_de_presupuesto.created_at DESC",[$evento_id]);
     }
 
     /**
