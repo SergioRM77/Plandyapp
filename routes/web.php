@@ -14,6 +14,7 @@ use App\Http\Controllers\LoginRegisterController;
 use App\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ImagenesController;
+use App\Http\Controllers\MailController;
 
 use App\Mail\PlandyAppMail;
 use Illuminate\Support\Facades\Mail;
@@ -109,11 +110,17 @@ Route::get('/getAccessSession', [SessionController::class, 'getAccessSession'])-
 Route::get('/deleteSessionData', [SessionController::class, 'deleteSetSessionData'])->name('deleteSetSessionData')->middleware('auth');
 
 Route::get('enviarmensaje', function(){
-    $correo = new PlandyAppMail();
+    $correo = new PlandyAppMail('');
 
-    Mail::to('sr.work.pap01@gmail.com')->send($correo);
+    // Mail::to('sr.work.pap01@gmail.com')->send($correo);
     return "mensaje enviado2";
 });
+Route::get('/datoscorreo', [MailController::class, 'verCorreo'])->name('recibir.correo');
+Route::post('/datoscorreo', [MailController::class, 'mostrarDatosCorreo'])->name('mostrar.correo');
+Route::post('/correo-nuevo', [MailController::class, 'mostrarDatosCorreo'])->name('nuevo.correo.pass');
+Route::post('/solicitud-cambio-password', [MailController::class, 'generarClaveRecuperacion'])->name('solicitud.cambio.password');
+Route::post('/nueva-password', [MailController::class, 'solicitarCambioContrasenna'])->name('nueva.password');
+
 
 // Ejemplo formulario con componentes
 Route::view('sample', 'sample');

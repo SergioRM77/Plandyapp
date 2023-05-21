@@ -14,7 +14,7 @@
                     <x-vistas.botones.agregar :agregado="$user->alias"/>
                 @endif
 
-                <a class="border border-black rounded-md bg-red-500 py-1 px-2 my-2 text-white" href="{{e(route('chatreporte'))}}">Reportar</a>
+                {{-- <a class="border border-black rounded-md bg-red-500 py-1 px-2 my-2 text-white" href="{{e(route('chatreporte'))}}">Reportar</a> --}}
 
             @endif
             

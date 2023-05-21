@@ -14,14 +14,17 @@ class PlandyAppMail extends Mailable
     use Queueable, SerializesModels;
 
     public $subject = "Información de PlandyApp!!";
+    protected $direccion;
+    public $datos;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(string $direccion, array $datosAsoc = [])
     {
-        //
+        $this->direccion = $direccion;
+        $this->datos = $datosAsoc;
     }
 
     /**
@@ -43,8 +46,12 @@ class PlandyAppMail extends Mailable
      */
     public function content()
     {
+        
         return new Content(
-            view: 'mails.send',
+            view: $this->direccion,
+            with: [
+                "datos" => $this->datos
+            ]
         );
     }
 
@@ -58,7 +65,7 @@ class PlandyAppMail extends Mailable
         return [];
     }
 
-    public function build(){
-        return $this->view("emails.send");
-    }
+    // public function build(){
+    //     return $this->view("emails.send");
+    // }
 }

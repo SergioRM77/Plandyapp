@@ -14,8 +14,14 @@
     </header>
     
     <main class="grid bg-blue-100 grid-cols-1 md:grid-cols-3 content-center h-screen">
+        <div></div>
         <h1 class="grid md:col-start-2">Bienvenido a PlandyApp</h1>
-        <p class="grid md:col-start-2">Plataforma de gestion de gastos para viajes, eventos y actividades en grupo</p>
+        <p class="grid md:col-start-2">Plataforma de gestion de gastos para viajes, eventos y actividades en grupo.
+             @if (session('status'))
+                        <span class="text-red-500">*{{session('status')}}</span>
+            @endif
+        </p>
+       
         <div class="grid bg-blue-300 md:col-start-2 border-2 rounded-md border-blue-500 p-4 sm:w-full">
             <h2>Login:</h2>
             <form  action="{{route('login')}}" method="POST">
@@ -33,13 +39,64 @@
                 </div>
                 
                 <div class="grid content-center lg:flex md:flex lg:justify-center md:justify-center">
-                    <a class="w-3/4 sm:w-full md:w-full lg:w-1/2 border border-black rounded-md bg-blue-500 py-1 p-2 my-2 mx-2 text-center" href="{{e(route('registrarse'))}}">Registrate aquí</a>
-                    <button class="w-3/4 sm:w-full md:w-full lg:w-1/2 border border-black rounded-md bg-green-500 py-1 p-2 my-2 mx-2" type="submit">Entrar</button>
+                    <a class="btn w-3/4 sm:w-full md:w-full lg:w-1/2 border border-black rounded-md bg-blue-500 py-1 p-2 my-2 mx-2 text-center" href="{{e(route('registrarse'))}}">Registrate aquí</a>
+                    <button class="btn w-3/4 sm:w-full md:w-full lg:w-1/2 border border-black rounded-md bg-green-500 py-1 p-2 my-2 mx-2" type="submit">Entrar</button>
                 </div>
-
             </form>
+            <label for="my-modal-1" class="btn bg-amber-300 my-3">¿Has olvidado contraseña o nombre de usuario?
+            </label>
         </div>
     </main>
     
+
+<!-- Put this part before </body> tag -->
+<input type="checkbox" id="my-modal-1" class="modal-toggle" />
+<div class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box bg-amber-300 my-3">
+    <h3 class="font-bold text-lg">Para recuperar contraseña ingresa tu correo electrónico</h3>
+    <p class="py-4">Ingresa el correo electrónico y recibirás un email con los pasos para cambiar contraseña</p>
+    <form action="{{route('solicitud.cambio.password')}}" method="post">
+        @csrf
+        <label for="">Correo electrónico de recuperación: 
+            <input class="w-full border border-blue-500 rounded-md my-1" type="text" name="email">
+        </label>
+        <input type="submit" class="btn bg-green-500 hover:bg-green-700 hover:text-white" value="1º Enviar Petición de cambio">
+    </form>
+    <div class="modal-action flex justify-between">
+        <label for="my-modal-2" class="btn bg-blue-500 hover:bg-blue-700 hover:text-white">2º realizar cambio de contraseña
+        </label>
+        <label for="my-modal-1" class="btn bg-red-500 hover:bg-red-700 hover:text-white">Cancelar</label>
+    </div>
+  </div>
+</div>
+
+<input type="checkbox" id="my-modal-2" class="modal-toggle" />
+<div class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box bg-amber-300 my-3">
+    <h3 class="font-bold text-lg">Has solicitado cambio de contraseña</h3>
+    <p class="py-4">Si existe en nuestra aplicación el correo proporcionado recibirá
+        un código de verificación, rellena los siguientes campos y recibirás otro con la nueva
+        contraseña
+    </p>
+    <form action="{{route('nueva.password')}}" method="post">
+        @csrf
+        <label for="">Código de verificación:
+            <input class="w-full border border-blue-500 rounded-md my-1" type="text" name="codigo">
+        </label>
+        <label>Nombre de usuario (Alias):
+            <input class="w-full border border-blue-500 rounded-md my-1" type="text" name="alias">
+        </label>
+        <label for="">Correo electrónico:
+            <input class="w-full border border-blue-500 rounded-md my-1" type="email" name="email" id="">
+        </label>
+
+    
+    <div class="modal-action flex justify-between">
+        <button for="my-modal-2" class="btn bg-green-500 hover:bg-green-700 hover:text-white">Enviar datos</button>
+    <label for="my-modal-2" class="btn bg-red-500 hover:bg-red-700 hover:text-white">Cancelar</label>
+    </form>
+    </div>
+  </div>
+</div>
 </body>
 </html>
