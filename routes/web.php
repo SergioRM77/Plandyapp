@@ -91,7 +91,8 @@ Route::post('mensajeria/chat/enviar',[ChatController::class, 'enviarMensajeChatP
 Route::get('mensajeria/chat/evento/{nombre_evento}-{id_evento}-{user}',[ChatController::class, 'abrirChatEvento'])->name('chatevento')->middleware('auth');
 Route::post('mensajeria/chat/evento/enviar',[ChatController::class, 'enviarMensajeChatEvento'])->name('enviar.mensaje.chat.evento')->middleware('auth');
 
-Route::view('acercade', 'acercade')->name('acercade')->middleware('auth');
+Route::view('acercade', 'acercadeVista')->name('acercade')->middleware('auth');
+Route::view('acercade-info-bienvenida', 'acercadeInfo-Bienvenida')->name('acercade.bienvenida');
 Route::get("ajustes", [AjustesUsuarioController::class, 'ajustes'])->name('ajustes')->middleware('auth');
 Route::patch("ajustes", [AjustesUsuarioController::class, 'update'])->name('updateUser')->middleware('auth');
 

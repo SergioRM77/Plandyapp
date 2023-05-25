@@ -1,4 +1,4 @@
-<div class="flex justify-between border border-black bg-lime-50 p-3">
+<div class="flex justify-between border border-black rounded-md bg-lime-50 p-3 mb-2">
     <div>
         @if (session('tipo_evento') == 1)
         <h3 class="text-center border border-black rounded-md bg-yellow-400 font-semibold">Evento SIN PRESUPUESTO</h3>

@@ -29,6 +29,7 @@ module.exports = {
     extend: {
       backgroundImage: {
         'fondo-inicio': "url('/public/images/playa.jpg')",
+        'logo': "url('/public/images/logo_prueba5.png')"
         
       }
     },

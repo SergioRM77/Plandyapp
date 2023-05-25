@@ -11,6 +11,7 @@
 </head>
 <body class="bg-blue-100">
     <header class="fixed w-full h-10 bg-gradient-to-r from-blue-700 to-blue-500 mt-auto top-0">
+        <img src="{{asset('images/logo_prueba5.png')}}" alt="" class="h-10">
     </header>
     <div class="bg-fondo-inicio bg-no-repeat bg-blue-100 bg-cover">
         <main class="grid  grid-cols-1 md:grid-cols-3 content-center pt-24">
@@ -35,6 +36,10 @@
                         <div class="grid grid-row-2">
                             <label for="alias">* Alias:</label>
                             <input class="w-3/4 lg:w-3/4 sm:w-full border border-blue-500 rounded-md my-1" type="text" name="alias" value="{{old("alias")}}" >@error('alias') <span> {{$message}}</span> @enderror
+                        </div>
+                        <div class="grid grid-row-2">
+                            <label for="direccion">*Email:</label>
+                            <input class="w-3/4 lg:w-3/4 sm:w-full border border-blue-500 rounded-md my-1" type="email" name="email" value="{{old('direccion')}}">@error('email') <span> {{$message}}</span> @enderror
                         </div>
                         <div class="grid grid-row-2">
                             <label for="telefono">Teléfono:</label>

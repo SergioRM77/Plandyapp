@@ -1,5 +1,8 @@
-<h4 class="border border-black bg-violet-400 pl-2">Participantes</h4>
-    <div class="border border-black rounded-b-lg p-2 mx-2">        
+    <div class="flex items-center border border-black bg-blue-300 pl-2 rounded-md py-1" id="participantes">
+        <div id="desplegable-participante" class="triangulo_inf"></div>
+        <h4 class="ml-2">PARTICIPANTES </h4>
+    </div>
+    <div class="border border-black rounded-b-lg p-2 mx-2" id="lista-participantes">        
         @foreach ($listaParticipantes as $item => $participante)
             <a href="{{e(route('contactos.ver', $participante->alias))}}" class="bg-yellow-300 rounded-full px-2">@-{{$participante->alias}} </a>
         @endforeach

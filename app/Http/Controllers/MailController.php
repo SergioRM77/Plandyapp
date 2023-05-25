@@ -12,12 +12,6 @@ use Illuminate\Support\Facades\Mail;
 
 class MailController extends Controller
 {
-
-    public function solicitarCorreoCambioContrasenna(){
-        return view('mails.solicitar_cambio_contrasenna');
-        //generar vista pendiente para enviar a correo O MODAL 
-    }
-
     /**
      * A través de correo proporcionado se busca en base de datos, si hay coincidencias
      * se envia a correo una clave de solicitud de cambio de contraseña
@@ -92,11 +86,6 @@ class MailController extends Controller
         return redirect('login');
     }
 
-    public function mostrarDatosCorreo(Request $dato){
-        $newPW = $this->randomPassword();
-        return view('mails.nuevaPassword', compact('newPW'));
-    }
-
 
     private function randomPassword() {
         $alphabet = 'abcdefghijklmnopqrstuvwxyz/?=_+-ABCDEFGHIJKLMNOPQRSTUVWXYZ/?=_+-1234567890/?=_+-';
@@ -109,9 +98,6 @@ class MailController extends Controller
         return implode($pass); 
     }
 
-/*************** */
-    public function verCorreo(){
-        return view('mails.send');
-    }
+
     
 }

@@ -1,65 +1,68 @@
-<h5 class="border border-black bg-blue-400 pl-2 mx-1" id="gasto">GASTO</h5>
-    
+<div class="flex items-center border border-black bg-blue-400 pl-2 mx-1 rounded-md" id="gastos">
+    <div id="desplegable-gastos" class="triangulo_inf"></div>
+    <h5 class="ml-2">GASTOS:</h5>
+</div>
+    <div id="lista-gastos">
         <div class="border border-black rounded-b-lg mx-2 {{
-            count($gastos) > 4 ? 'overflow-y-auto h-96 scrollbar-thin scrollbar-thumb-blue-300 scrollbar-thumb-rounded-lg scrollbar-track-rounded-md scrollbar-track-slate-300' : ''
-        }}">
-            @if ($gastos != null)
-                @foreach ($gastos as $id => $gasto)
-                    <div class="shadow-lg border rounded-lg border-gray-300 m-2">
-                        @if (($isAdmin->is_admin_principal == true && $gasto->is_aceptado == false) || 
-                            ($isAdmin->is_admin_secundario == true && $gasto->is_aceptado == false) ||
-                            $gasto->is_aceptado == true)
-                            <div class="md:flex justify-between">
-                                <div class="px-8">
-                                    <p><span class="font-semibold">Gasto de: </span><span class="bg-yellow-300 rounded-full px-2">@-{{$gasto->alias}}</span></p>
-                                    <p><span class="font-semibold">Coste: </span> {{$gasto->coste}}</p>
-                                    <p><span class="font-semibold">Fecha: </span>{{date("d-m-Y H:i", strtotime($gasto->created_at))}}</p>
-                                    <p><span class="font-semibold">Descripcion del gasto:</span> {{$gasto->descripcion}}</p>
+                count($gastos) > 4 ? 'overflow-y-auto h-96 scrollbar-thin scrollbar-thumb-blue-300 scrollbar-thumb-rounded-lg scrollbar-track-rounded-md scrollbar-track-slate-300' : ''
+                }}">
+                @if ($gastos != null)
+                    @foreach ($gastos as $id => $gasto)
+                        <div class="shadow-lg border rounded-lg border-gray-300 m-2">
+                            @if (($isAdmin->is_admin_principal == true && $gasto->is_aceptado == false) || 
+                                ($isAdmin->is_admin_secundario == true && $gasto->is_aceptado == false) ||
+                                $gasto->is_aceptado == true)
+                                <div class="md:flex justify-between">
+                                    <div class="px-8">
+                                        <p><span class="font-semibold">Gasto de: </span><span class="bg-yellow-300 rounded-full px-2">@-{{$gasto->alias}}</span></p>
+                                        <p><span class="font-semibold">Coste: </span> {{$gasto->coste}}</p>
+                                        <p><span class="font-semibold">Fecha: </span>{{date("d-m-Y H:i", strtotime($gasto->created_at))}}</p>
+                                        <p><span class="font-semibold">Descripcion del gasto:</span> {{$gasto->descripcion}}</p>
+                                    </div>
+                                    <div class="flex md:shrink-0 items-center p-2">
+                                        <img class="h-32 w-full object-cover rounded-md md:w-48" src="{{$gasto->foto != null ? asset($gasto->foto) :
+                                            'https://img.freepik.com/vector-premium/paisaje-dibujos-animados-vista-campos-verdes-verano-colina-cesped-primavera-cielo-azul_313905-688.jpg?w=2000'}}" alt="Foto de Gasto">
+                                    </div>
                                 </div>
-                                <div class="flex md:shrink-0 items-center p-2">
-                                    <img class="h-32 w-full object-cover rounded-md md:w-48" src="{{$gasto->foto != null ? asset($gasto->foto) :
-                                        'https://img.freepik.com/vector-premium/paisaje-dibujos-animados-vista-campos-verdes-verano-colina-cesped-primavera-cielo-azul_313905-688.jpg?w=2000'}}" alt="Foto de Gasto">
-                                </div>
+                            @endif
+                            <div class="flex">
+                                @if (($isAdmin->is_admin_principal == true || $isAdmin->is_admin_secundario == true)  && $gasto->is_aceptado == false && $evento["is_activo"])
+                                    <form action="{{e(route('gasto.evento.aceptar'))}}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="gasto_id" value="{{$gasto->id}}">
+                                        <input type="hidden" name="evento_id" value="{{$evento->id}}">
+                                        <button class="border border-black rounded-md bg-green-500 py-1 p-2 my-2 mx-2" type="submit">Aceptar Gasto</button>
+                                    </form>
+                                @endif
+                                @if ($evento["is_activo"] && ($isAdmin->is_admin_principal || $isAdmin->is_admin_secundario) )
+                                    <form action="{{e(route('gasto.evento.eliminar'))}}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="gasto_id" value="{{$gasto->id}}">
+                                        <input type="hidden" name="evento_id" value="{{$evento->id}}">
+                                        <button class="border border-black rounded-md bg-red-700 py-1 p-2 my-2 mx-2" type="submit">Eliminar Gasto</button>
+                                    </form>
+                                @endif
                             </div>
-                        @endif
-                        <div class="flex">
-                            @if (($isAdmin->is_admin_principal == true || $isAdmin->is_admin_secundario == true)  && $gasto->is_aceptado == false && $evento["is_activo"])
-                                <form action="{{e(route('gasto.evento.aceptar'))}}" method="post">
-                                    @csrf
-                                    <input type="hidden" name="gasto_id" value="{{$gasto->id}}">
-                                    <input type="hidden" name="evento_id" value="{{$evento->id}}">
-                                    <button class="border border-black rounded-md bg-green-500 py-1 p-2 my-2 mx-2" type="submit">Aceptar Gasto</button>
-                                </form>
-                            @endif
-                            @if ($evento["is_activo"] && ($isAdmin->is_admin_principal || $isAdmin->is_admin_secundario) )
-                                <form action="{{e(route('gasto.evento.eliminar'))}}" method="post">
-                                    @csrf
-                                    <input type="hidden" name="gasto_id" value="{{$gasto->id}}">
-                                    <input type="hidden" name="evento_id" value="{{$evento->id}}">
-                                    <button class="border border-black rounded-md bg-red-700 py-1 p-2 my-2 mx-2" type="submit">Eliminar Gasto</button>
-                                </form>
-                            @endif
+                            
                         </div>
-                        
-                    </div>
-                @endforeach
-            @else
-                <p>No hay gastos presentados</p>
-            @endif
-    </div>
-
-    </div>
-    @if ($evento["is_activo"])
-        <div class="flex justify-center">
-            <label for="my-modal-1" class="border-black w-2/5 btn py-2 px-4 bg-blue-500 text-white font-semibold shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                    <lord-icon
-                        src="https://cdn.lordicon.com/mecwbjnp.json"
-                        trigger="hover">
-                    </lord-icon>
-            Añadir gasto
-            </label>
+                    @endforeach
+                @else
+                    <p>No hay gastos presentados</p>
+                @endif
         </div>
 
+
+        @if ($evento["is_activo"])
+            <div class="flex justify-center my-2">
+                <label for="my-modal-1" class="border-black w-2/5 btn py-2 px-4 bg-blue-400 text-white font-semibold shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+                        <lord-icon
+                            src="https://cdn.lordicon.com/mecwbjnp.json"
+                            trigger="hover">
+                        </lord-icon>
+                Añadir gasto
+                </label>
+            </div>
+    </div>
     
     <input type="checkbox" id="my-modal-1" class="modal-toggle" />
 

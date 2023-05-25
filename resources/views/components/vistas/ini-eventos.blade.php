@@ -24,8 +24,8 @@
                     </section>
                 @endif
             @endforeach
-        @endif
-        @if ($numEventosFinalizados[0]->numFinalizados == 0)
+        @else
             <p>No hay eventos Finalizados </p>
         @endif
+        
 </article>

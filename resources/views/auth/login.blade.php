@@ -10,19 +10,24 @@
 
 </head>
 <body>
-    <header class="fixed w-full flex items-center justify-between h-10 z-10 bg-gradient-to-r from-blue-700 to-blue-500">
+    <header class="fixed w-full grid justify-items-start h-10 z-0 bg-gradient-to-r from-blue-700 to-blue-500">
+        <img src="{{asset('images/logo_prueba5.png')}}" alt="" class="h-10">
+    
     </header>
     <div class="bg-fondo-inicio bg-no-repeat bg-blue-100 bg-cover">
+        
         <main class="grid grid-cols-1 md:grid-cols-3 content-center h-screen">
             
             <h1 class="grid md:col-start-2">Bienvenido a PlandyApp</h1>
+            
             <p class="grid md:col-start-2">Plataforma de gestion de gastos para viajes, eventos y actividades en grupo.
                 @if (session('status'))
                             <span class="text-red-500">*{{session('status')}}</span>
                 @endif
             </p>
-        
+            
             <div class="grid bg-blue-300 md:col-start-2 border-2 rounded-md border-blue-500 p-4 sm:w-full">
+                
                 <h2>Login:</h2>
                 <form  action="{{route('login')}}" method="POST">
                     @csrf
@@ -45,9 +50,12 @@
                 </form>
                 <label for="my-modal-1" class="btn bg-orange-300 hover:bg-orange-700 hover:text-white mt-2">¿Has olvidado contraseña o nombre de usuario?
                 </label>
+                <a href="{{route('acercade.bienvenida')}}" class="pt-12 font-mono hover:underline hover:font-bold text-center">Info sobre PlandyApp</a>
             </div>
+            
         </main>
     </div>
+    
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="my-modal-1" class="modal-toggle" />
@@ -58,7 +66,7 @@
     <form action="{{route('solicitud.cambio.password')}}" method="post">
         @csrf
         <label for="">Correo electrónico de recuperación: 
-            <input class="w-full border border-blue-500 rounded-md my-1" type="text" name="email">
+            <input class="w-full border border-blue-500 rounded-md my-1" type="text" name="email" required>
         </label>
         <input type="submit" class="btn bg-green-500 hover:bg-green-700 hover:text-white" value="1º Enviar Petición de cambio">
     </form>
@@ -81,13 +89,13 @@
     <form action="{{route('nueva.password')}}" method="post">
         @csrf
         <label for="">Código de verificación:
-            <input class="w-full border border-blue-500 rounded-md my-1" type="text" name="codigo">
+            <input class="w-full border border-blue-500 rounded-md my-1" type="text" name="codigo" required>
         </label>
         <label>Nombre de usuario (Alias):
-            <input class="w-full border border-blue-500 rounded-md my-1" type="text" name="alias">
+            <input class="w-full border border-blue-500 rounded-md my-1" type="text" name="alias" required>
         </label>
         <label for="">Correo electrónico:
-            <input class="w-full border border-blue-500 rounded-md my-1" type="email" name="email" id="">
+            <input class="w-full border border-blue-500 rounded-md my-1" type="email" name="email" id="" required>
         </label>
 
     
@@ -96,6 +104,7 @@
     <label for="my-modal-2" class="btn bg-red-500 hover:bg-red-700 hover:text-white">Cancelar</label>
     </form>
     </div>
+    
   </div>
 </div>
 </body>

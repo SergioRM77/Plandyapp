@@ -1,5 +1,9 @@
-<h5 class="border border-black bg-lime-500 pl-2 mx-1" id="gasto">ESTADO DE CUENTAS</h5>
-<div class="border border-black rounded-b-lg mx-2 px-2">
+<div class="flex items-center border border-black bg-lime-500 pl-2 py-1 rounded-md mt-2" id="cuentas">
+    <div id="desplegable-cuentas" class="triangulo_inf"></div>
+    <h5 class="ml-2">ESTADO DE CUENTAS:</h5>
+</div>
+
+<div class="border border-black rounded-b-lg mx-2 px-2" id="datos-cuentas">
 
     <p>
         @foreach ($listapagos as $item => $pago)
@@ -26,8 +30,6 @@
             @endforeach
 
         </div>
-        <div class="w-1/2">
-            <h5>GASTOS GENERALES</h5>
-        </div>
+        
     </div>
 </div>

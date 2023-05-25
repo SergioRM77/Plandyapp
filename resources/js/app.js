@@ -10,6 +10,18 @@ function mostrarOcultarElem(nombreID){
     }
     
 }
+
+function cambiarSimbolDesplegable(desplegableID){
+    let desplegable = document.getElementById(desplegableID)
+
+    if(desplegable.className == "" || desplegable.className == "triangulo_der") {
+        desplegable.className = "triangulo_inf";
+    }
+    else {
+        desplegable.className = "triangulo_der";
+    }
+    
+}
 window.addEventListener("DOMContentLoaded", () => {
     const aside = document.getElementsByTagName('header')[0]
     aside.addEventListener('click', () => {
@@ -17,5 +29,50 @@ window.addEventListener("DOMContentLoaded", () => {
     })
 })
 
+window.addEventListener("DOMContentLoaded", () => {
+    const participantes = document.getElementById('participantes')
+    participantes.addEventListener('click', () => {
+        mostrarOcultarElem('lista-participantes')
+        cambiarSimbolDesplegable('desplegable-participante')
+    })
+})
 
+window.addEventListener("DOMContentLoaded", () => {
+    const gastos = document.getElementById('gastos')
+    gastos.addEventListener('click', () => {
+        mostrarOcultarElem('lista-gastos')
+        cambiarSimbolDesplegable('desplegable-gastos')
+    })
+})
+
+window.addEventListener("DOMContentLoaded", () => {
+    const gastosPresu = document.getElementById('gastos-presu')
+    gastosPresu.addEventListener('click', () => {
+        mostrarOcultarElem('lista-gastos-presu')
+        cambiarSimbolDesplegable('desplegable-gastos-presu')
+    })
+})
+
+window.addEventListener("DOMContentLoaded", () => {
+    const actividades = document.getElementById('actividades')
+    actividades.addEventListener('click', () => {
+        mostrarOcultarElem('lista-actividades')
+        cambiarSimbolDesplegable('desplegable-actividades')
+    })
+})
+
+window.addEventListener("DOMContentLoaded", () => {
+    const cuentas = document.getElementById('cuentas')
+    cuentas.addEventListener('click', () => {
+        mostrarOcultarElem('datos-cuentas')
+        cambiarSimbolDesplegable('desplegable-cuentas')
+    })
+})
+window.addEventListener("DOMContentLoaded", () => {
+    const desgloseGastos = document.getElementById('desglose-gastos')
+    desgloseGastos.addEventListener('click', () => {
+        mostrarOcultarElem('lista-desglose-gastos')
+        cambiarSimbolDesplegable('desplegable-desglose-gastos')
+    })
+})
 

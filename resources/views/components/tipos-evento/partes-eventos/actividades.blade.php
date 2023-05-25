@@ -1,8 +1,12 @@
-<div class="actividades">
-    <h4 class="border border-black bg-violet-400 pl-2">ACTIVIDADES:</h4>
+<div class="flex items-center border border-black bg-sky-400 pl-2 rounded-md p-1 mt-2" id="actividades">
+    <div id="desplegable-actividades" class="triangulo_inf"></div>
+    <h5 class="ml-2">ACTIVIDADES:</h5>
+</div>
+<div class="actividades"id="lista-actividades">
+    
     <div class="border border-black rounded-b-lg mx-2 px-2 {{
         count($actividades) > 4 ? 'overflow-y-auto h-96 scrollbar-thin scrollbar-thumb-violet-400 scrollbar-thumb-rounded-lg scrollbar-track-rounded-md scrollbar-track-slate-300' : ''
-    }}">
+        }}" >
         @if (count($actividades)>0)
             @foreach ($actividades as $item => $actividad)
             <div class="flex items-center ">
@@ -65,9 +69,9 @@
                                     <button class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-blue-500 my-2 mx-2 w-4/6" type="submit">Unirse a Actividad</button>
                                 </form>
                             @endif
-                    </div>
+                        </div>
 
-            </div>
+                </div>
     </div>
             @endforeach
 
@@ -77,16 +81,18 @@
 
 </div>
 
-@if ($evento["is_activo"] && ($isAdmin->is_admin_principal == true || $isAdmin->is_admin_secundario == true))
-<div class="flex justify-center">
-    <label for="my-modal-3" class="border-black w-2/5 btn py-2 px-4 bg-violet-400 text-white font-semibold shadow-md hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-        <lord-icon
-            src="https://cdn.lordicon.com/mecwbjnp.json"
-            trigger="hover">
-        </lord-icon>
-        Crear Actividad
-    </label>
-</div>
+
+        @if ($evento["is_activo"] && ($isAdmin->is_admin_principal == true || $isAdmin->is_admin_secundario == true))
+        <div class="flex justify-center my-2">
+            <label for="my-modal-3" class="border-black w-2/5 btn py-2 px-4 bg-sky-400 text-white font-semibold shadow-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+                <lord-icon
+                    src="https://cdn.lordicon.com/mecwbjnp.json"
+                    trigger="hover">
+                </lord-icon>
+                Crear Actividad
+            </label>
+        </div>
+    </div>
 
 <input type="checkbox" id="my-modal-3" class="modal-toggle" />
     
@@ -125,3 +131,4 @@
 </div>
 </div>
 @endif
+</div>
