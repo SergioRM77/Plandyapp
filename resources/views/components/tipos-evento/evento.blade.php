@@ -34,7 +34,8 @@
 <div class="modal">
 <div class="modal-box w-11/12 max-w-5xl bg-red-50">
     <h3 class="font-bold text-lg">¡Vas a finalizar evento!</h3>
-    <p class="py-4">Si finalizas evento tanto tú como los demás usuarios no podréis modificar y añadir nada.¿Estás seguro?</p>
+    <p class="py-4">Si finalizas evento tanto tú como los demás usuarios no podréis modificar y añadir nada. Tampoco tendreis 
+        acceso al chat del evento. ¿Estás seguro?</p>
     <div class="modal-action">
         <div class="flex flex-row justify-center my-4 w-full">
             <form  action="{{e(route('evento.finalizar'))}}" method="get">

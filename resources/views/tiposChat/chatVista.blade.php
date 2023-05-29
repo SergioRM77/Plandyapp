@@ -18,9 +18,7 @@
                </div>
             </div>
          </div>
-         <div class="flex items-center space-x-2">
-            <p class="btn bg-yellow-300 border-2 border-gray-400 rounded-full hover:bg-orange-400 mr-2">Ver datos usuario</p>
-      </div>
+         <a href="{{e(route('contactos.ver', $contacto->alias))}}" class="btn bg-yellow-300 border-2 border-gray-400 rounded-full hover:bg-orange-400 mr-2">Ver datos de usuario</a>
 </div>
    <div id="messages" class="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
       @foreach ($conversacion as $mensaje)

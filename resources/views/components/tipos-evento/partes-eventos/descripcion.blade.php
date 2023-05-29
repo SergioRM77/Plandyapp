@@ -1,5 +1,5 @@
 <div class="flex justify-between border border-black rounded-md bg-lime-50 p-3 mb-2">
-    <div>
+    <div class="w-2/3">
         @if (session('tipo_evento') == 1)
         <h3 class="text-center border border-black rounded-md bg-yellow-400 font-semibold">Evento SIN PRESUPUESTO</h3>
         @else
@@ -14,13 +14,20 @@
             <span class="font-semibold italic"> hasta:</span> {{$evento->fecha_fin == null ? '' : date("d-m-Y", strtotime($evento->fecha_fin))}}</p>
         <p><span class="font-semibold italic">Tags:</span> {{$evento->tags}}</p>
         <p><span class="font-semibold italic">Descripcion:</span> {{$evento->descripcion}}</p>
+        @if ($evento->is_activo)
+            <div class="flex justify-start p-1 mr-4">
+                <a class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded border-b-2 border-green-900" 
+                        href="{{route('chatevento',[$evento->nombre_evento, $evento->id, session('alias')])}}">Abrir chat Evento</a>
+            </div>
+            @endif
         @if ($evento["is_activo"] && $isAdmin->is_admin_principal == true)
             <form action="{{e(route('evento.editar'))}}" method="post">
                 @csrf
                 <input type="hidden" name="id" value="{{$evento->id}}">
-                <button class="border border-black rounded-md bg-green-500 py-1 p-2 my-2 mx-2" type="submit">Editar</button>
+                <button class="btn border border-black rounded-md bg-green-500 hover:bg-green-700 hover:text-white py-1 p-2 my-2 mx-2 w-24" type="submit">Editar</button>
             </form>
         @endif
+        
         
     </div>
     <div class="shrink">

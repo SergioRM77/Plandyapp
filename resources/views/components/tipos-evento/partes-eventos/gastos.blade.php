@@ -31,7 +31,7 @@
                                         @csrf
                                         <input type="hidden" name="gasto_id" value="{{$gasto->id}}">
                                         <input type="hidden" name="evento_id" value="{{$evento->id}}">
-                                        <button class="border border-black rounded-md bg-green-500 py-1 p-2 my-2 mx-2" type="submit">Aceptar Gasto</button>
+                                        <button class="btn bg-green-500 hover:bg-green-700 hover:text-white  p-2 my-2 mx-2" type="submit">Aceptar Gasto</button>
                                     </form>
                                 @endif
                                 @if ($evento["is_activo"] && ($isAdmin->is_admin_principal || $isAdmin->is_admin_secundario) )
@@ -39,7 +39,7 @@
                                         @csrf
                                         <input type="hidden" name="gasto_id" value="{{$gasto->id}}">
                                         <input type="hidden" name="evento_id" value="{{$evento->id}}">
-                                        <button class="border border-black rounded-md bg-red-700 py-1 p-2 my-2 mx-2" type="submit">Eliminar Gasto</button>
+                                        <button class="btn bg-red-500 hover:bg-red-700 hover:text-white  p-2 my-2 mx-2" type="submit">Eliminar Gasto</button>
                                     </form>
                                 @endif
                             </div>

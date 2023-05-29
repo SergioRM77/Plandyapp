@@ -12,10 +12,10 @@
     </p>
     
     <div class="flex mt-4">
-        <div class="w-1/2">
+        <div class="">
             <h5>USUARIOS QUE DEBEN A USUARIOS</h5>
             @foreach ($deben as $item => $debe)
-                    <p>{{$debe}}</p>
+                    <p class="{{str_contains($debe, "ha pagado de más") ? 'font-bold' : ''}}">{{$debe}}</p>
                     @if ($listapagos[$item]['pagado'] > session('mediaPagos') && session('pagado') < session('mediaPagos') 
                         && !str_contains($debe, "no debe ni le deben dinero") && session('is_activo'))
                         <form action="{{e(route('gasto.vista.pago.usuario'))}}" method="post">
@@ -24,7 +24,7 @@
                             <input type="hidden" name="alias" value="{{$listapagos[$item]['alias']}}">
                             <input type="hidden" name="evento_id" value="{{session('evento_id')}}">
                             <input type="hidden" name="costeMax" value="{{$listapagos[$item]['pagado'] - session('mediaPagos')}}">
-                            <button class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-blue-500" type="submit">realizar pago</button>
+                            <button class="btn bg-blue-500 hover:bg-blue-600 hover:text-white p-2 my-2 mx-2" type="submit">realizar pago</button>
                         </form>
                     @endif
             @endforeach

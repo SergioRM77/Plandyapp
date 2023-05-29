@@ -11,12 +11,12 @@
             <form action="{{e(route('evento.contactos.add'))}}" method="post">
                 @csrf
                 <input type="hidden" name="evento_id" value="{{$evento->id}}">
-                <button class="border border-black rounded-md bg-blue-500 py-1 p-2 my-2 mx-2">Añadir participante</button>
+                <button class="btn bg-blue-500 hover:bg-blue-700 hover:text-white mt-2 mx-2">Añadir participante</button>
             </form>
             <form action="{{e(route('evento.contactos.ver'))}}" method="post">
                 @csrf
                 <input type="hidden" name="evento_id" value="{{$evento->id}}">
-                <button class="border border-black rounded-md bg-green-500 py-1 p-2 my-2 mx-2">Ver participantes</button>
+                <button class="btn bg-green-500 hover:bg-green-700 hover:text-white mt-2">Ver participantes</button>
             </form>
     </div>
         @endif

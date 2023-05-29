@@ -1,4 +1,5 @@
 console.log('añadiendo JS');
+
 function mostrarOcultarElem(nombreID){
     let contenedor = document.getElementById(nombreID)
 
@@ -75,4 +76,3 @@ window.addEventListener("DOMContentLoaded", () => {
         cambiarSimbolDesplegable('desplegable-desglose-gastos')
     })
 })
-

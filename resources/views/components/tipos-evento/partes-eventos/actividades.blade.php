@@ -33,13 +33,13 @@
                                 @csrf
                                 <input type="hidden" name="id_actividad" value="{{$actividad->id}}">
                                 <input type="hidden" name="nombre_actividad" value="{{$actividad->nombre_actividad}}">
-                                <button class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-red-500 my-2 mx-2 w-4/6" type="submit">Eliminar</button>
+                                <button class="btn bg-red-500 hover:bg-red-600 hover:text-white p-2 my-2 mx-2 lg:w-2/4 w-24" type="submit">Eliminar</button>
 
                             </form>
                             <form action="{{e(route('editar.actividad'))}}" method="post">
                                 @csrf
                                 <input type="hidden" name="id_actividad" value="{{$actividad->id}}">
-                                <button class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-green-500 my-2 mx-2 w-4/6"  type="submit">Actualizar</button>
+                                <button class="btn bg-green-500 hover:bg-green-600 hover:text-white p-2 my-2 mx-2 lg:w-2/4 w-24"  type="submit">Actualizar</button>
                             </form>
                             {{-- <a href="{{e(route('editar.actividad', $actividad->id))}}" class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-green-500">Actualizar Actividad</a> --}}
                         @endif
@@ -50,7 +50,7 @@
                                 <form action="{{e(route('delete.participante.actividad'))}}" method="post">
                                     @csrf
                                     <input type="hidden" name="actividad_id" value="{{$actividad->id}}">
-                                    <button class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-yellow-500 my-2 mx-2 w-4/6" type="submit">Salirse</button>
+                                    <button class="btn bg-yellow-500 hover:bg-yellow-600 hover:text-white p-2 my-2 mx-2 lg:w-2/4 w-24" type="submit">Salirse</button>
                                 </form>
                                 @break
                             @endif
@@ -58,17 +58,17 @@
                                 <form action="{{e(route('add.participante.actividad'))}}" method="post">
                                     @csrf
                                     <input type="hidden" name="actividad_id" value="{{$actividad->id}}">
-                                    <button class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-blue-500 my-2 mx-2 w-4/6" type="submit">Unirse</button>
+                                    <button class="btn bg-blue-500 hover:bg-blue-600 hover:text-white p-2 my-2 mx-2 lg:w-2/4 w-24" type="submit">Unirse</button>
                                 </form>
                             @endif
                             @endforeach
-                            @if ($evento["is_activo"] && count($listaParticipantesActividades) == 0)
+                            {{-- @if ($evento["is_activo"] && count($listaParticipantesActividades) == 0)
                                 <form action="{{e(route('add.participante.actividad'))}}" method="post">
                                     @csrf
                                     <input type="hidden" name="actividad_id" value="{{$actividad->id}}">
                                     <button class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-blue-500 my-2 mx-2 w-4/6" type="submit">Unirse a Actividad</button>
                                 </form>
-                            @endif
+                            @endif --}}
                         </div>
 
                 </div>
