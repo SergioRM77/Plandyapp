@@ -1,4 +1,6 @@
+// localStorage.setItem('test', 1);
 console.log('añadiendo JS');
+// alert( sessionStorage.getItem('test') ); 
 
 function mostrarOcultarElem(nombreID){
     let contenedor = document.getElementById(nombreID)
@@ -24,9 +26,11 @@ function cambiarSimbolDesplegable(desplegableID){
     
 }
 window.addEventListener("DOMContentLoaded", () => {
-    const aside = document.getElementsByTagName('header')[0]
+    const aside = document.getElementById('mostrar-ocultar-sidebar')
     aside.addEventListener('click', () => {
         mostrarOcultarElem('main-menu')
+        // sessionStorage.test++;
+        // alert( sessionStorage.test );
     })
 })
 

@@ -18,8 +18,10 @@ use App\Http\Controllers\EventoController;
 
 class ActividadesController extends Controller
 {
+    /**
+     * Añadir una actividad a Evento
+     */
     public function addActividad(Request $request){
-        // return dump($request);
         try {
             $validar = $request->validate([
                 'nombre_actividad' => 'required|max:100',
@@ -45,7 +47,9 @@ class ActividadesController extends Controller
             return (new EventoController)->verEventoGet($actividad->evento_id);
         }
     }
-
+    /**
+     * Editar una nueva actividad
+     */
     public function editarActividad(Request $request){
         try {
             $request->validate([
@@ -59,8 +63,10 @@ class ActividadesController extends Controller
             session()->flash('status', 'No se puede editar actividad');
             return (new EventoController)->verEventoGet(session('evento_id'));
         }
-        // return view('vistasTiposEvento.editarActividadVista');
     }
+    /**
+     * Actualizar una actividad ya creada
+     */
     public function actualizarActividad(Request $request){
     
         try {
@@ -88,7 +94,9 @@ class ActividadesController extends Controller
             return (new EventoController)->verEventoGet(session('evento_id'));
         }
     }
-
+    /**
+     * Eliminar Actividad existente en evento
+     */
     public function eliminarActividad(Request $request){
         try {
             Usuario_participa_actividad::where('actividad_id', $request->id_actividad)->delete();
@@ -103,12 +111,15 @@ class ActividadesController extends Controller
         
         
     }
-
-    public function listaActividades(){
+    /**
+     * Retorna todas las Actividades de evento actual
+     */
+    public static function listaActividades(){
         return Actividad::where('evento_id', '=', session('evento_id'))->orderBy('created_at', 'desc')->get();
     }
-
-
+    /**
+     * Unirse a actividad
+     */
     public function unirseActividad(Request $request){
         try {
             $request->validate([
@@ -125,7 +136,9 @@ class ActividadesController extends Controller
             return (new EventoController)->verEventoGet(session('evento_id'));
         }
     }
-
+    /**
+     * Salir de una actividad en la que participo
+     */
     public function salirDeActividad(Request $request){
         try {
             $request->validate([
@@ -140,7 +153,10 @@ class ActividadesController extends Controller
             return (new EventoController)->verEventoGet(session('evento_id'));
         }
     }
-    public function participantesEnActividades(){
+    /**
+     * Retorna los datos de los participantes de una actividad
+     */
+    public static function participantesEnActividades(){
         return DB::table('usuario_participa_actividad')
                     ->join('actividades', 'usuario_participa_actividad.actividad_id', '=', 'actividades.id')
                     ->join('users', 'users.id', '=', 'usuario_participa_actividad.participante_id')

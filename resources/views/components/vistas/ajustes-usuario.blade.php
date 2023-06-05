@@ -22,10 +22,10 @@
     <textarea class="border-2 border-black rounded-md col-span-1 my-1" type="text" rows="10" name="intereses" placeholder="#montaña, #playa, #concierto-rock...">{{$show('intereses')}}</textarea>@error('intereses') <span> {{$message}}</span> @enderror
     <div class="grid col-span-2">
         <div class="grid grid-cols-2 my-1 border-2 border-black rounded-md bg-gray-400 p-1">
-            <label class="col-span-1 my-1" for="password">Contraseña *:</label>
-            <input class="border-2 border-black rounded-md col-span-1 my-1" type="password" name="password" required>@error('password') <span> {{$message}}</span> @enderror
-            <label class="col-span-1 my-1" for="confirm-password">Confirmar contraseña *:</label>
-            <input class="border-2 border-black rounded-md col-span-1 my-1" type="password" name="confirm-password" required>@error('same') <span> {{$message}}</span> @enderror
+            <label class="col-span-1 my-1" for="password">Contraseña *: @error('password') <span> {{$message}}</span> @enderror</label>
+            <input class="border-2 border-black rounded-md col-span-1 my-1" type="password" name="password" required>
+            <label class="col-span-1 my-1" for="confirm-password">Confirmar contraseña *: @error('same') <span> {{$message}}</span> @enderror</label>
+            <input class="border-2 border-black rounded-md col-span-1 my-1" type="password" name="confirm-password" required>
         </div>
     </div>
 

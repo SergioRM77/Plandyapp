@@ -1,4 +1,4 @@
-<x-layouts.base titulo="Evento Finalizado" metaDescription="Evento Finalizado Plandyapp">
+<x-layouts.base titulo="Evento Realizar pago a participante" metaDescription="Realizar pago a otro participante">
 
     <h2>Pagar a otro Usuario</h2>
     <div class="presentar gasto">
@@ -13,7 +13,8 @@
             <div class="grid grid-cols-3">
                 <div class="grid grid-cols-1">
                     <label class="col-span-1 row-span-3 font-semibold" for="coste">Tu pago máximo para este usuario es de {{session('mediaPagos') - session('pagado')}}€:
-                        <input class="col-span-2 border border-blue-400 rounded-md my-4" type="number" name="coste" value="{{session('mediaPagos') - session('pagado')}}" min="0" max="{{session('mediaPagos') - session('pagado')}}" step="any"></label>
+                        <input class="col-span-2 border border-blue-400 rounded-md my-4" type="number" name="coste" 
+                            value="{{session('mediaPagos') - session('pagado')}}" min="0" max="{{session('mediaPagos') - session('pagado')}}" step="any"></label>
                     <p class="col-span-1 row-span-2 font-semibold">Descripcion del gasto: @-{{$request->alias}} ha recibido un pago de @-{{session('alias')}}</p>
                 </div>
                 <div class="grid grid-cols-1">

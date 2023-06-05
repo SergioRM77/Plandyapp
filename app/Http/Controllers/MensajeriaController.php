@@ -30,7 +30,7 @@ class MensajeriaController extends Controller
         $eventosChat = DB::select("SELECT eventos.id, eventos.nombre_evento FROM eventos
                                         RIGHT JOIN users_eventos ON users_eventos.evento_id = eventos.id
                                         LEFT JOIN users ON users.id = users_eventos.user_id
-                                    WHERE users.id = ? AND eventos.is_activo = TRUE", [session('id')]);//users_eventos.is_visible = TRUE
+                                    WHERE users.id = ? AND eventos.is_activo = TRUE", [session('id')]);
         return view('mensajeriaVista', compact('usuariosChatPrivados', 'eventosChat'));
         
     }

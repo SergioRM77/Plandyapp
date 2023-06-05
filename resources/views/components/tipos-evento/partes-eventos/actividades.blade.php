@@ -41,7 +41,6 @@
                                 <input type="hidden" name="id_actividad" value="{{$actividad->id}}">
                                 <button class="btn bg-green-500 hover:bg-green-600 hover:text-white p-2 my-2 mx-2 lg:w-2/4 w-24"  type="submit">Actualizar</button>
                             </form>
-                            {{-- <a href="{{e(route('editar.actividad', $actividad->id))}}" class="basis-1/4 h-10 mr-1 col-span-1 border border-black rounded-md bg-green-500">Actualizar Actividad</a> --}}
                         @endif
                         
                             

@@ -1,6 +1,9 @@
 <details><summary><div class="flex justify-between items-center border border-black bg-blue-500 hover:bg-blue-700 p-1 rounded-md shadow-lg  shadow-gray-400 mt-2">
     <div class="flex items-center">
-        <img class="h-14 rounded-full"  src="https://img.freepik.com/fotos-premium/paisaje-verano-relajese-paradise-beach-blue-sea-clean-sand-espacio-copiar_638259-177.jpg?w=2000" alt="foto perfil">
+        <img class="h-14 w-14 rounded-full object-cover"  src="
+        {{ !empty($user->foto) ? asset($user->foto) :
+            'https://castillotrans.eu/wp-content/uploads/2019/06/77461806-icono-de-usuario-hombre-hombre-avatar-avatar-pictograma-pictograma-vector-ilustraci%C3%B3n.jpg'
+        }}" alt="foto perfil">
         <p class="bg-yellow-300 rounded-full px-2 ml-2">@-{{$user['alias']}}</p>
     </div>
     <p class="btn bg-yellow-300 border-2 border-gray-400 rounded-full hover:bg-orange-400 mr-2">Ver Contacto</p>

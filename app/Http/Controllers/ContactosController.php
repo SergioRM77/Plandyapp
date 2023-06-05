@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\DB;
 
 class ContactosController extends Controller
 {
-
-    /*METER ID DEL USUARIO EN VEZ DE ALIAS EN LO QUE DEVUELVE BOTONES. AHORRAS UNA CONSULTA*/
-
+    /**
+     * Busqueda de usuario por alias, debe ser nombre completo, no parcial
+     */
     public function buscarPorAlias(Request $request){
         $IDusuario=User::whereAlias($request->alias)->get('id');
         $busqueda = $this->datosPorAlias($request->alias);
@@ -26,17 +26,21 @@ class ContactosController extends Controller
         return view('vistasContactos.busquedaVista', compact('busqueda', 'isContacto', 'isBloqueadoPorMi'));
     }
 
-    public function showAllUsers(Request $request)
-    {
+    /**
+     * Mostrar todos los usuarios, solo para el admin del sistema
+     */
+    public function showAllUsers(Request $request){
         $users = User::all()->where('alias', '!=', session()->get('alias'));
         return view('vistasContactos.contactosVista', compact('users'));
     }
     
+    /**
+     * Mostrar todos mis contactos
+     */
     public function mostrarContactos(){
-        $usuario=User::whereAlias(session('alias'))->get('id');
         $contactos = DB::select("SELECT usuario_agreagador_id AS IDsContactos FROM agregar_aceptar WHERE usuario_agreagado_id = ? AND is_aceptado = true
                                 UNION SELECT usuario_agreagado_id FROM agregar_aceptar WHERE usuario_agreagador_id = ? AND is_aceptado = true",
-                                [$usuario[0]->id , $usuario[0]->id]);
+                                [session('id'), session('id')]);
         $IDsContactos=[];
         foreach ($contactos as $key => $ids) {
             foreach ($ids as $key => $numID) {
@@ -46,12 +50,16 @@ class ContactosController extends Controller
         $users = User::whereIn('id',$IDsContactos)->get();
         return view('vistasContactos.contactosVista', compact('users'));
     }
+
+    /**
+     * Agregar y mandar solicitud de amistad a otro usuario
+     */
     public function agregar(Request $request){
-        $agregador=User::whereAlias(session('alias'))->get('id');
-        $agregado=User::whereAlias($request->alias)->get('id');
+        $agregador=session('id');
+        $agregado=User::whereAlias($request->alias)->get('id')->first();
         $solicitud = DB::select("SELECT * FROM agregar_aceptar WHERE usuario_agreagador_id 
-                                IN (" . $agregador[0] -> id . ", " . $agregado[0] -> id . ") AND 
-                                usuario_agreagado_id IN (" . $agregador[0] -> id . ", " . $agregado[0] -> id . ")");
+                                IN (" . $agregador . ", " . $agregado->id . ") AND 
+                                usuario_agreagado_id IN (" . $agregador . ", " . $agregado->id . ")");
 
         if(count($solicitud) > 0){
             session()->flash('status', 'Solicitud en curso');
@@ -59,13 +67,16 @@ class ContactosController extends Controller
         }
 
         $agregar = new Agregar_aceptar();
-        $agregar->usuario_agreagador_id = $agregador[0]->id;
-        $agregar->usuario_agreagado_id = $agregado[0]->id;
+        $agregar->usuario_agreagador_id = $agregador;
+        $agregar->usuario_agreagado_id = $agregado->id;
         $agregar->save();
         session()->flash('status', 'Has enviado solicitud');
         return redirect('contactos');
     }
 
+    /**
+     * Filtar contactos por, 'solicitudes', 'contactos' o 'bloqueados'
+     */
     public function filtrar(Request $request){
         if($request->select == "solicitudes"){
             return $this->solicitudes();
@@ -76,16 +87,19 @@ class ContactosController extends Controller
         }
     }
 
+    /**
+     * Ver mis solicitudes de amistad
+     */
     public function solicitudes(){
-        $usuario=User::whereAlias(session('alias'))->get('id');
+        $usuario=session('id');
         //dame todos los ids que aparecen en la tabla agregar_aceptar y que aceptado sea false
-        $users = DB::select("SELECT  usuario_agreagador_id AS solicitudes FROM agregar_aceptar WHERE usuario_agreagado_id IN (" . $usuario[0] -> id . ")  AND is_aceptado IN (false) UNION
-        SELECT  usuario_agreagado_id FROM agregar_aceptar WHERE usuario_agreagador_id IN (" . $usuario[0] -> id . ")  AND is_aceptado IN (false) " );
+        $users = DB::select("SELECT  usuario_agreagador_id AS solicitudes FROM agregar_aceptar WHERE usuario_agreagado_id IN (" . $usuario . ")  AND is_aceptado IN (false) UNION
+        SELECT  usuario_agreagado_id FROM agregar_aceptar WHERE usuario_agreagador_id IN (" . $usuario . ")  AND is_aceptado IN (false) " );
         
         //dame todos los ids de los agregadores, no los agregados
         $agregadoresID = DB::select("SELECT usuario_agreagador_id FROM agregar_aceptar 
                                     WHERE usuario_agreagador_id = ? OR usuario_agreagado_id = ? 
-                                    AND is_aceptado IN (false)",[ $usuario[0] -> id, $usuario[0] -> id]);
+                                    AND is_aceptado IN (false)",[ $usuario, $usuario]);
         $agregadorID = [];
         foreach ($agregadoresID as $key => $value) {
             $agregadorID[]= $value->usuario_agreagador_id;
@@ -95,7 +109,7 @@ class ContactosController extends Controller
             foreach ($users as $key => $valores) {
 
                 foreach($valores as $valor){
-                    if($valor != $usuario[0]->id){
+                    if($valor != $usuario){
                         $allIDs[] = $valor;
                     }
                 }
@@ -107,41 +121,57 @@ class ContactosController extends Controller
         return view('vistasContactos.solicitudesVista', compact('solicitudes', 'agregadorID'));
     }
 
+    /**
+     * Aceptar a otro usuario como amistad
+     */
     public function aceptar(Request $request){
-        $usuario=User::whereAlias(session('alias'))->get('id');
-        $otro=User::whereAlias($request->alias)->get('id');
+        $usuario = session('id');
+        $otro = User::whereAlias($request->alias)->get('id')->first();
         //dame el quien es agregador, agregado y si es true o false
         $solicitud = DB::select("SELECT usuario_agreagador_id, usuario_agreagado_id, is_aceptado FROM agregar_aceptar
                                 WHERE usuario_agreagador_id = ? AND usuario_agreagado_id = ? 
                                 OR usuario_agreagador_id = ? AND usuario_agreagado_id = ?",
-                                [$otro[0]->id, $usuario[0]->id,$usuario[0]->id,$otro[0]->id]);
+                                [$otro->id, $usuario,$usuario,$otro->id]);
         
         if($solicitud[0]->is_aceptado == false){
             DB::update("UPDATE agregar_aceptar set is_aceptado = true 
                         WHERE usuario_agreagador_id = ? AND usuario_agreagado_id = ? 
                         OR usuario_agreagador_id = ? AND usuario_agreagado_id = ?",
-                        [$otro[0]->id, $usuario[0]->id,$usuario[0]->id,$otro[0]->id]);
+                        [$otro->id, $usuario,$usuario,$otro->id]);
+
+        if($this->isBloqueadoPorMi($otro->id)){
+            DB::delete("DELETE FROM bloquear_desbloquear
+            WHERE  usuario_bloqueador_id = ? AND usuario_bloqueado_id = ?
+            OR  usuario_bloqueador_id = ? AND usuario_bloqueado_id = ?",
+            [session('id'), $otro->id, $otro->id, session('id')]);
+        }
             return $this->solicitudes();
         }
     }
 
+    /**
+     * Eliminar a contacto o solicitud de amistad
+     */
     public function eliminar(Request $request){
-        $usuario=User::whereAlias(session('alias'))->get('id');
-        $contacto=User::whereAlias($request->alias)->get('id');
+        $usuario = session('id');
+        $contacto=User::whereAlias($request->alias)->get('id')->first();
         $exiteEnTabla = DB::select("SELECT usuario_agreagador_id, usuario_agreagado_id, is_aceptado FROM agregar_aceptar
                                 WHERE usuario_agreagador_id = ? AND usuario_agreagado_id = ? 
                                 OR usuario_agreagador_id = ? AND usuario_agreagado_id = ?",
-                                [$contacto[0]->id, $usuario[0]->id,$usuario[0]->id,$contacto[0]->id]);
+                                [$contacto->id, $usuario, $usuario, $contacto->id]);
         if($exiteEnTabla == null){
             return $this->mostrarContactos();
         }
         DB::delete("DELETE FROM agregar_aceptar
                     WHERE usuario_agreagador_id = ? AND usuario_agreagado_id = ? 
                     OR usuario_agreagador_id = ? AND usuario_agreagado_id = ?",
-                    [$contacto[0]->id, $usuario[0]->id,$usuario[0]->id,$contacto[0]->id]);
+                    [$contacto->id, $usuario, $usuario, $contacto->id]);
         return $this->mostrarContactos();
     }
 
+    /**
+     * Mostrar usuarios bloqueados
+     */
     public function mostrarBloqueados(){
         $bloqueadosID = DB::select("SELECT usuario_bloqueado_id  FROM bloquear_desbloquear 
                                     WHERE usuario_bloqueador_id = ?",[session('id')]);
@@ -159,47 +189,55 @@ class ContactosController extends Controller
         return view('vistasContactos.bloqueadosVista', compact('bloqueados'));
     }
 
+    /**
+     * Bloquear a usuario o contacto
+     */
     public function bloquear(Request $request){
-        $idABloquear = User::whereAlias($request->alias)->get('id');
+        $idABloquear = User::whereAlias($request->alias)->get('id')->first();
         $exist_bloqueado = DB::select("SELECT usuario_bloqueador_id, usuario_bloqueado_id FROM bloquear_desbloquear
                     WHERE usuario_bloqueador_id = ? AND usuario_bloqueado_id = ?
                     OR  usuario_bloqueador_id = ? AND usuario_bloqueado_id = ?",
-                    [session('id'), $idABloquear[0]->id, $idABloquear[0]->id, session('id')]);
-        if(count($exist_bloqueado)>0){
-            return $this->mostrarBloqueados();
-        }
-        if($this->isInAgregarAceptar(session('id'), $idABloquear[0]->id)){
+                    [session('id'), $idABloquear->id, $idABloquear->id, session('id')]);
+        
+        if($this->isInAgregarAceptar(session('id'), $idABloquear->id)){
             DB::delete("DELETE FROM agregar_aceptar
                     WHERE usuario_agreagador_id = ? AND usuario_agreagado_id = ? 
                     OR usuario_agreagador_id = ? AND usuario_agreagado_id = ?",
-                    [session('id'), $idABloquear[0]->id,$idABloquear[0]->id,session('id')]);
+                    [session('id'), $idABloquear->id, $idABloquear->id, session('id')]);
         }
-        
+        if(count($exist_bloqueado)>0){
+            return $this->mostrarBloqueados();
+        }
         $bloqueo = new Bloquear_desbloquear();
         $bloqueo->usuario_bloqueador_id= session('id');
-        $bloqueo->usuario_bloqueado_id= $idABloquear[0]->id;
+        $bloqueo->usuario_bloqueado_id= $idABloquear->id;
         $bloqueo->save();
         return $this->mostrarContactos();
     }
 
+    /**
+     * Desbloquear a usuario o contacto
+     */
     public function desbloquear(Request $request){
-        $idADesbloquear = User::whereAlias($request->alias)->get('id');
+        $idADesbloquear = User::whereAlias($request->alias)->get('id')->first();
         $exist_bloqueado = DB::select("SELECT usuario_bloqueador_id, usuario_bloqueado_id FROM bloquear_desbloquear
                     WHERE usuario_bloqueador_id = ? AND usuario_bloqueado_id = ?
                     OR  usuario_bloqueador_id = ? AND usuario_bloqueado_id = ?",
-                    [session('id'), $idADesbloquear[0]->id, $idADesbloquear[0]->id, session('id')]);
+                    [session('id'), $idADesbloquear->id, $idADesbloquear->id, session('id')]);
         if(count($exist_bloqueado)<0){
             return $this->mostrarBloqueados();
         }
         DB::delete("DELETE FROM bloquear_desbloquear
                     WHERE  usuario_bloqueador_id = ? AND usuario_bloqueado_id = ?
                     OR  usuario_bloqueador_id = ? AND usuario_bloqueado_id = ?",
-                    [session('id'), $idADesbloquear[0]->id, $idADesbloquear[0]->id, session('id')]);
+                    [session('id'), $idADesbloquear->id, $idADesbloquear->id, session('id')]);
         
         return $this->mostrarBloqueados();
 
     }
-
+/**
+ * Mostrar datos de usuario por alias
+ */
     private function datosPorAlias($alias){
         $usuario = User::all()->where('alias', '=', $alias);
         if (count($usuario) >0) {
@@ -208,18 +246,25 @@ class ContactosController extends Controller
         return "No se ha encontrado coincidencias";
     }
 
+    /**
+     * Comprobar si un contacto es acepato según el alias
+     */
     private function isContactoAceptadoAlias($alias){
-        $IDbuscado = User::whereAlias($alias)->get('id');
-        $IDmio = User::whereAlias(session('alias'))->get('id');
+        $IDbuscado = User::whereAlias($alias)->get('id')->first();
+        $IDmio = session('id');
         $isContacto=DB::select("SELECT is_aceptado FROM agregar_aceptar 
                                 WHERE usuario_agreagador_id = ? AND usuario_agreagado_id = ? OR
                                 usuario_agreagador_id = ? AND usuario_agreagado_id = ?",
-                                [$IDbuscado[0]->id, $IDmio[0]->id,$IDmio[0]->id,$IDbuscado[0]->id]);
+                                [$IDbuscado->id, $IDmio, $IDmio, $IDbuscado->id]);
         if(!empty($isContacto)){
             return $isContacto[0]->is_aceptado;
         }
         return false;
     }
+
+    /**
+     * Comprobar si existe dos usuarios en tabla agregar_aceptar, según el alias
+     */
     private function isInAgregarAceptar($id1, $id2){
         $isContacto=DB::select("SELECT is_aceptado FROM agregar_aceptar 
                                 WHERE usuario_agreagador_id = ? AND usuario_agreagado_id = ? OR
@@ -231,6 +276,9 @@ class ContactosController extends Controller
         return false;
     }
 
+    /**
+     * Comprobar si el contacto está bloqueado por mi
+     */
     private function isBloqueadoPorMi($idAConsultar){
         $isbloqueado = DB::select("SELECT usuario_bloqueador_id, usuario_bloqueado_id FROM bloquear_desbloquear
                                 WHERE usuario_bloqueador_id = ? AND usuario_bloqueado_id = ?",

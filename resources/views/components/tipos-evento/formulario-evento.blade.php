@@ -12,7 +12,7 @@
         <input type="hidden" name="id" value="{{$evento->id ?? ''}}">
         <input type="hidden" name="tipo_evento" 
                 value="{{$tipo == null ? session('tipo_evento') : ($tipo == "sin-presupuesto" ? 1 : 2)}}">
-        <div class="grid grid-cols-3 gap-4 border border-black bg-lime-50 p-3">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 border border-gray-400 bg-lime-50 p-3 rounded-lg shadow-lg shadow-gray-500">
             
             <div class="grid col-span-2 grid-rows-7">
                 @if ($tipo != null)
@@ -51,13 +51,15 @@
             </div>
             <div class="grid place-items-center shrink">
                 <img class="h-full w-full object-cover rounded-md md:h-full md:w-48" src="{{!empty($evento->foto) ? asset($evento->foto) : 'https://img.freepik.com/vector-premium/paisaje-dibujos-animados-vista-campos-verdes-verano-colina-cesped-primavera-cielo-azul_313905-688.jpg?w=2000'}}" alt="Foto de evento">
-                <input type="file" src="" alt="imagen subida" name="foto" accept="image/*">
+                <label for="subir-imagen" class="bg-gray-500 hover:bg-gray-600 text-white rounded-md border border-black px-2 py-2 ml-2 w-36">Elegir imagen</label>
+                <input id="subir-imagen" type="file" src="" alt="imagen subida" name="foto" accept="image/*" class="hidden">
             </div>
+            
             @if ($evento == null)
-                <button class="border border-black rounded-md bg-green-500 py-1 p-2 my-2 mx-2" type="submit">Crear Evento</button>
+                <button class="btn bg-green-500 hover:bg-green-700 hover:text-white" type="submit">Crear Evento</button>
 
             @else
-            <button class="border border-black rounded-md bg-green-500 py-1 p-2 my-2 mx-2" type="submit">Actualizar</button>
+            <button class="btn bg-green-500 hover:bg-green-700 hover:text-white md:w-2/4 w-full" type="submit">Actualizar</button>
 
             @endif
         </div>

@@ -24,7 +24,7 @@ class GastosController extends Controller
     /**
      * Obtener lista de todos los gastos de un evento por el id
      */
-    public function getListaGastos($evento_id){
+    public static function getListaGastos($evento_id){
         return DB::select("SELECT gastos.id, gastos.evento_id, gastos.usuario_id, gastos.descripcion, gastos.coste, gastos.foto, gastos.created_at,  gastos.is_aceptado, users.alias as alias, gastos.foto FROM gastos 
                             LEFT JOIN users ON gastos.usuario_id = users.id  WHERE gastos.evento_id = ? ORDER BY gastos.created_at DESC",[$evento_id]);
     }
@@ -85,7 +85,7 @@ class GastosController extends Controller
     /**
      * Todo lo pagado en evento concreto por el id
      */
-    public function pagadoEvento($id){
+    public static function pagadoEvento($id){
         session(['pagado' => 0]);
         $pagos = DB::select("SELECT sum(gastos.coste) as pagado, users.id as usuario_id, users.alias FROM gastos 
                             RIGHT JOIN users ON users.id = gastos.usuario_id WHERE evento_id = ? AND is_aceptado = true GROUP BY usuario_id ORDER BY users.id", [$id]);
@@ -115,7 +115,10 @@ class GastosController extends Controller
         return $listaPagos ;
     }
 
-    public function usuarioDebeUsuario($id){
+    /**
+     * Calcula quién debe y cuánto debe
+     */
+    public static function usuarioDebeUsuario($id){
         $pagos = DB::select("SELECT sum(gastos.coste) as pagado, users.id as usuario_id, users.alias FROM gastos 
                             RIGHT JOIN users ON users.id = gastos.usuario_id WHERE evento_id = ? AND is_aceptado = true GROUP BY usuario_id ORDER BY users.id", [$id]);
         $listaParticipantes = DB::select("SELECT user_id as usuario_id, users.alias FROM users_eventos 
@@ -132,21 +135,24 @@ class GastosController extends Controller
                 }
             }
         }
-        return $this->quienDebeQuien($listaPagos);
+        return GastosController::quienDebeQuien($listaPagos);
     }
 
-    public function quienDebeQuien(array $listaPagos){
+    /**
+     * Retorna qarray de strings con los costes
+     */
+    private static function quienDebeQuien(array $listaPagos){
         $deben = [];
         foreach ($listaPagos as $key => $usuario) {
             $diferencia = session('mediaPagos')-$usuario['pagado'] <0 ? -(session('mediaPagos')-$usuario['pagado']) : session('mediaPagos')-$usuario['pagado'];
             if (($diferencia <= 0.01)) {
                 $deben[$key] = "@-" . $usuario['alias'] . " no debe ni le deben dinero.";
             }else{
-                if (round($usuario['pagado'],2) > round(session('mediaPagos',2))) {
+                if (round($usuario['pagado'],2) > round(session('mediaPagos'),2)) {
                 $deben[$key] = "@-" . $usuario['alias'] . " ha pagado de más, le deben: " 
                                     . ($usuario['pagado'] - session('mediaPagos')) . "€";
             }
-            if (round($usuario['pagado'],2) < round(session('mediaPagos',2))) {
+            if (round($usuario['pagado'],2) < round(session('mediaPagos'),2)) {
                 $deben[$key] = "@-" . $usuario['alias'] . " ha pagado de menos, debe: " 
                                     . session('mediaPagos') - $usuario['pagado'] . "€";
             }
@@ -156,6 +162,9 @@ class GastosController extends Controller
         return $deben;
     }
 
+    /**
+     * Ir a vista de pago a usuario
+     */
     public function vistaPagoUsuario(Request $request){
         try {
             $request->validate([
@@ -172,6 +181,9 @@ class GastosController extends Controller
         }
     }
 
+    /**
+     * Realizar pago a usuario
+     */
     public function pagarUsuario(Request $request){
         try {
             $request->validate([
@@ -214,7 +226,7 @@ class GastosController extends Controller
     /**
      * Obtener lista de gastos en Presupuesto de un evento por el id
      */
-    public function getListaGastosPresu($evento_id){
+    public static function getListaGastosPresu($evento_id){
         return DB::select("SELECT gastos_de_presupuesto.id, gastos_de_presupuesto.evento_id, gastos_de_presupuesto.admin_id, 
                                     gastos_de_presupuesto.descripcion_gasto_pre, gastos_de_presupuesto.coste, 
                                     gastos_de_presupuesto.foto, gastos_de_presupuesto.created_at, 

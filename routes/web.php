@@ -25,13 +25,8 @@ use App\View\Components\TiposEvento\EventoSinPresu;
 Route::get('/',[InicioController::class, 'inicio'])->name('inicio')->middleware('auth');
 Route::get('/inicio',[InicioController::class, 'inicio'])->name('inicio')->middleware('auth');
 
-Route::get('samplechat', [ChatController::class, 'chatPrivadoEjemplo'])->name('samplechat');
-Route::get('subirfoto', [ImagenesController::class, 'subirImagen'])->name('subir.foto');
-Route::post('guardarfoto', [ImagenesController::class, 'guardarImagen'])->name('guardar.foto');
-// Route::post('guardarfoto', [ImagenesController::class, 'store'])->name('store.foto');
-
 Route::get('contactos',[ContactosController::class, 'mostrarContactos'])->name('contactos.miscontactos')->middleware('auth');
-Route::get('contactosall',[ContactosController::class, 'showAllUsers'])->name('contactos')->middleware('auth');
+// Route::get('contactosall',[ContactosController::class, 'showAllUsers'])->name('contactos')->middleware('auth');
 Route::post('contactos/buscar',[ContactosController::class, 'buscarPorAlias'])->name('contactos.buscar')->middleware('auth');
 Route::get('contactos/ver/{alias}',[ContactosController::class, 'buscarPorAlias'])->name('contactos.ver')->middleware('auth');
 Route::post('contactos/filtrar',[ContactosController::class, 'filtrar'])->name('contactos.filtrar')->middleware('auth');
@@ -52,7 +47,6 @@ Route::get('evento/crear/{tipo}',[EventoController::class, 'newEvento'])->name('
 Route::post('evento/crear',[EventoController::class, 'saveEvento'])->name('evento.guardar')->middleware('auth');
 Route::post('evento/editar',[EventoController::class, 'editarEvento'])->name('evento.editar')->middleware('auth');
 Route::patch('evento/actualizar',[EventoController::class, 'updateEvento'])->name('evento.update')->middleware('auth');
-Route::get('evento/ver/{id}',[EventoController::class, 'verEventoGet'])->name('evento.ver.get')->middleware('auth');
 Route::get('evento/verget/{id}/{nombre}',[EventoController::class, 'verEventoGet2'])->name('evento.ver.get.get')->middleware('auth');
 Route::post('evento/ver',[EventoController::class, 'verEvento'])->name('evento.ver')->middleware('auth');
 Route::post('evento/contactos-para-evento/',[EventoController::class, 'verContactosParaEvento'])->name('evento.contactos.ver')->middleware('auth');
@@ -84,9 +78,7 @@ Route::post('evento/add-participante-actividad',  [ActividadesController::class,
 Route::post('evento/eliminar-participante-actividad',  [ActividadesController::class, 'salirDeActividad'])->name('delete.participante.actividad')->middleware('auth');
 
 Route::get('mensajeria',[MensajeriaController::class, 'verMensajeria'])->name('mensajeria')->middleware('auth');
-// Route::get('mensajeria/chat',[ChatController::class, 'chatPrivado'])->name('chat')->middleware('auth');
 Route::get('mensajeria/chat/{user}-{contacto}',[ChatController::class, 'abrirChatPrivado'])->name('abrirChatPrivadoGet')->middleware('auth');
-// Route::post('mensajeria/chat',[ChatController::class, 'abrirChatPrivado'])->name('abrirChatPrivado')->middleware('auth');
 Route::post('mensajeria/chat/enviar',[ChatController::class, 'enviarMensajeChatPrivado'])->name('enviar.mensaje.privado')->middleware('auth');
 Route::get('mensajeria/chat/evento/{nombre_evento}-{id_evento}-{user}',[ChatController::class, 'abrirChatEvento'])->name('chatevento')->middleware('auth');
 Route::post('mensajeria/chat/evento/enviar',[ChatController::class, 'enviarMensajeChatEvento'])->name('enviar.mensaje.chat.evento')->middleware('auth');
@@ -95,6 +87,7 @@ Route::view('acercade', 'acercadeVista')->name('acercade')->middleware('auth');
 Route::view('acercade-info-bienvenida', 'acercadeInfo-Bienvenida')->name('acercade.bienvenida');
 Route::get("ajustes", [AjustesUsuarioController::class, 'ajustes'])->name('ajustes')->middleware('auth');
 Route::patch("ajustes", [AjustesUsuarioController::class, 'update'])->name('updateUser')->middleware('auth');
+Route::delete('borrar-cuenta', [AjustesUsuarioController::class, 'deleteUser'])->name('deleteUser');
 
 Route::view('login','auth.login')->name('login')->middleware('guest');
 Route::post('login',[LoginRegisterController::class, 'storeLogin'])->middleware('guest');
@@ -103,19 +96,13 @@ Route::view('registrarse','auth.registrarse')->name('registrarse')->middleware('
 Route::post('registrarse',[LoginRegisterController::class, 'store'])->middleware('guest');
 Route::post('logout',[LoginRegisterController::class, 'destroySession'])->name('logout');
 Route::get('logout',[LoginRegisterController::class, 'destroySession'])->name('logout');
-Route::delete('borrar-cuenta', [AjustesUsuarioController::class, 'deleteUser'])->name('deleteUser');
+
 
 
 Route::get('/setSession', [SessionController::class, 'setSessionData'])->name('setSessionData')->middleware('auth');
 Route::get('/getAccessSession', [SessionController::class, 'getAccessSession'])->name('getAccessSession')->middleware('auth');
 Route::get('/deleteSessionData', [SessionController::class, 'deleteSetSessionData'])->name('deleteSetSessionData')->middleware('auth');
 
-Route::get('enviarmensaje', function(){
-    $correo = new PlandyAppMail('');
-
-    // Mail::to('sr.work.pap01@gmail.com')->send($correo);
-    return "mensaje enviado2";
-});
 Route::get('/datoscorreo', [MailController::class, 'verCorreo'])->name('recibir.correo');
 Route::post('/datoscorreo', [MailController::class, 'mostrarDatosCorreo'])->name('mostrar.correo');
 Route::post('/correo-nuevo', [MailController::class, 'mostrarDatosCorreo'])->name('nuevo.correo.pass');
@@ -124,6 +111,7 @@ Route::post('/nueva-password', [MailController::class, 'solicitarCambioContrasen
 
 
 // Ejemplo formulario con componentes
+Route::get('evento/ver/{id}',[EventoController::class, 'verEventoGet'])->name('evento.ver.get')->middleware('auth');
 Route::view('sample', 'sample');
 Route::post('sample/registrarse', [MyForm::class, 'handle'])->name('handle');
 Route::post('sample/login', [MyForm::class, 'storeLogin'])->name('storeLogin');

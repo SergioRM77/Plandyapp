@@ -12,19 +12,20 @@ use Illuminate\Http\Request;
 
 class InicioController extends Controller
 {
+    /**
+     * Ir a la ventana de inicio con la información necesaria:
+     * datos de evento, participantes, actividades, pagos...
+     */
     public function inicio()
     {
         $cadenaEventos =  $this->getEventosActivos();
-        // $this->getDatosEventosActivos($cadenaEventos);
-
         $datosEventos = $this->getDatosEventos();
-        $numEventosFinalizados = $this->getNumEventosFinalizados();
         $participantes = $this->getParticipantesEventos();
         $admins = $this->getAdminsEventos();
         $actividades = $this->getActividadesEventos();
         $pagado = $this->getPagadoEventos();
         $eventos=[];
-        // return [ $datosEventos, $admins];
+
         for ($i=0; $i < count($datosEventos); $i++) { 
             $eventos[$i] = array_merge((array)$datosEventos[$i],(array)$participantes[$i],
                         (array)$admins[$i],
@@ -32,10 +33,12 @@ class InicioController extends Controller
                         (array)$pagado[$i]);
         }
         
-        return view('inicioVista',compact('eventos', 'numEventosFinalizados'));
+        return view('inicioVista',compact('eventos'));
     }
     
-    //Probar métodos a ver si es mas rapido asi y más corto
+    /**
+     * Consigue los Ids de los eventos activos
+     */
     private function getEventosActivos(){
         $eventos = DB::select("SELECT users_eventos.evento_id FROM users_eventos
                             WHERE users_eventos.user_id = ? AND users_eventos.is_visible = true 
@@ -47,11 +50,10 @@ class InicioController extends Controller
         return $arrayIDs;
     }
 
-    private function getDatosEventosActivos($arrayIDs){
-        return DB::table('eventos')->whereIn('id', $arrayIDs)->get();
-    }
-    //^^^
 
+    /**
+     * Consigue los datos de todos los eventos en los que participo o participé visibles para mi
+     */
     public function getDatosEventos(){
         return DB::select("SELECT eventos.id, eventos.nombre_evento, eventos.fecha_inicio, eventos.fecha_fin, eventos.is_activo, users.id as IDuser, eventos.foto FROM eventos 
                         LEFT JOIN users_eventos ON users_eventos.evento_id = eventos.id
@@ -59,11 +61,17 @@ class InicioController extends Controller
                         WHERE users.id = ? AND users_eventos.is_visible = true ORDER BY eventos.id", [session('id')]);
     }
 
+    /**
+     * Consigue el número de eventos Finalizados
+     */
     public function getNumEventosFinalizados(){
         return DB::select("SELECT count(id) as numFinalizados FROM eventos
                         WHERE is_activo = false");
     }
 
+    /**
+     * Consigue el numero de participantes por evento en el que participo
+     */
     public function getParticipantesEventos(){
         return DB::select("SELECT count(user_id) as numParticipantes, evento_id FROM users_eventos
                         RIGHT JOIN eventos ON eventos.id = users_eventos.evento_id
@@ -72,6 +80,9 @@ class InicioController extends Controller
                         GROUP BY evento_id ORDER BY eventos.id",[session('id')]);
     }
 
+    /**
+     * Consigue los administradores de cada evento en los que participo
+     */
     public function getAdminsEventos(){
         return DB::select("SELECT users.alias as admin, users_eventos.evento_id FROM users
                         RIGHT JOIN users_eventos ON users_eventos.user_id = users.id
@@ -83,6 +94,9 @@ class InicioController extends Controller
                             ,[session('id')]);
     }
 
+    /**
+     * Consigue el numero de actividades de cada evento en el que participo
+     */
     public function getActividadesEventos(){
         return DB::select("SELECT count(actividades.id) as numActividades, eventos.id FROM actividades
                         RIGHT JOIN eventos ON eventos.id = actividades.evento_id
@@ -91,6 +105,9 @@ class InicioController extends Controller
                         GROUP BY eventos.id ORDER BY eventos.id",[session('id')]);
     }
 
+    /**
+     * Consigue el pago total de cada evetno en el que participo
+     */
     public function getPagadoEventos(){
         return DB::select("SELECT sum(if(gastos.is_aceptado = true, gastos.coste, 0)) as pagado, eventos.id as evento_id FROM gastos
                         RIGHT JOIN eventos ON eventos.id = gastos.evento_id
