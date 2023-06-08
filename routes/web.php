@@ -24,6 +24,7 @@ use App\View\Components\TiposEvento\EventoSinPresu;
 
 Route::get('/',[InicioController::class, 'inicio'])->name('inicio')->middleware('auth');
 Route::get('/inicio',[InicioController::class, 'inicio'])->name('inicio')->middleware('auth');
+Route::get('/home', function () { return redirect('inicio'); });
 
 Route::get('contactos',[ContactosController::class, 'mostrarContactos'])->name('contactos.miscontactos')->middleware('auth');
 // Route::get('contactosall',[ContactosController::class, 'showAllUsers'])->name('contactos')->middleware('auth');

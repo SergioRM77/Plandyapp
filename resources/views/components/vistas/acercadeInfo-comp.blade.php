@@ -49,3 +49,5 @@
         </li>
     </ul>
 </div>
+<div class="flex justify-center mt-2"><a href="{{ asset('\guia_uso_PlandyApp.pdf') }}" class="btn bg-green-500 hover:bg-green-700 hover:text-white">Descargar Guía Rapida de uso</a></div>
+

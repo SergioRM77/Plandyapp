@@ -18,6 +18,9 @@ class MensajeriaController extends Controller
         return view('mensajeriaVista');
     }
 
+    /**
+     * Ver todos los mensajes que hay en mi bandeja de entrada, privados y de evento
+     */
     public static function verMensajeria(){
         $usuariosChatPrivados = DB::select("SELECT alias, id, localidad, foto, intereses FROM users
                                             WHERE users.id IN (

@@ -17,36 +17,42 @@ class ChatController extends Controller
 {
 
     //CHATS PRIVADOS
-    public function chatPrivadoEjemplo()
-    {
-        
-        return view('tiposChat.chatVista');
-    }
 
+
+    /**
+     * Abrir chat privado con contacto, ya sea nuevo o con mensajes anteriores
+     */
     public function abrirChatPrivado($user, $contacto){
-        $contacto = User::select('id','alias', 'foto')->where('alias', $contacto)->first();
-        $conversacion = DB::select("SELECT chat.usuario_origen_id, chat.contenido FROM chat
-                                        WHERE (usuario_origen_id = ? AND usuario_destino_id = ?)
-                                            OR (usuario_origen_id = ? AND usuario_destino_id = ?)
-                                            ORDER BY fecha_y_hora ASC",
-                                            [session('id'), $contacto->id, $contacto->id, session('id')]);
-        
-        return view('tiposChat.chatVista', compact('conversacion', 'contacto'));
-    }
-    // public function abrirChatPrivado(Request $request){
-    //     $conversacion = DB::select("SELECT chat.usuario_origen_id, chat.contenido FROM chat
-    //                                     WHERE (usuario_origen_id = ? AND usuario_destino_id = ?)
-    //                                         OR (usuario_origen_id = ? AND usuario_destino_id = ?)
-    //                                         ORDER BY fecha_y_hora ASC",
-    //                                         [session('id'), $request->usuario_id, $request->usuario_id, session('id')]);
-    //     $alias = User::select('id','alias')->where('id', $request->usuario_id)->first();
-    //     // return compact('alias', 'conversacion');
-    //     return view('tiposChat.chatVista', compact('conversacion', 'alias'));
-    // }
-
-    public function enviarMensajeChatPrivado(Request $request){
-        $contacto = User::select('id')->where('alias', $request->contacto)->first();
         try {
+            
+            $contacto = User::select('id','alias', 'foto')->where('alias', $contacto)->first();
+            $iscontacto = DB::select("SELECT is_aceptado FROM agregar_aceptar 
+                                        WHERE (usuario_agreagador_id = ? AND usuario_agreagado_id = ? AND is_aceptado = TRUE)
+                                        OR (usuario_agreagador_id = ? AND usuario_agreagado_id = ? AND is_aceptado = TRUE)", 
+                                        [session('id'),$contacto->id, $contacto->id, session('id')]);
+            if (count($iscontacto)==0) {
+                session()->flash('status', 'No se reconoce como contacto a ese usuario');
+                return redirect()->route('inicio');
+            }
+            $conversacion = DB::select("SELECT * FROM chat
+                                            WHERE (usuario_origen_id = ? AND usuario_destino_id = ?)
+                                                OR (usuario_origen_id = ? AND usuario_destino_id = ?)
+                                                ORDER BY fecha_y_hora ASC",
+                                                [session('id'), $contacto->id, $contacto->id, session('id')]);
+            
+            return view('tiposChat.chatVista', compact('conversacion', 'contacto'));
+        } catch (Exception $th) {
+            session()->flash('status', 'Ha ocurrido un error');
+                    return redirect()->route('inicio');
+        }
+    }
+
+    /**
+     * Enviar mensaje a contacto privado
+     */
+    public function enviarMensajeChatPrivado(Request $request){
+        try {
+            $contacto = User::select('id')->where('alias', $request->contacto)->first();
             date_default_timezone_set('Europe/Madrid');
             if ($this->validarMensaje($request, $contacto->id)) {
                 $mensaje = new Chat();
@@ -61,21 +67,23 @@ class ChatController extends Controller
             session()->flash('status', $th->getMessage());
         }
         return redirect()->route('abrirChatPrivadoGet', [session('alias'), $request->contacto]);
-        
-        
-
     }
 
+    /**
+     * Validar mensaje a usuario
+     */
     public function validarMensaje(Request $request, int $idContacto){
-
         return $request->validate(['contenido' => 'required|max:254']) && is_numeric($idContacto);
         
     }
 
     //CHATS DE EVENTOS
 
+    /**
+     * Abrir el chat de evento activo con todos los mensajes grupales
+     */
     public function abrirChatEvento($nombre_evento, $id_evento, $user){
-        try {//arreglar user alias!!
+        try {
             if ($this->validarAccesoChatEvento($nombre_evento, $id_evento, $user)) {
                 $chatEvento = DB::select("SELECT chats_eventos.usuario_id, chats_eventos.evento_id, chats_eventos.fecha_y_hora, 
                                             chats_eventos.contenido, users.alias FROM chats_eventos
@@ -87,17 +95,23 @@ class ChatController extends Controller
             
             
         } catch (Exception $th) {
-            session()->flash('status','Ha ocurrido un error');
+            session()->flash('status','No se puede acceder ese chat de evento');
             return redirect()->route('inicio');
         }
         
     }
 
+    /**
+     * Validar si este usuario forma parte de este evento
+     */
     public function validarAccesoChatEvento($nombre_evento, $id_evento, $user){
         $datos = DB::table("eventos")->where("id", $id_evento)->first();
         return $datos->id == $id_evento && $datos->nombre_evento = $nombre_evento && $user == session('alias');
     }
 
+    /**
+     * Enviar mensaje a evento si soy participante
+     */
     public function enviarMensajeChatEvento(Request $request){
         try {
             date_default_timezone_set('Europe/Madrid');
@@ -119,6 +133,9 @@ class ChatController extends Controller
         return redirect()->route('inicio');
     }
 
+    /**
+     * Validar datos de mensaje para evento
+     */
     public function validarMensajeEvento(Request $request){
         return $request->validate([
             'contenido' => 'required|max:254',
@@ -127,16 +144,5 @@ class ChatController extends Controller
         ]) && $request->user == session('alias');
     }
 
-    public function chatEvento()
-    {
-        
-        return view('tiposChat.chatEventoVista');
-    }
 
-    //CHATS DE REPORTE
-    public function chatReporte()
-    {
-        
-        return view('tiposChat.chatReporteVista');
-    }
 }

@@ -4,13 +4,11 @@
       <div class="flex sm:items-center justify-between py-3 border-b-2 border-gray-200 bg-blue-300 rounded-lg shadow-lg">
          <div class="flex items-center space-x-4">  
             @if ($contacto->foto == null)
-               <lord-icon class="object-cover w-10 sm:w-16 h-10 sm:h-16 rounded-full ml-2"
-                  src="https://cdn.lordicon.com/bhfjfgqz.json"
-                  trigger="hover"
-                  colors="primary:#121331">
-               </lord-icon>
+               <img src="https://castillotrans.eu/wp-content/uploads/2019/06/77461806-icono-de-usuario-hombre-hombre-avatar-avatar-pictograma-pictograma-vector-ilustraci%C3%B3n.jpg"
+               alt="foto de perfil de {{$contacto->alias}}" class="object-cover w-10 sm:w-16 h-10 sm:h-16 rounded-full ml-2">
             @else
-               <img src="{{asset($contacto->foto)}}" alt="" class="object-cover w-10 sm:w-16 h-10 sm:h-16 rounded-full ml-2">
+               <img src="{{asset($contacto->foto)}}" alt="foto de perfil de {{$contacto->alias}}" class="object-cover w-10 sm:w-16 h-10 sm:h-16 rounded-full ml-2">
+               
             @endif
             <div class="flex flex-col leading-tight">
                <div class="text-2xl mt-1 flex items-center">
@@ -26,6 +24,7 @@
          <div class="chat-message">
             <div class="flex items-end">
                <div class="flex flex-col space-y-2 max-w-xs mx-2 order-2 items-start">
+                  <p><span>{{date("d-m-Y H:i", strtotime($mensaje->fecha_y_hora))}}</span></p>
                   <div><span class="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-blue-300 text-gray-600">{{$mensaje->contenido}}</span></div>
                </div>
             </div>
@@ -34,6 +33,7 @@
          <div class="chat-message">
             <div class="flex items-end justify-end">
                <div class="flex flex-col space-y-2 max-w-xs mx-2 order-1 items-end">
+                  <p><span>{{date("d-m-Y H:i", strtotime($mensaje->fecha_y_hora))}}</span></p>
                   <div><span class="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">{{$mensaje->contenido}}</span></div>
                </div>
             </div>

@@ -1,6 +1,10 @@
 // localStorage.setItem('test', 1);
 console.log('añadiendo JS');
 // alert( sessionStorage.getItem('test') ); 
+const aside = document.getElementById('mostrar-ocultar-sidebar')
+
+const mainMenu = document.getElementById('main-menu')
+
 
 function mostrarOcultarElem(nombreID){
     let contenedor = document.getElementById(nombreID)
@@ -26,11 +30,14 @@ function cambiarSimbolDesplegable(desplegableID){
     
 }
 window.addEventListener("DOMContentLoaded", () => {
-    const aside = document.getElementById('mostrar-ocultar-sidebar')
+    
     aside.addEventListener('click', () => {
-        mostrarOcultarElem('main-menu')
-        // sessionStorage.test++;
-        // alert( sessionStorage.test );
+        if (mainMenu.classList.contains("hover:w-52")) {
+            mainMenu.classList.remove("hover:w-52");
+        }else{
+            mainMenu.classList.add('hover:w-52')
+        }
+
     })
 })
 

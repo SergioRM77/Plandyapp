@@ -23,11 +23,8 @@
                     <div class="flex items-center justify-between border rounded-md border-black bg-blue-500 p-1 mx-4 shadow-lg shadow-gray-400 mt-2">
                         <div class="flex items-center">
                             @if ($usuario->foto == null)
-                            <lord-icon class="object-cover w-10 sm:w-16 h-10 sm:h-16 rounded-full ml-2"
-                                src="https://cdn.lordicon.com/bhfjfgqz.json"
-                                trigger="hover"
-                                colors="primary:#121331">
-                                </lord-icon>
+                            <img class="object-cover w-10 sm:w-16 h-10 sm:h-16 rounded-full ml-2"
+                                src="https://castillotrans.eu/wp-content/uploads/2019/06/77461806-icono-de-usuario-hombre-hombre-avatar-avatar-pictograma-pictograma-vector-ilustraci%C3%B3n.jpg">
                             @else
                                 <img src="{{asset($usuario->foto)}}" alt="" class="object-cover w-10 sm:w-16 h-10 sm:h-16 rounded-full ml-2">
                             @endif

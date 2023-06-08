@@ -31,6 +31,7 @@
             <div class="chat-message">
                <div class="flex items-end justify-end">
                   <div class="flex flex-col space-y-2 max-w-xs mx-2 order-1 items-end">
+                     <p><span>{{date("d-m-Y H:i", strtotime($mensaje->fecha_y_hora))}}</span></p>
                      <div><span class="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white shadow-md">{{$mensaje->contenido}}</span></div>
                   </div>
                </div>

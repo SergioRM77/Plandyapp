@@ -29,13 +29,13 @@
         </div>
     </div>
 
-    <input class="h-12 mr-1 col-span-1 border-2 border-black rounded-md bg-green-500" type="submit" value="Actualizar Datos">
-    <a class="h-12 pt-2.5 ml-1 col-span-1 inline-block align-middle text-center border-2 border-black rounded-md bg-violet-500" href="{{e(route('logout'))}}">Cerrar Sesión</a>
+    <input class="btn h-12 mr-1 col-span-1 border-2 border-black rounded-md bg-green-500 hover:bg-green-700" type="submit" value="Actualizar Datos">
+    <a class="btn h-12 mr-1 col-span-1 border-2 border-black rounded-md bg-violet-500 hover:bg-violet-700" href="{{e(route('logout'))}}">Cerrar Sesión</a>
 </form>
 
 <div >
 <form class="grid place-items-center mt-6" action="{{route('deleteUser')}}" method="post">
     @csrf @method('DELETE')
-    <button class="h-12 w-1/2 my-1 border-2 border-black rounded-md bg-red-500" type="submit">Borrar cuenta</button>
+    <button class="btn h-12 w-1/2 my-1 border-2 border-black rounded-md bg-red-500 hover:bg-red-700" type="submit">Borrar cuenta</button>
 </form>
 </div>
