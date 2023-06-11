@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call(array(
-            UserSeeder::class
+            UserSeeder::class,
+            TiposEventoSeeder::class
         ));
     }
 }

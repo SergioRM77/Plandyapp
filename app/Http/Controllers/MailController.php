@@ -35,7 +35,7 @@ class MailController extends Controller
                         "email" => $email
                     ]);
                 //IMPORTANTE CAMBIAR POR $user->email
-                Mail::to('josepz93perez@gmail.com')->send($correo);
+                Mail::to($user->email)->send($correo);
                 session()->flash('status', 'Se ha enviado un correo a la cuenta proporcionada
                     para que pueda cambiar la contraseña. Es posible que esté en SPAM');
             }else {
@@ -70,7 +70,7 @@ class MailController extends Controller
                         ]
                     );
                     //IMPORTANTE CAMBIAR POR $user->email
-                    Mail::to("josepz93perez@gmail.com")->send($correo);
+                    Mail::to( $user->email)->send($correo);
                     Clave_recuperacion_cuenta::where('usuario_id', $user->id)->delete();
                     session()->flash('status', 'Se ha enviado un correo a la cuenta proporcionada con la
                                     nueva contraseña');

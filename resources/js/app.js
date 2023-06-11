@@ -34,8 +34,10 @@ window.addEventListener("DOMContentLoaded", () => {
     aside.addEventListener('click', () => {
         if (mainMenu.classList.contains("hover:w-52")) {
             mainMenu.classList.remove("hover:w-52");
+            aside.innerHTML = "Menu Expandir"
         }else{
             mainMenu.classList.add('hover:w-52')
+            aside.innerHTML = "Menu Ocultar"
         }
 
     })
