@@ -56,5 +56,5 @@ jobs:
         with:
           app-name: 'plandyappv2'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C54C2CE3426B4F97ABA3ABC766D23491 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_665270C7B0244CE09793F2F17E50B14B }}
           package: .
