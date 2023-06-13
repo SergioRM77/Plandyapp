@@ -19,7 +19,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: '8.0'
 
       - name: Check if composer.json exists
         id: check_files
@@ -56,5 +56,5 @@ jobs:
         with:
           app-name: 'plandyappv2'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_665270C7B0244CE09793F2F17E50B14B }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_292BED0D566847F18ACD91F7062DD9B2 }}
           package: .
