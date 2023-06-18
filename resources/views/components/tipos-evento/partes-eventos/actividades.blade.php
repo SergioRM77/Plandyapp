@@ -83,7 +83,7 @@
 
         @if ($evento["is_activo"] && ($isAdmin->is_admin_principal == true || $isAdmin->is_admin_secundario == true))
         <div class="flex justify-center my-2">
-            <label for="my-modal-3" class="border-black w-2/5 btn py-2 px-4 bg-sky-400 text-white font-semibold shadow-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+            <label for="my-modal-3" class="border-black lg:w-2/5 w-3/4 btn py-2 px-4 bg-sky-400 text-white font-semibold shadow-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
                 <lord-icon
                     src="https://cdn.lordicon.com/mecwbjnp.json"
                     trigger="hover">

@@ -54,7 +54,7 @@
 
         @if ($evento["is_activo"])
             <div class="flex justify-center my-2">
-                <label for="my-modal-1" class="border-black w-2/5 btn py-2 px-4 bg-blue-400 text-white font-semibold shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+                <label for="my-modal-1" class="border-black lg:w-2/5 w-3/4 btn py-2 px-4 bg-blue-400 text-white font-semibold shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
                         <lord-icon
                             src="https://cdn.lordicon.com/mecwbjnp.json"
                             trigger="hover">
